@@ -18,4 +18,15 @@ namespace qlay
 			std::chrono::high_resolution_clock::now().time_since_epoch().count()
 			));
 	}
+
+	void init(unsigned seed)
+	{
+		rng.seed(seed);
+	}
+
+	bool chance(double p)
+	{
+		std::bernoulli_distribution dist(p);
+		return dist(rng);
+	}
 }

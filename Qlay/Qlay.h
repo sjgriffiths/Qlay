@@ -21,4 +21,10 @@ namespace qlay
 {
 	//Initialises the system with a seed based on current time
 	QLAY_API void init();
+
+	//Initialises the system with the given seed
+	QLAY_API void init(unsigned seed);
+
+	//Returns true with the given probability (Bernoulli distribution)
+	QLAY_API bool chance(double p);
 }
