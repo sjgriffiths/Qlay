@@ -10,9 +10,9 @@
 #pragma once
 
 #ifdef QLAY_EXPORTS
-#define QLAY_API extern "C" __declspec(dllexport)
+#define QLAY_API __declspec(dllexport)
 #else
-#define QLAY_API extern "C" __declspec(dllimport)
+#define QLAY_API __declspec(dllimport)
 #endif
 
 #include <memory>
