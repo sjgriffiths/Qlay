@@ -21,6 +21,9 @@ namespace qlay
 
 	Qubit &Qubit::operator=(Basis b)
 	{
+		if (M(*this) != b)
+			X(*this);
+
 		return *this;
 	}
 }

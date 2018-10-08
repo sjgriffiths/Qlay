@@ -60,4 +60,16 @@ namespace qlay
 
 	//Measures the given qubit
 	QLAY_API Basis M(Qubit &q);
+
+	//Pauli X gate (NOT)
+	QLAY_API void X(Qubit &q);
+
+	//Pauli Y gate
+	QLAY_API void Y(Qubit &q);
+
+	//Pauli Z gate
+	QLAY_API void Z(Qubit &q);
+
+	//Hadamard gate
+	QLAY_API void H(Qubit &q);
 }
