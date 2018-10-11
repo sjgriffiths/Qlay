@@ -1,5 +1,13 @@
 # Qlay (C++) tutorial
 
+* [Introduction](#introduction)
+* [The quantum bit](#the-quantum-bit)
+* [Coding with one qubit](#coding-with-one-qubit)
+  * [Setting up an experiment](#setting-up-an-experiment)
+  * [Quantum logic gates](#quantum-logic-gates)
+  * [Intricacies of Pauli X and Hadamard](#intricacies-of-pauli-x-and-hadamard)
+* [Reference: Quantum logic gates](#reference--quantum-logic-gates)
+
 ## Introduction
 Quantum mechanics is an extraordinarily strange, unintuitive yet increasingly accurate description of how reality works at the lowest of levels. The idea that we can take this theory and use it to build an entirely new form of computing is now well-known in popular science, but to study it requires a drastic entry barrier of maths and physics. As a computer scientist/programmer, is it at all possible as of yet to break into the field of quantum programming?
 
@@ -175,3 +183,5 @@ ONE:  0
 The answer is **no**. Applying the `H` gate twice gets you right back to where you started, i.e. equals the *identity* operation. The reason for this is that the `H` gate matrix (given later) is its own inverse. The same is, more intuitively, true of the Pauli X (NOT) gate (and also Y and Z, for future reference).
 
 Speaking of the `X` gate, it is generalised to flipping all superpositions. In other words, if you had for example a qubit with a 25% chance of |0> and a 75% chance of |1>, applying the `X` gate would yield a 75% chance of |0> and 25% chance of |1> (it simply swaps the values of *&alpha;* and *&beta;*).
+
+## Reference: Quantum logic gates
