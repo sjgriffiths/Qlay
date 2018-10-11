@@ -18,7 +18,7 @@ C++/CLI wrapper library to allow the use of Qlay in managed code environments.
 Graphical tool for the visualisation and building of quantum logic circuits.
 
 ## Tutorials
-The Qlay documentation functions as an introduction to both using the library/GUI and teaching the fundamental quantum concepts from scratch. For this latter purpose, the tutorials are largely equivalent depending on which way you would like to learn &mdash; *both* is recommended!
+The Qlay documentation functions as an introduction to both using the library/GUI and teaching the fundamental quantum concepts from scratch. For this latter purpose, the tutorials are largely equivalent depending on which way you would like to learn &ndash; *both* is recommended!
 
 * [Qlay (C++) tutorial](QLAY.md)
 * [Qlay Visual tutorial](QLAYVISUAL.md)

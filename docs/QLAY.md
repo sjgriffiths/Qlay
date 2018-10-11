@@ -7,6 +7,8 @@
   * [Quantum logic gates](#quantum-logic-gates)
   * [Intricacies of Pauli X and Hadamard](#intricacies-of-pauli-x-and-hadamard)
 * [Reference: Quantum logic gates](#reference--quantum-logic-gates)
+  * [Measurement](#measurement)
+  * [Single-input gates](#single--input-gates)
 
 ## Introduction
 Quantum mechanics is an extraordinarily strange, unintuitive yet increasingly accurate description of how reality works at the lowest of levels. The idea that we can take this theory and use it to build an entirely new form of computing is now well-known in popular science, but to study it requires a drastic entry barrier of maths and physics. As a computer scientist/programmer, is it at all possible as of yet to break into the field of quantum programming?
@@ -112,9 +114,9 @@ Every single qubit prepared to |0> is |1>. Again, very normal.
 
 A logic gate is actually an operation, represented by a matrix, applied to the qubit vector representation. The matrix for the Pauli X gate is:
 
-![PauliXgate.png](images/maths/PauliXgate.png)
+![PauliXgateequals.png](images/maths/PauliXgateequals.png)
 
-Matrix representations will no longer be given here, but are all given below for each gate.
+Matrix representations will no longer be given here, but are all [provided below](#reference--quantum-logic-gates) for each gate.
 
 Measuring and flipping are the only things we can do with only one bit, classically, but there actually exist numerous quantum logic gates with only one input which don't have classical equivalents. For instance, *Pauli Y* and *Pauli Z* gates also exist, but their effects are subtle and not of interest to us yet.
 
@@ -163,7 +165,7 @@ If the qubit simply had a 50:50 chance of being |0> or |1> when observed, then t
 This means that not only did we get a 50:50 result when first observing the qubit, but the *act of measurement itself* permanently collapsed the qubit into that state. The superpostion has been destroyed and we will now measure the same result every time. This phenomenon is called ***wavefunction collapse*** and goes alongside superposition itself as perhaps the most startling, fundamental of features of quantum mechanics, entering popular science as the *Schr&ouml;dinger's cat paradox*.
 
 ### Intricacies of Pauli X and Hadamard
-The description of the Hadamard gate's effects as 'half a bit-flip' is a gross simplification, albeit a useful one, but it is harder to understand it without delving into the underlying linear algebra.
+The description of the Hadamard gate's effects as 'half a bit-flip' is a gross simplification, albeit a useful one, but it is hard to understand it more without delving into the underlying linear algebra.
 
 Instead, we will simply note another important property. If you were to apply 'half a bit-flip' twice, you would reasonably expect to get a full bit-flip. Is using two `H` gates equivalent to an `X` gate? Let's find out:
 
@@ -180,8 +182,22 @@ ZERO: 1000
 ONE:  0
 ```
 
-The answer is **no**. Applying the `H` gate twice gets you right back to where you started, i.e. equals the *identity* operation. The reason for this is that the `H` gate matrix (given later) is its own inverse. The same is, more intuitively, true of the Pauli X (NOT) gate (and also Y and Z, for future reference).
+The answer is **no**. Applying the `H` gate twice gets you right back to where you started, i.e. equals the *identity operation*. The same is, more intuitively, true of the Pauli X (`NOT`) gate (and also Y and Z, for future reference).
 
 Speaking of the `X` gate, it is generalised to flipping all superpositions. In other words, if you had for example a qubit with a 25% chance of |0> and a 75% chance of |1>, applying the `X` gate would yield a 75% chance of |0> and 25% chance of |1> (it simply swaps the values of *&alpha;* and *&beta;*).
 
 ## Reference: Quantum logic gates
+This section outlines all of the quantum logic gates, explaning them by their operator matrices and effects on a qubit by treating it as a spin state &ndash; understanding their intricacies is not necessarily crucial to start quantum programming. All angles are given in radians.
+
+### Measurement
+| Function header | Description |
+|:---------------:| ----------- |
+| `M(q)` | The 'normal' measurement, returning 0 or 1. Measures the qubit in the Z-axis, i.e. the computational basis.
+
+### Single-input gates
+| Gate | Function header | Operator matrix | Description |
+|:----:|:---------------:| --------------- | ----------- |
+| Pauli X | `X(q)` | ![PauliXgate.png](images/maths/PauliXgate.png) | Bit-flip, equivalent to classical `NOT`. Performs a rotation of *&pi;* around the X-axis. Maps \|0> to \|1> and \|1> to \|0>.
+| Pauli Y | `Y(q)` | ![PauliYgate.png](images/maths/PauliYgate.png) | Performs a rotation of *&pi;* around the Y-axis. Maps \|0> to *i*\|1> and \|1> to &minus;*i*\|0>.
+| Pauli Z | `Z(q)` | ![PauliZgate.png](images/maths/PauliZgate.png) | Phase-flip. Performs a rotation of *&pi;* around the Z-axis. Leaves \|0> unchanged and maps \|1> to &minus;\|1>.
+| Hadamard | `H(q)` | ![Hadamardgate.png](images/maths/Hadamardgate.png) | Creates a superposition by mapping \|0> to (\|0>&plus;\|1>)/sqrt(2) and \|1> to (\|0>&minus;\|1>)/sqrt(2). Performs a rotation of *&pi;* around the X-axis followed by *&pi;*/2 around the Y-axis.
