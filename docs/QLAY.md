@@ -6,9 +6,9 @@
   * [Setting up an experiment](#setting-up-an-experiment)
   * [Quantum logic gates](#quantum-logic-gates)
   * [Intricacies of Pauli X and Hadamard](#intricacies-of-pauli-x-and-hadamard)
-* [Reference: Quantum logic gates](#reference--quantum-logic-gates)
+* [Reference: Quantum logic gates](#reference-quantum-logic-gates)
   * [Measurement](#measurement)
-  * [Single-input gates](#single--input-gates)
+  * [Single-input gates](#single-input-gates)
 
 ## Introduction
 Quantum mechanics is an extraordinarily strange, unintuitive yet increasingly accurate description of how reality works at the lowest of levels. The idea that we can take this theory and use it to build an entirely new form of computing is now well-known in popular science, but to study it requires a drastic entry barrier of maths and physics. As a computer scientist/programmer, is it at all possible as of yet to break into the field of quantum programming?
