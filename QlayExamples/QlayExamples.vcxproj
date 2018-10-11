@@ -128,7 +128,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Hadamard.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PauliX.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Examples.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

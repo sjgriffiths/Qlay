@@ -6,13 +6,12 @@
  * @author Sam Griffiths
  */
 
-#include "../Qlay/Qlay.h"
-
-using namespace qlay;
+#include "Examples.h"
 
 int main()
 {
-	qlay::init();
+	//PauliX(1000);
+	Hadamard(1000);
 
 	return 0;
 }
