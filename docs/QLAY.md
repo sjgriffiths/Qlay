@@ -19,8 +19,29 @@ The pipe-and-chevron notation is known as a *ket vector*: for our purposes, it s
 
 ![linearcombination.png](images/maths/linearcombination.png)
 
-For a classical bit, either &alpha; is 1 and &beta; is 0, or vice versa: the state is either entirely |0> or entirely |1>.
+For a classical bit, either *&alpha;* is 1 and *&beta;* is 0, or vice versa: the state is either entirely |0> or entirely |1>.
 
 Simulating our classical bit like this allows us to extend our line of thinking a bit more: what if the state *isn't* entirely |0> or |1>, but somewhere in between? This is the motivation behind the *qubit*: the quantum bit.
 
-A qubit can take almost any values for the coefficients &alpha; and &beta;, creating a mix of states, not quite |0> yet not quite |1>, a blur between the two. The squared magnitude of the coefficient gives the state's probability, i.e. |&alpha;|<sup>2</sup> is the chance it will be |0> and |&beta;|<sup>2</sup> is the chance it will be |1>. Therefore, these two must sum to 1, as there are no other possibilities.
+A qubit can take almost any values for the coefficients *&alpha;* and *&beta;*, creating a mix of states, not quite |0> yet not quite |1>, a blur between the two. The squared magnitude of the coefficient gives the state's probability, i.e. |*&alpha;*|<sup>2</sup> is the chance it will be |0> and |*&beta;*|<sup>2</sup> is the chance it will be |1>. Therefore, these two must sum to 1, as there are no other possibilities.
+
+## Coding with one qubit
+The maths checks out, but how can a qubit possibly be probabilistic in reality? Let's set that aside for one moment: enough with the linear algebra, ahead with the coding.
+
+First, we'll set up a bareboned Qlay program:
+
+```c++
+#include "Qlay.h"
+#include <iostream>
+
+using namespace qlay;
+
+int main()
+{
+    qlay::init();
+
+    return 0;
+}
+```
+
+We must call `init()` to seed the random number generator (you can provide a seed as an argument, but leaving it blank defaults to using the current time).
