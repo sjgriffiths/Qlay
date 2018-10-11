@@ -15,7 +15,7 @@ Let's begin by treating 0 and 1 as vectors. We'll define them as:
 
 The pipe-and-chevron notation is known as a *ket vector*: for our purposes, it simply means a column vector.
 
-0 and 1 are our only two possible states, so |0> and |1> are out *basis vectors*, or *basis states*. We can represent a single bit, *b*, using this system like so:
+0 and 1 are our only two possible states, so |0> and |1> are our *basis vectors*, or *basis states*. We can represent a single bit, *b*, using this system like so:
 
 ![linearcombination.png](images/maths/linearcombination.png)
 
