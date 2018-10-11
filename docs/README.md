@@ -23,6 +23,15 @@ The Qlay documentation functions as an introduction to both using the library/GU
 * [Qlay (C++) tutorial](QLAY.md)
 * [Qlay Visual tutorial](QLAYVISUAL.md)
 
+## Versioning
+| Version | Description | Released |
+|:-------:| ----------- |:--------:|
+| v1.0.0 | The API is defined, set up as open-source and tutorial-style documentation is initiated. The library supports programming with a single qubit and single-input logic gates.
+| v1.1.0 | Qlay Visual, the circuitry GUI program, is launched using the Qlay API.
+| v2.0.0 | The API is refactored to support programming with multiple qubits and include multi-input logic gates.
+| v2.1.0 | Qlay Visual is extended with the refactored API to support multiple qubits.
+| v2.2.0 | The API includes some basic abstractions for treating qubit strings as integers, further supporting arithmetical context.
+
 ## License
 This API, including the GUI visualiser, is hosted open-source under the [MIT license](../LICENSE.md).
 
