@@ -11,7 +11,7 @@
 int main()
 {
 	//PauliX(1000);
-	Hadamard(1000);
+	//Hadamard(1000);
 
 	return 0;
 }
