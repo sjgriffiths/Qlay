@@ -28,6 +28,7 @@ A qubit can take almost any values for the coefficients *&alpha;* and *&beta;*, 
 ## Coding with one qubit
 The maths checks out, but how can a qubit possibly be probabilistic in reality? Let's set that aside for one moment: enough with the linear algebra, ahead with the coding.
 
+### Setting up an experiment
 First, we'll set up a bareboned Qlay program:
 
 ```c++
@@ -45,3 +46,132 @@ int main()
 ```
 
 We must call `init()` to seed the random number generator (you can provide a seed as an argument, but leaving it blank defaults to using the current time).
+
+Inside here, let's create a qubit:
+
+```c++
+Qubit q;
+std::cout << M(q) << std::endl;
+```
+
+Our qubit data type does not possess its own value in an accessible way. Instead, we use the `M()` function to measure the qubit, which returns the value as a boolean (true/false, representing |1> and |0>).
+
+The output will be 0: all qubits are initialised into the |0> state.
+
+As mentioned before, this system will reveal itself to be probabilistic. Rather than just doing our experiments once, we should repeat them for statistical results:
+
+```c++
+int repeats = 1000;
+int zeroes = 0, ones = 0;
+
+for (int i = 0; i < repeats; i++)
+{
+    Qubit q;
+
+    M(q) ? ones++ : zeroes++;
+}
+
+std::cout << "ZERO: " << zeroes << std::endl << "ONE:  " << ones << std::endl;
+```
+
+```
+ZERO: 1000
+ONE:  0
+```
+
+We repeat the experiment some suitably large number of times, counting every time the result was 0 and every time it was 1. As expected, it's 0 every time.
+
+### Quantum logic gates
+The classical bit doesn't do much by itself: we create programs by manipulating them with logic gates, such as `NOT`, `AND`, `OR` etc. We manipulate the qubit using logic gates, too, but they work rather differently indeed.
+
+The first gate to use is called the *Pauli X gate*. It's a complicated name for a very simple function: it maps |0> to |1> and |1> to |0>. In other words, it's a direct equivalent of the classical `NOT`, or *bit-flip*.
+
+Let's add the `X` gate to our experiment (see [PauliX.cpp](../QlayExamples/PauliX.cpp)):
+
+```c++
+Qubit q;
+X(q);
+
+M(q) ? ones++ : zeroes++;
+```
+
+```
+ZERO: 0
+ONE:  1000
+```
+
+Every single qubit prepared to |0> is |1>. Again, very normal.
+
+A logic gate is actually an operation, represented by a matrix, applied to the qubit vector representation. The matrix for the Pauli X gate is:
+
+![PauliXgate.png](images/maths/PauliXgate.png)
+
+Matrix representations will no longer be given here, but are all given below for each gate.
+
+Measuring and flipping are the only things we can do with only one bit, classically, but there actually exist numerous quantum logic gates with only one input which don't have classical equivalents. For instance, *Pauli Y* and *Pauli Z* gates also exist, but their effects are subtle and not of interest to us yet.
+
+Instead, the next essential gate to know is the *Hadamard gate*. The easiest way to understand what this gate does is that it performs half a bit-flip. If the input is |0> or |1>, the output will be exactly half-way between |0> and |1>. 
+
+What does this mean in practice? Let's try it out in the same way as before:
+
+```c++
+Qubit q;
+H(q);
+
+M(q) ? ones++ : zeroes++;
+```
+
+```
+ZERO: 497
+ONE:  503
+```
+
+With the qubit set to exactly half-way between |0> and |1>, it has a 50:50 chance of being measured as 0 or 1! This is, clearly, a huge deviation from classical computing and the fundamental motivation behind the qubit, as explained earlier.
+
+The fact that the qubit can exist as as any mixture of the two states is known as ***quantum superposition***. The qubit exists as a *superpostion* of the |0> and |1> basis states. When we observe/measure the qubit, only then does it present itself as one of those basis states, with some probability.
+
+It goes further than even that. Let's extend our experiment so that we simply measure the qubit twice, and also count the number of times both measurements matched (see [Hadamard.cpp](../QlayExamples/Hadamard.cpp)):
+
+```c++
+Qubit q;
+H(q);
+
+//Basis type is just an alias of bool
+Basis result = M(q);
+result ? ones++ : zeroes++;
+
+if (M(q) == result)
+    matches++;
+```
+
+```
+ZERO:  536
+ONE:   464
+MATCH: 1000
+```
+
+If the qubit simply had a 50:50 chance of being |0> or |1> when observed, then the number of matches would be around 50% of the time. However, we instead see that the measurements matched 100% of the time.
+
+This means that not only did we get a 50:50 result when first observing the qubit, but the *act of measurement itself* permanently collapsed the qubit into that state. The superpostion has been destroyed and we will now measure the same result every time. This phenomenon is called ***wavefunction collapse*** and goes alongside superposition itself as perhaps the most startling, fundamental of features of quantum mechanics, entering popular science as the *Schr&ouml;dinger's cat paradox*.
+
+### Intricacies of Pauli X and Hadamard
+The description of the Hadamard gate's effects as 'half a bit-flip' is a gross simplification, albeit a useful one, but it is harder to understand it without delving into the underlying linear algebra.
+
+Instead, we will simply note another important property. If you were to apply 'half a bit-flip' twice, you would reasonably expect to get a full bit-flip. Is using two `H` gates equivalent to an `X` gate? Let's find out:
+
+```c++
+Qubit q;
+H(q);
+H(q);
+
+M(q) ? ones++ : zeroes++;
+```
+
+```
+ZERO: 1000
+ONE:  0
+```
+
+The answer is **no**. Applying the `H` gate twice gets you right back to where you started, i.e. equals the *identity* operation. The reason for this is that the `H` gate matrix (given later) is its own inverse. The same is, more intuitively, true of the Pauli X (NOT) gate (and also Y and Z, for future reference).
+
+Speaking of the `X` gate, it is generalised to flipping all superpositions. In other words, if you had for example a qubit with a 25% chance of |0> and a 75% chance of |1>, applying the `X` gate would yield a 75% chance of |0> and 25% chance of |1> (it simply swaps the values of *&alpha;* and *&beta;*).
