@@ -55,7 +55,7 @@ int main()
 }
 ```
 
-We must call `init()` to seed the random number generator (you can provide a seed as an argument, but leaving it blank defaults to using the current time).
+We must call `init()` to seed the pseudorandom engine (you can provide a seed as an argument, but leaving it blank defaults to using the current time).
 
 Inside here, let's create a qubit:
 
@@ -193,6 +193,7 @@ This section outlines all of the quantum logic gates, explaning them by their op
 | Function header | Description |
 |:---------------:| ----------- |
 | `M(q)` | The 'normal' measurement, returning 0 or 1. Measures the qubit in the Z-axis, i.e. the computational basis.
+| `Mx(q)` | Measures the qubit in the X-axis, i.e. the sign basis.
 
 ### Single-input gates
 | Gate | Function header | Operator matrix | Description |
@@ -201,3 +202,8 @@ This section outlines all of the quantum logic gates, explaning them by their op
 | Pauli Y | `Y(q)` | ![PauliYgate.png](images/maths/PauliYgate.png) | Performs a rotation of *&pi;* around the Y-axis. Maps \|0> to *i*\|1> and \|1> to &minus;*i*\|0>.
 | Pauli Z | `Z(q)` | ![PauliZgate.png](images/maths/PauliZgate.png) | Phase-flip. Performs a rotation of *&pi;* around the Z-axis. Leaves \|0> unchanged and maps \|1> to &minus;\|1>.
 | Hadamard | `H(q)` | ![Hadamardgate.png](images/maths/Hadamardgate.png) | Creates a superposition by mapping \|0> to (\|0>&plus;\|1>)/sqrt(2) and \|1> to (\|0>&minus;\|1>)/sqrt(2). Performs a rotation of *&pi;* around the X-axis followed by *&pi;*/2 around the Y-axis.
+| Square root NOT | `SRNOT(q)` | ![SRNOTgate.png](images/maths/SRNOTgate.png) | Square root of the Pauli X gate. Appling two in sequence is thus equivalent to a single `NOT`.
+| X rotation | `Rx(angle, q)` | ![Rxgate.png](images/maths/Rxgate.png) | Rotates around the X-axis by the given angle.
+| Y rotation | `Ry(angle, q)` | ![Rygate.png](images/maths/Rygate.png) | Rotates around the Y-axis by the given angle.
+| Z rotation | `Rz(angle, q)` | ![Rzgate.png](images/maths/Rzgate.png) | Rotates around the Z-axis by the given angle.
+| Phase shift | `Rp(angle, q)` | ![phaseshiftgate.png](images/maths/phaseshiftgate.png) | Performs a phase shift by the given angle, mapping \|1> to exp(*i&theta;*)\|1>.
