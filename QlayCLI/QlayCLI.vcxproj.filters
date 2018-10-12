@@ -15,12 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Qlay.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Qubit.cpp">
+    <ClCompile Include="Qlay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

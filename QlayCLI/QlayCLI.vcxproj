@@ -131,10 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Qlay.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Qubit.cpp" />
+    <ClCompile Include="Qlay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Qlay\Qlay.vcxproj">

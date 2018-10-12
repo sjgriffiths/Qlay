@@ -27,10 +27,25 @@ namespace QlayVisual
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            using (var qubit = new qlay.cli.Qubit())
+            qlay.cli.Qlay.init();
+
+            int repeats = 1000;
+            int zeroes = 0, ones = 0;
+
+            for (int i = 0; i < repeats; i++)
             {
-                MessageBox.Show("Made a qubit!");
+                using (var q = new qlay.cli.Qubit())
+                {
+                    qlay.cli.Gates.H(q);
+
+                    if (qlay.cli.Gates.M(q))
+                        ones++;
+                    else
+                        zeroes++;
+                }
             }
+
+            MessageBox.Show("ZERO: " + zeroes + "\nONE:  " + ones);
         }
     }
 }
