@@ -26,6 +26,8 @@ namespace qlay
 	//State vector (forward declaration used internally)
 	struct State;
 
+	template class QLAY_API std::shared_ptr<State>;
+
 	//Represents a qubit (quantum bit), a linear combination of |0> and |1>
 	class QLAY_API Qubit
 	{
