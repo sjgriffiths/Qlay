@@ -58,8 +58,9 @@ namespace qlay
 	QLAY_API bool chance(double p);
 
 
-	//Measures the given qubit
+	//Measures the given qubit in the Z (computational) basis
 	QLAY_API Basis M(Qubit &q);
+
 
 	//Pauli X gate (NOT)
 	QLAY_API void X(Qubit &q);
