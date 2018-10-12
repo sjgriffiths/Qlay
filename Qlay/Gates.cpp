@@ -18,6 +18,20 @@ namespace qlay
 		return result;
 	}
 
+	Basis Mx(Qubit &q)
+	{
+		//Rotate X onto Z
+		H(q);
+
+		//Measure in Z
+		Basis result = M(q);
+
+		//Rotate back again
+		H(q);
+
+		return result;
+	}
+
 	void X(Qubit &q)
 	{
 		Ket &k = q.s->v;
@@ -60,5 +74,67 @@ namespace qlay
 			 INV_ROOT_2, -INV_ROOT_2;
 
 		k = h * k;
+	}
+
+	void SRNOT(Qubit &q)
+	{
+		Ket &k = q.s->v;
+
+		Mat srnot(2, 2);
+		srnot << Complex(1,  1), Complex(1, -1),
+			     Complex(1, -1), Complex(1,  1);
+		srnot *= 0.5;
+
+		k = srnot * k;
+	}
+
+	void Rx(double angle, Qubit &q)
+	{
+		Ket &k = q.s->v;
+
+		double hsin = sin(angle / 2.0);
+		double hcos = cos(angle / 2.0);
+
+		Mat rx(2, 2);
+		rx <<              hcos, Complex(0, -hsin),
+			  Complex(0, -hsin),              hcos;
+
+		k = rx * k;
+	}
+
+	void Ry(double angle, Qubit &q)
+	{
+		Ket &k = q.s->v;
+
+		double hsin = sin(angle / 2.0);
+		double hcos = cos(angle / 2.0);
+
+		Mat ry(2, 2);
+		ry << hcos, -hsin,
+			  hsin,  hcos;
+
+		k = ry * k;
+	}
+
+	void Rz(double angle, Qubit &q)
+	{
+		Ket &k = q.s->v;
+
+		Mat rz(2, 2);
+		rz << exp(Complex(0, -angle/2.0)),                            0,
+			                            0, exp(Complex(0, angle/2.0));
+
+		k = rz * k;
+	}
+
+	void Rp(double angle, Qubit &q)
+	{
+		Ket &k = q.s->v;
+
+		Mat rp(2, 2);
+		rp << 1,                      0,
+			  0, exp(Complex(0, angle));
+
+		k = rp * k;
 	}
 }

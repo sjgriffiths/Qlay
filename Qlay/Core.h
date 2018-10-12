@@ -44,7 +44,4 @@ namespace qlay
 
 	// |1> basis vector
 	const Ket ONE  ((Ket(2) << 0, 1).finished());
-
-	//1/sqrt(2) runtime constant
-	const double INV_ROOT_2 = 1.0 / std::sqrt(2.0);
 }

@@ -22,6 +22,12 @@ namespace qlay
 	//Basis vectors (|0> and |1>) yield binary result
 	using Basis = bool;
 
+	//Pi constant
+	constexpr double PI = 3.14159265358979323846;
+
+	//1/sqrt(2) constant
+	const double INV_ROOT_2 = 1.0 / sqrt(2.0);
+
 
 	//State vector (forward declaration used internally)
 	struct State;
@@ -63,6 +69,9 @@ namespace qlay
 	//Measures the given qubit in the Z (computational) basis
 	QLAY_API Basis M(Qubit &q);
 
+	//Measures the given qubit in the X (sign) basis
+	QLAY_API Basis Mx(Qubit &q);
+
 
 	//Pauli X gate (NOT)
 	QLAY_API void X(Qubit &q);
@@ -75,4 +84,20 @@ namespace qlay
 
 	//Hadamard gate
 	QLAY_API void H(Qubit &q);
+
+	//Square root NOT gate
+	QLAY_API void SRNOT(Qubit &q);
+
+
+	//Rotation around the X axis
+	QLAY_API void Rx(double angle, Qubit &q);
+
+	//Rotation around the Y axis
+	QLAY_API void Ry(double angle, Qubit &q);
+
+	//Rotation around the Z axis
+	QLAY_API void Rz(double angle, Qubit &q);
+
+	//Phase shift gate
+	QLAY_API void Rp(double angle, Qubit &q);
 }
