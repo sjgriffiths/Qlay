@@ -47,5 +47,43 @@ namespace QlayVisual
 
             MessageBox.Show("ZERO: " + zeroes + "\nONE:  " + ones);
         }
+
+        private void New_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void New_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            MessageBox.Show("New");
+        }
+
+        private void Open_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void Open_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+            openFileDialog.Filter = "Qlay Visual circuits (*.qvc)|*.qvc|All files (*.*)|*.*";
+            if (openFileDialog.ShowDialog() == true)
+                MessageBox.Show(openFileDialog.FileName);
+        }
+
+        private void Save_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void Save_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            MessageBox.Show("Save");
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
+        }
     }
 }
