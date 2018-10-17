@@ -6,12 +6,17 @@
         xmlns:local="clr-namespace:QlayVisual"
         mc:Ignorable="d"
         Title="Qlay Visual" Height="450" Width="800">
+    
+    <!--Common command bindings-->
     <Window.CommandBindings>
         <CommandBinding Command="New" CanExecute="New_CanExecute" Executed="New_Executed"/>
         <CommandBinding Command="Open" CanExecute="Open_CanExecute" Executed="Open_Executed"/>
         <CommandBinding Command="Save" CanExecute="Save_CanExecute" Executed="Save_Executed"/>
     </Window.CommandBindings>
+    
+    <!--Main window parent panel-->
     <DockPanel>
+        <!--Menu bar-->
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
                 <MenuItem Command="New"/>
@@ -21,6 +26,40 @@
                 <MenuItem Header="_Exit" Click="Exit_Click"/>
             </MenuItem>
         </Menu>
-        <Button Content="Click me!" Click="Button_Click" Margin="10"/>
+        
+        <Canvas>
+            <Canvas.Resources>
+                <!--Template for transparent MoveThumb controls-->
+                <ControlTemplate x:Key="MoveThumbTemplate"
+                                 TargetType="{x:Type local:MoveThumb}">
+                    <Rectangle Fill="Transparent"/>
+                </ControlTemplate>
+
+                <!--Template for draggable circuit items-->
+                <ControlTemplate x:Key="DesignerItemTemplate"
+                                 TargetType="ContentControl">
+                    <Grid>
+                        <local:MoveThumb Template="{StaticResource MoveThumbTemplate}"
+                                         DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                                         Cursor="SizeAll"/>
+                        <ContentPresenter Content="{TemplateBinding ContentControl.Content}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Canvas.Resources>
+
+            <!--Test draggable circuit item-->
+            <ContentControl Name="DesignerItem"
+                            Template="{StaticResource DesignerItemTemplate}"
+                            Width="100"
+                            Height="100"
+                            Canvas.Top="100"
+                            Canvas.Left="100">
+                <Ellipse Fill="Blue"
+                         IsHitTestVisible="False"/>
+            </ContentControl>
+        </Canvas>
+        
+        <!--Test button communicating with Qlay API-->
+        <!--<Button Content="Click me!" Click="Button_Click" Margin="10"/>-->
     </DockPanel>
 </Window>

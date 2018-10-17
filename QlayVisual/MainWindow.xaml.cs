@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using qlay.cli;
+
 namespace QlayVisual
 {
     /// <summary>
@@ -27,18 +29,18 @@ namespace QlayVisual
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            qlay.cli.Qlay.init();
+            Qlay.init();
 
             int repeats = 1000;
             int zeroes = 0, ones = 0;
 
             for (int i = 0; i < repeats; i++)
             {
-                using (var q = new qlay.cli.Qubit())
+                using (var q = new Qubit())
                 {
-                    qlay.cli.Gates.H(q);
+                    Gates.H(q);
 
-                    if (qlay.cli.Gates.M(q))
+                    if (Gates.M(q))
                         ones++;
                     else
                         zeroes++;
@@ -65,8 +67,10 @@ namespace QlayVisual
 
         private void Open_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
-            openFileDialog.Filter = "Qlay Visual circuits (*.qvc)|*.qvc|All files (*.*)|*.*";
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "Qlay Visual circuits (*.qvc)|*.qvc|All files (*.*)|*.*"
+            };
             if (openFileDialog.ShowDialog() == true)
                 MessageBox.Show(openFileDialog.FileName);
         }
