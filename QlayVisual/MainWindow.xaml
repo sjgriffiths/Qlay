@@ -14,6 +14,15 @@
         <CommandBinding Command="Save" CanExecute="Save_CanExecute" Executed="Save_Executed"/>
     </Window.CommandBindings>
     
+    <!--Window-level resources-->
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="CircuitItem.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    
     <!--Main window parent panel-->
     <DockPanel>
         <!--Menu bar-->
@@ -27,37 +36,25 @@
             </MenuItem>
         </Menu>
         
-        <Canvas>
-            <Canvas.Resources>
-                <!--Template for transparent MoveThumb controls-->
-                <ControlTemplate x:Key="MoveThumbTemplate"
-                                 TargetType="{x:Type local:MoveThumb}">
-                    <Rectangle Fill="Transparent"/>
-                </ControlTemplate>
-
-                <!--Template for draggable circuit items-->
-                <ControlTemplate x:Key="DesignerItemTemplate"
-                                 TargetType="ContentControl">
-                    <Grid>
-                        <local:MoveThumb Template="{StaticResource MoveThumbTemplate}"
-                                         DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}"
-                                         Cursor="SizeAll"/>
-                        <ContentPresenter Content="{TemplateBinding ContentControl.Content}"/>
-                    </Grid>
-                </ControlTemplate>
-            </Canvas.Resources>
-
-            <!--Test draggable circuit item-->
-            <ContentControl Name="DesignerItem"
-                            Template="{StaticResource DesignerItemTemplate}"
-                            Width="100"
-                            Height="100"
-                            Canvas.Top="100"
-                            Canvas.Left="100">
-                <Ellipse Fill="Blue"
-                         IsHitTestVisible="False"/>
-            </ContentControl>
-        </Canvas>
+        <!--Circuit diagram viewer-->
+        <ScrollViewer Name="CircuitScrollViewer"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto"
+                      Background="Transparent">
+            <local:CircuitCanvas x:Name="MainCircuitCanvas"
+                                 MinHeight="800"
+                                 MinWidth="1000"
+                                 Background="White">
+                <ContentControl Style="{StaticResource CircuitItemStyle}"
+                                Width="100"
+                                Height="100"
+                                Canvas.Top="10"
+                                Canvas.Left="10">
+                    <Ellipse IsHitTestVisible="False"
+                             Fill="Blue"/>
+                </ContentControl>
+            </local:CircuitCanvas>
+        </ScrollViewer>
         
         <!--Test button communicating with Qlay API-->
         <!--<Button Content="Click me!" Click="Button_Click" Margin="10"/>-->
