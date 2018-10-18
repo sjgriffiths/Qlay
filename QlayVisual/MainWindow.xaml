@@ -44,16 +44,7 @@
             <local:CircuitCanvas x:Name="MainCircuitCanvas"
                                  MinHeight="800"
                                  MinWidth="1000"
-                                 Background="White">
-                <ContentControl Style="{StaticResource CircuitItemStyle}"
-                                Width="100"
-                                Height="100"
-                                Canvas.Top="10"
-                                Canvas.Left="10">
-                    <Ellipse IsHitTestVisible="False"
-                             Fill="Blue"/>
-                </ContentControl>
-            </local:CircuitCanvas>
+                                 Background="White"/>
         </ScrollViewer>
         
         <!--Test button communicating with Qlay API-->

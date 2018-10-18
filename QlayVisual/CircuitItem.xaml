@@ -10,13 +10,16 @@
     
     <!--Style for draggable CircuitItem-->
     <Style x:Key="CircuitItemStyle"
-           TargetType="ContentControl">
+           TargetType="{x:Type local:CircuitItem}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="ContentControl">
+                <ControlTemplate TargetType="{x:Type local:CircuitItem}">
                     <Grid DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}">
-                        <local:MoveThumb Cursor="SizeAll" Template="{StaticResource MoveThumbTemplate}"/>
-                        <ContentPresenter Content="{TemplateBinding ContentControl.Content}"
+                        <local:MoveThumb x:Name="Child_MoveThumb"
+                                         Template="{StaticResource MoveThumbTemplate}"
+                                         Cursor="SizeAll"/>
+                        <ContentPresenter x:Name="Child_ContentPresenter"
+                                          Content="{TemplateBinding ContentControl.Content}"
                                           Margin="{TemplateBinding Padding}"/>
                     </Grid>
                 </ControlTemplate>

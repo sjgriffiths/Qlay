@@ -15,6 +15,7 @@ namespace QlayVisual
 
         private void MoveThumb_DragDelta(object sender, DragDeltaEventArgs e)
         {
+            //Update position by drag change event
             if (DataContext is Control item)
             {
                 double left = Canvas.GetLeft(item);
