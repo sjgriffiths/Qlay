@@ -13,6 +13,14 @@ namespace QlayVisual
             Loaded += new RoutedEventHandler(CircuitItem_Loaded);
         }
 
+        /// <summary>
+        /// Deletes this CircuitItem from the owning canvas
+        /// </summary>
+        public void DeleteFromCanvas()
+        {
+            ((CircuitCanvas)Parent).Children.Remove(this);
+        }
+
         private void CircuitItem_Loaded(object sender, RoutedEventArgs e)
         {
             //Ensure correct style is assigned upon loading

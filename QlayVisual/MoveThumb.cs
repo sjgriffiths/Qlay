@@ -11,17 +11,34 @@ namespace QlayVisual
         public MoveThumb()
         {
             DragDelta += new DragDeltaEventHandler(MoveThumb_DragDelta);
+            DragCompleted += new DragCompletedEventHandler(MoveThumb_DragCompleted);
         }
 
         private void MoveThumb_DragDelta(object sender, DragDeltaEventArgs e)
         {
             //Update position by drag change event
-            if (DataContext is Control item)
+            if (DataContext is CircuitItem ci)
             {
-                double left = Canvas.GetLeft(item);
-                double top = Canvas.GetTop(item);
-                Canvas.SetLeft(item, left + e.HorizontalChange);
-                Canvas.SetTop(item, top + e.VerticalChange);
+                double left = Canvas.GetLeft(ci);
+                double top = Canvas.GetTop(ci);
+                Canvas.SetLeft(ci, left + e.HorizontalChange);
+                Canvas.SetTop(ci, top + e.VerticalChange);
+            }
+        }
+
+        private void MoveThumb_DragCompleted(object sender, DragCompletedEventArgs e)
+        {
+            //Delete self from canvas if dropped outside bounds
+            if (DataContext is CircuitItem ci)
+            {
+                double left = Canvas.GetLeft(ci) + ci.Width/2.0;
+                double top = Canvas.GetTop(ci) + ci.Height/2.0;
+
+                double width = ((CircuitCanvas)ci.Parent).ActualWidth;
+                double height = ((CircuitCanvas)ci.Parent).ActualHeight;
+                
+                if (left < 0 || left > width || top < 0 || top > height)
+                    ci.DeleteFromCanvas();
             }
         }
     }
