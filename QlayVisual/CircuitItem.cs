@@ -6,7 +6,7 @@ namespace QlayVisual
     /// <summary>
     /// Quantum logic circuit component
     /// </summary>
-    class CircuitItem : ContentControl
+    public class CircuitItem : ContentControl
     {
         public CircuitItem()
         {

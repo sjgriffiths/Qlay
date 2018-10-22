@@ -12,6 +12,7 @@
         <CommandBinding Command="New" CanExecute="New_CanExecute" Executed="New_Executed"/>
         <CommandBinding Command="Open" CanExecute="Open_CanExecute" Executed="Open_Executed"/>
         <CommandBinding Command="Save" CanExecute="Save_CanExecute" Executed="Save_Executed"/>
+        <CommandBinding Command="SaveAs" CanExecute="SaveAs_CanExecute" Executed="SaveAs_Executed"/>
     </Window.CommandBindings>
     
     <!--Window-level resources-->
@@ -30,7 +31,9 @@
             <MenuItem Header="_File">
                 <MenuItem Command="New"/>
                 <MenuItem Command="Open"/>
+                <Separator/>
                 <MenuItem Command="Save"/>
+                <MenuItem Command="SaveAs"/>
                 <Separator/>
                 <MenuItem Header="_Exit" Click="Exit_Click"/>
             </MenuItem>

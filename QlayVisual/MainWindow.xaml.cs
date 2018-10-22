@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Markup;
 
 using qlay.cli;
 
@@ -71,23 +61,56 @@ namespace QlayVisual
             {
                 Filter = "Qlay Visual circuits (*.qvc)|*.qvc|All files (*.*)|*.*"
             };
+
             if (openFileDialog.ShowDialog() == true)
-                MessageBox.Show(openFileDialog.FileName);
+            {
+                string filename = openFileDialog.FileName;
+
+                using (FileStream fs = File.Open(filename, FileMode.Open, FileAccess.Read))
+                {
+                    Content = XamlReader.Load(fs);
+                }
+            }
         }
 
         private void Save_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = true;
+            SaveAs_CanExecute(sender, e);
         }
 
         private void Save_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            MessageBox.Show("Save");
+            SaveAs_Executed(sender, e);
+        }
+
+        private void SaveAs_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void SaveAs_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Filter = "Qlay Visual circuits (*.qvc)|*.qvc|All files (*.*)|*.*"
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                string filename = saveFileDialog.FileName;
+                string xamlString = XamlWriter.Save(Content);
+
+                using (FileStream fs = File.Create(filename))
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    sw.Write(xamlString);
+                }
+            }
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.Application.Current.Shutdown();
+            Application.Current.Shutdown();
         }
     }
 }
