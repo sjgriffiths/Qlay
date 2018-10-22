@@ -12,6 +12,13 @@ namespace QlayVisual
     /// </summary>
     public class CircuitCanvas : Canvas
     {
+        public CircuitCanvas()
+        {
+            MinHeight = 800;
+            MinWidth = 1000;
+            Background = new SolidColorBrush(Colors.White);
+        }
+
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonUp(e);
