@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -12,11 +14,56 @@ namespace QlayVisual
     /// </summary>
     public class CircuitCanvas : Canvas
     {
+        /// <summary>
+        /// Redraws n qubit lines
+        /// </summary>
+        /// <param name="n"></param>
+        public void SetQubitLines(uint n)
+        {
+            //Delete preexisting qubit lines
+            foreach (Line l in Children.OfType<Line>())
+                Children.Remove(l);
+
+            //Add n qubit lines
+            for (uint i = 0; i < n; i++)
+            {
+                Line l = new Line()
+                {
+                    Stroke = new SolidColorBrush(Colors.Black),
+                    StrokeThickness = 4,
+                    X1 = 0,
+                    Y1 = 80 * (i+1),
+                    X2 = MinWidth,
+                    Y2 = 80 * (i+1),
+                };
+
+                Children.Add(l);
+            }
+        }
+
         public CircuitCanvas()
         {
+            //Manually define properties upon construction
             MinHeight = 800;
             MinWidth = 1000;
             Background = new SolidColorBrush(Colors.White);
+
+            //Initialise with one qubit line
+            SetQubitLines(1);
+        }
+
+        /// <summary>
+        /// Returns a list of the Y value of each qubit line
+        /// </summary>
+        public List<double> QubitLineYValues
+        {
+            get
+            {
+                var li = new List<double>();
+                foreach (Line l in Children.OfType<Line>())
+                    li.Add(l.Y1);
+                return li;
+            }
         }
 
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)

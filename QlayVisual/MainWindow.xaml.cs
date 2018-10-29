@@ -3,8 +3,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-using qlay.cli;
-
 namespace QlayVisual
 {
     /// <summary>
@@ -16,29 +14,6 @@ namespace QlayVisual
         {
             InitializeComponent();
             DataContext = new DataModel(FindName("CircuitScrollViewer") as ContentControl);
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Qlay.init();
-
-            int repeats = 1000;
-            int zeroes = 0, ones = 0;
-
-            for (int i = 0; i < repeats; i++)
-            {
-                using (var q = new Qubit())
-                {
-                    Gates.H(q);
-
-                    if (Gates.M(q))
-                        ones++;
-                    else
-                        zeroes++;
-                }
-            }
-
-            MessageBox.Show("ZERO: " + zeroes + "\nONE:  " + ones);
         }
 
         private void New_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -128,6 +103,11 @@ namespace QlayVisual
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void RunSimulation_Click(object sender, RoutedEventArgs e)
+        {
+            ((DataModel)DataContext).RunSimulation();
         }
     }
 }

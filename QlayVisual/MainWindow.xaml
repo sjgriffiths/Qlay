@@ -38,16 +38,31 @@
                 <MenuItem Header="_Exit" Click="Exit_Click"/>
             </MenuItem>
         </Menu>
-        
-        <!--Circuit diagram viewer-->
-        <ScrollViewer Name="CircuitScrollViewer"
-                      HorizontalScrollBarVisibility="Auto"
-                      VerticalScrollBarVisibility="Auto"
-                      Background="Transparent">
-            <local:CircuitCanvas x:Name="MainCircuitCanvas"/>
-        </ScrollViewer>
-        
-        <!--Test button communicating with Qlay API-->
-        <!--<Button Content="Click me!" Click="Button_Click" Margin="10"/>-->
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Left panel-->
+            <StackPanel Name="LeftPanel"
+                        Grid.Column="0"
+                        Background="LightSlateGray">
+                <Button Name="RunSimulation"
+                        Content="Run Simulation"
+                        Click="RunSimulation_Click"
+                        Margin="10"/>
+            </StackPanel>
+
+            <!--Circuit diagram viewer-->
+            <ScrollViewer Name="CircuitScrollViewer"
+                          Grid.Column="1"
+                          HorizontalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Auto"
+                          Background="Transparent">
+                <local:CircuitCanvas x:Name="MainCircuitCanvas"/>
+            </ScrollViewer>
+        </Grid>
     </DockPanel>
 </Window>

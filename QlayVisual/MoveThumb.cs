@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Linq;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
 namespace QlayVisual
@@ -28,17 +30,22 @@ namespace QlayVisual
 
         private void MoveThumb_DragCompleted(object sender, DragCompletedEventArgs e)
         {
-            //Delete self from canvas if dropped outside bounds
             if (DataContext is CircuitItem ci)
             {
+                CircuitCanvas cc = ci.Parent as CircuitCanvas;
+
                 double left = Canvas.GetLeft(ci) + ci.Width/2.0;
                 double top = Canvas.GetTop(ci) + ci.Height/2.0;
+                double width = cc.ActualWidth;
+                double height = cc.ActualHeight;
 
-                double width = ((CircuitCanvas)ci.Parent).ActualWidth;
-                double height = ((CircuitCanvas)ci.Parent).ActualHeight;
-                
+                //Delete self from canvas if dropped outside bounds
                 if (left < 0 || left > width || top < 0 || top > height)
                     ci.DeleteFromCanvas();
+
+                //Else, snap to nearest (currently only) qubit line
+                double y = cc.QubitLineYValues.OrderBy(n => Math.Abs(top - n)).First();
+                Canvas.SetTop(ci, y - ci.Height/2.0);
             }
         }
     }
