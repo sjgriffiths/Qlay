@@ -93,7 +93,7 @@ namespace QlayVisual
             CircuitCanvas cc = ContentContainer.Content as CircuitCanvas;
             int n = cc.Children.OfType<CircuitItem>().Count();
 
-            Qlay.init();
+            Core.init();
 
             int repeats = 1000;
             int zeroes = 0, ones = 0;

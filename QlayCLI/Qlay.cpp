@@ -14,7 +14,7 @@ namespace qlay
 	namespace cli
 	{
 		//Contains core library functions
-		public ref class Qlay abstract sealed
+		public ref class Core abstract sealed
 		{
 		public:
 			//Pi constant
@@ -38,7 +38,7 @@ namespace qlay
 		//Represents a qubit (quantum bit), a linear combination of |0> and |1>
 		public ref class Qubit
 		{
-		public:
+		internal:
 			qlay::Qubit *impl_;
 
 		public:
