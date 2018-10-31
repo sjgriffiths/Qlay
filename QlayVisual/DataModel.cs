@@ -13,6 +13,11 @@ namespace QlayVisual
     /// </summary>
     public class DataModel : INotifyPropertyChanged
     {
+        public DataModel(ContentControl contentContainer)
+        {
+            ContentContainer = contentContainer;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string name)
@@ -52,11 +57,6 @@ namespace QlayVisual
         /// </summary>
         public string WindowTitle => (FileName ?? "Untitled") + " - Qlay Visual";
 
-
-        public DataModel(ContentControl contentContainer)
-        {
-            ContentContainer = contentContainer;
-        }
 
         /// <summary>
         /// Serialises the data model into a storable format

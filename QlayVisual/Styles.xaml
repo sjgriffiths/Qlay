@@ -1,7 +1,20 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:QlayVisual">
+                    xmlns:local="clr-namespace:QlayVisual"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
     
+    <!--CircuitCanvas dimensions-->
+    <sys:Double x:Key="CANVAS_HEIGHT">800</sys:Double>
+    <sys:Double x:Key="CANVAS_WIDTH">1200</sys:Double>
+    
+    <!--Style for CircuitCanvas-->
+    <Style x:Key="CircuitCanvasStyle"
+           TargetType="{x:Type local:CircuitCanvas}">
+        <Setter Property="Height" Value="{StaticResource CANVAS_HEIGHT}"/>
+        <Setter Property="Width" Value="{StaticResource CANVAS_WIDTH}"/>
+        <Setter Property="Background" Value="White"/>
+    </Style>
+
     <!--Template for transparent MoveThumb controls-->
     <ControlTemplate x:Key="MoveThumbTemplate"
                      TargetType="{x:Type local:MoveThumb}">

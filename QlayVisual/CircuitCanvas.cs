@@ -14,43 +14,15 @@ namespace QlayVisual
     /// </summary>
     public class CircuitCanvas : Canvas
     {
-        /// <summary>
-        /// Redraws n qubit lines
-        /// </summary>
-        /// <param name="n"></param>
-        public void SetQubitLines(uint n)
-        {
-            //Delete preexisting qubit lines
-            foreach (Line l in Children.OfType<Line>())
-                Children.Remove(l);
-
-            //Add n qubit lines
-            for (uint i = 0; i < n; i++)
-            {
-                Line l = new Line()
-                {
-                    Stroke = new SolidColorBrush(Colors.Black),
-                    StrokeThickness = 4,
-                    X1 = 0,
-                    Y1 = 80 * (i+1),
-                    X2 = MinWidth,
-                    Y2 = 80 * (i+1),
-                };
-
-                Children.Add(l);
-            }
-        }
-
         public CircuitCanvas()
         {
-            //Manually define properties upon construction
-            MinHeight = 800;
-            MinWidth = 1000;
-            Background = new SolidColorBrush(Colors.White);
-
-            //Initialise with one qubit line
-            SetQubitLines(1);
+            Loaded += new RoutedEventHandler(CircuitCanvas_Loaded);
         }
+
+        /// <summary>
+        /// Vertical separation between qubit lines
+        /// </summary>
+        public readonly double LINE_SEPARATION = 80;
 
         /// <summary>
         /// Returns a list of the Y value of each qubit line
@@ -64,6 +36,42 @@ namespace QlayVisual
                     li.Add(l.Y1);
                 return li;
             }
+        }
+
+        /// <summary>
+        /// Redraws n qubit lines
+        /// </summary>
+        /// <param name="n"></param>
+        public void SetQubitLines(int n)
+        {
+            //Delete preexisting qubit lines
+            foreach (Line l in Children.OfType<Line>().ToList())
+                Children.Remove(l);
+
+            //Add n qubit lines
+            for (int i = 0; i < n; i++)
+            {
+                Line l = new Line()
+                {
+                    Stroke = new SolidColorBrush(Colors.Black),
+                    StrokeThickness = 4,
+                    X1 = 0,
+                    Y1 = LINE_SEPARATION * (i + 1),
+                    X2 = Width,
+                    Y2 = LINE_SEPARATION * (i + 1),
+                };
+
+                Children.Add(l);
+            }
+        }
+
+        private void CircuitCanvas_Loaded(object sender, RoutedEventArgs e)
+        {
+            //Ensure correct style is assigned upon loading
+            Style = FindResource("CircuitCanvasStyle") as Style;
+
+            //Initialise with one qubit line
+            SetQubitLines(1);
         }
 
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
@@ -82,8 +90,8 @@ namespace QlayVisual
             CircuitItem ci = new CircuitItem
             {
                 Content = ellipse,
-                Width = 100,
-                Height = 100
+                Width = 70,
+                Height = 70
             };
 
             //Centre at cursor position
