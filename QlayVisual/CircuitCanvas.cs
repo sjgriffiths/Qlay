@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Xml;
 
 namespace QlayVisual
 {
@@ -74,36 +77,6 @@ namespace QlayVisual
             SetQubitLines(1);
         }
 
-        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
-        {
-            base.OnMouseLeftButtonUp(e);
-
-            //Test ellipse
-            SolidColorBrush blue = new SolidColorBrush(Colors.Blue);
-            Ellipse ellipse = new Ellipse
-            {
-                Fill = blue,
-                IsHitTestVisible = false
-            };
-
-            //Assign to new CircuitItem
-            CircuitItem ci = new CircuitItem
-            {
-                Content = ellipse,
-                Width = 70,
-                Height = 70
-            };
-
-            //Centre at cursor position
-            SetLeft(ci, e.GetPosition(this).X - ci.Width/2.0);
-            SetTop(ci, e.GetPosition(this).Y - ci.Height/2.0);
-
-            Children.Add(ci);
-
-
-            e.Handled = true;
-        }
-
         protected override Size MeasureOverride(Size constraint)
         {
             //Resize canvas when instructed to
@@ -129,6 +102,46 @@ namespace QlayVisual
             size.Height += 10;
 
             return size;
+        }
+
+        protected override void OnDrop(DragEventArgs e)
+        {
+            base.OnDrop(e);
+
+            //Receive data from ToolboxItem
+            string xamlString = e.Data.GetData("CIRCUIT_ITEM") as string;
+            if (!String.IsNullOrEmpty(xamlString))
+            {
+                FrameworkElement content = null;
+
+                using (StringReader sr = new StringReader(xamlString))
+                using (XmlReader xr = XmlReader.Create(sr))
+                {
+                    content = XamlReader.Load(xr) as FrameworkElement;
+                }
+
+                if (content != null)
+                {
+                    //Copy content into CircuitItem
+                    content.IsHitTestVisible = false;
+                    CircuitItem ci = new CircuitItem
+                    {
+                        Content = content,
+                        Width = content.Width,
+                        Height = content.Height
+                    };
+                    Children.Add(ci);
+
+                    //Set to dropped position
+                    SetLeft(ci, e.GetPosition(this).X - ci.Width/2.0);
+                    SetTop(ci, e.GetPosition(this).Y - ci.Height/2.0);
+
+                    //Snap to nearest qubit line
+                    ci.SnapToQubitLine();
+                }
+
+                e.Handled = true;
+            }
         }
     }
 }

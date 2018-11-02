@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
 namespace QlayVisual
@@ -44,8 +42,7 @@ namespace QlayVisual
                     ci.DeleteFromCanvas();
 
                 //Else, snap to nearest (currently only) qubit line
-                double y = cc.QubitLineYValues.OrderBy(n => Math.Abs(top - n)).First();
-                Canvas.SetTop(ci, y - ci.Height/2.0);
+                ci.SnapToQubitLine();
             }
         }
     }

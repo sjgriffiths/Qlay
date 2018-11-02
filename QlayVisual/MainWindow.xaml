@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:QlayVisual"
         mc:Ignorable="d"
         Title="{Binding WindowTitle}"
-        Height="500" Width="1000">
+        Width="1000" Height="500">
     
     <!--Common command bindings-->
     <Window.CommandBindings>
@@ -51,6 +51,11 @@
             <StackPanel Name="LeftPanel"
                         Grid.Column="0"
                         Background="LightSlateGray">
+                <local:ToolboxItem>
+                    <Ellipse Width="70"
+                             Height="70"
+                             Fill="Blue"/>
+                </local:ToolboxItem>
             </StackPanel>
             
             <!--Circuit diagram viewer-->
@@ -58,8 +63,8 @@
                           Grid.Column="1"
                           HorizontalScrollBarVisibility="Auto"
                           VerticalScrollBarVisibility="Auto"
-                          MaxHeight="{StaticResource CANVAS_HEIGHT}"
-                          MaxWidth="{StaticResource CANVAS_WIDTH}">
+                          MaxWidth="{StaticResource CANVAS_WIDTH}"
+                          MaxHeight="{StaticResource CANVAS_HEIGHT}">
                 <local:CircuitCanvas x:Name="MainCircuitCanvas"
                                      Style="{StaticResource CircuitCanvasStyle}"/>
             </ScrollViewer>
