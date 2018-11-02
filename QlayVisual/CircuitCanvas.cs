@@ -65,6 +65,7 @@ namespace QlayVisual
                 };
 
                 Children.Add(l);
+                SetZIndex(l, -1);
             }
         }
 
