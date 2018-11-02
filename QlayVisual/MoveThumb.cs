@@ -42,7 +42,8 @@ namespace QlayVisual
                     ci.DeleteFromCanvas();
 
                 //Else, snap to nearest (currently only) qubit line
-                ci.SnapToQubitLine();
+                else
+                    ci.SnapToQubitLine();
             }
         }
     }
