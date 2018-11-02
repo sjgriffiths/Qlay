@@ -104,7 +104,7 @@ namespace QlayVisual
                 {
                     //Apply logic gates in the order they appear, i.e. by X value
                     foreach (CircuitItem ci in cc.Children.OfType<CircuitItem>().OrderBy(n => Canvas.GetLeft(n)))
-                        typeof(Gates).GetMethod(ci.Name).Invoke(null, new object[] { q });
+                        typeof(Gates).GetMethod((string)ci.Tag).Invoke(null, new object[] { q });
 
                     //Measure and log result
                     if (Gates.M(q))

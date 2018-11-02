@@ -127,7 +127,7 @@ namespace QlayVisual
                     CircuitItem ci = new CircuitItem
                     {
                         Content = content,
-                        Name = content.Name,
+                        Tag = content.Tag,
                         Width = content.Width,
                         Height = content.Height
                     };

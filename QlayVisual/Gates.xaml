@@ -22,7 +22,7 @@
     </Style>
     
     
-    <!--Canvas name represents gate function to invoke-->
+    <!--Canvas tag represents gate function to invoke-->
     
     <!--Pauli X-->
     <Style x:Key="XStyle"
@@ -31,7 +31,7 @@
         <Setter Property="ToolTip" Value="Pauli X (NOT) gate"/>
         <Setter Property="Content">
             <Setter.Value>
-                <Canvas x:Name="X"
+                <Canvas Tag="X"
                         Width="{StaticResource SIZE}" Height="{StaticResource SIZE}">
                     <Ellipse Width="{StaticResource SIZE}" Height="{StaticResource SIZE}"
                              Stroke="Black"
@@ -57,7 +57,7 @@
         <Setter Property="ToolTip" Value="Pauli Y gate"/>
         <Setter Property="Content">
             <Setter.Value>
-                <Canvas x:Name="Y"
+                <Canvas Tag="Y"
                         Width="{StaticResource SIZE}" Height="{StaticResource SIZE}">
                     <Rectangle Width="{StaticResource SIZE}" Height="{StaticResource SIZE}"
                                Stroke="Black"
@@ -78,7 +78,7 @@
         <Setter Property="ToolTip" Value="Pauli Z gate"/>
         <Setter Property="Content">
             <Setter.Value>
-                <Canvas x:Name="Z"
+                <Canvas Tag="Z"
                         Width="{StaticResource SIZE}" Height="{StaticResource SIZE}">
                     <Rectangle Width="{StaticResource SIZE}" Height="{StaticResource SIZE}"
                                Stroke="Black"
@@ -99,7 +99,7 @@
         <Setter Property="ToolTip" Value="Hadamard gate"/>
         <Setter Property="Content">
             <Setter.Value>
-                <Canvas x:Name="H"
+                <Canvas Tag="H"
                         Width="{StaticResource SIZE}" Height="{StaticResource SIZE}">
                     <Rectangle Width="{StaticResource SIZE}" Height="{StaticResource SIZE}"
                                Stroke="Black"
@@ -120,7 +120,7 @@
         <Setter Property="ToolTip" Value="Square root NOT (SRNOT) gate"/>
         <Setter Property="Content">
             <Setter.Value>
-                <Canvas x:Name="SRNOT"
+                <Canvas Tag="SRNOT"
                         Width="{StaticResource SIZE}" Height="{StaticResource SIZE}">
                     <Rectangle Width="{StaticResource SIZE}" Height="{StaticResource SIZE}"
                                Stroke="Black"
