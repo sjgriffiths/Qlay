@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -128,6 +127,7 @@ namespace QlayVisual
                     CircuitItem ci = new CircuitItem
                     {
                         Content = content,
+                        Name = content.Name,
                         Width = content.Width,
                         Height = content.Height
                     };

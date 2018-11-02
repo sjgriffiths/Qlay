@@ -21,6 +21,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles.xaml"/>
+                <ResourceDictionary Source="Gates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -47,15 +48,15 @@
                 <ColumnDefinition Width="300"/>
             </Grid.ColumnDefinitions>
             
-            <!--Left panel-->
+            <!--Left panel, containing toolbox of circuit items-->
             <StackPanel Name="LeftPanel"
                         Grid.Column="0"
                         Background="LightSlateGray">
-                <local:ToolboxItem>
-                    <Ellipse Width="70"
-                             Height="70"
-                             Fill="Blue"/>
-                </local:ToolboxItem>
+                <local:ToolboxItem Style="{StaticResource XStyle}"/>
+                <local:ToolboxItem Style="{StaticResource YStyle}"/>
+                <local:ToolboxItem Style="{StaticResource ZStyle}"/>
+                <local:ToolboxItem Style="{StaticResource HadamardStyle}"/>
+                <local:ToolboxItem Style="{StaticResource SRNOTStyle}"/>
             </StackPanel>
             
             <!--Circuit diagram viewer-->
@@ -69,7 +70,7 @@
                                      Style="{StaticResource CircuitCanvasStyle}"/>
             </ScrollViewer>
             
-            <!--Right panel-->
+            <!--Right panel, containing simulation data-->
             <StackPanel Name="RightPanel"
                         Grid.Column="2"
                         Background="LightSlateGray">

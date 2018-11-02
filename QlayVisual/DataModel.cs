@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Controls;
 using System.Windows.Markup;
 
@@ -91,7 +92,6 @@ namespace QlayVisual
         public void RunSimulation()
         {
             CircuitCanvas cc = ContentContainer.Content as CircuitCanvas;
-            int n = cc.Children.OfType<CircuitItem>().Count();
 
             Core.init();
 
@@ -102,9 +102,9 @@ namespace QlayVisual
             {
                 using (var q = new Qubit())
                 {
-                    //Apply X gate for each CircuitItem
-                    for (int j = 0; j < n; j++)
-                        Gates.X(q);
+                    //Apply logic gates in the order they appear, i.e. by X value
+                    foreach (CircuitItem ci in cc.Children.OfType<CircuitItem>().OrderBy(n => Canvas.GetLeft(n)))
+                        typeof(Gates).GetMethod(ci.Name).Invoke(null, new object[] { q });
 
                     //Measure and log result
                     if (Gates.M(q))
