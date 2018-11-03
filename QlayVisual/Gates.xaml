@@ -21,6 +21,21 @@
         <Setter Property="FontStyle" Value="Italic"/>
     </Style>
     
+    <!--Style for subscript Run-->
+    <Style x:Key="GateSubscriptStyle"
+           TargetType="Run">
+        <Setter Property="BaselineAlignment" Value="Subscript"/>
+        <Setter Property="FontSize" Value="35"/>
+    </Style>
+    
+    <!--Style for input angle TextBox-->
+    <Style x:Key="InputAngleStyle"
+           TargetType="TextBox">
+        <Setter Property="Width" Value="{StaticResource SIZE}"/>
+        <Setter Property="Canvas.Top" Value="-20"/>
+        <Setter Property="Visibility" Value="Hidden"/>
+    </Style>
+    
     
     <!--Canvas tag represents gate function to invoke-->
     
@@ -127,9 +142,101 @@
                                StrokeThickness="{StaticResource LINE_THICKNESS}"
                                Fill="White"/>
                     <TextBlock Style="{StaticResource GateTextStyle}"
-                               Text="&#8730;NOT"
+                               Text="&#x221A;NOT"
                                FontSize="23"
                                Canvas.Left="5" Canvas.Top="22"/>
+                </Canvas>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!--Rotation around the X axis-->
+    <Style x:Key="RxStyle"
+           TargetType="{x:Type local:ToolboxItem}">
+        <Setter Property="Margin" Value="{StaticResource MARGIN}"/>
+        <Setter Property="ToolTip" Value="X-axis rotation gate"/>
+        <Setter Property="Content">
+            <Setter.Value>
+                <Canvas Tag="Rx"
+                        Width="{StaticResource SIZE}" Height="{StaticResource SIZE}">
+                    <Rectangle Width="{StaticResource SIZE}" Height="{StaticResource SIZE}"
+                               Stroke="Black"
+                               StrokeThickness="{StaticResource LINE_THICKNESS}"
+                               Fill="White"/>
+                    <TextBlock Style="{StaticResource GateTextStyle}"
+                               Canvas.Left="14" Canvas.Top="5">
+                        R<Run Style="{StaticResource GateSubscriptStyle}">x</Run>
+                    </TextBlock>
+                    <TextBox Style="{StaticResource InputAngleStyle}"/>
+                </Canvas>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!--Rotation around the Y axis-->
+    <Style x:Key="RyStyle"
+           TargetType="{x:Type local:ToolboxItem}">
+        <Setter Property="Margin" Value="{StaticResource MARGIN}"/>
+        <Setter Property="ToolTip" Value="Y-axis rotation gate"/>
+        <Setter Property="Content">
+            <Setter.Value>
+                <Canvas Tag="Ry"
+                        Width="{StaticResource SIZE}" Height="{StaticResource SIZE}">
+                    <Rectangle Width="{StaticResource SIZE}" Height="{StaticResource SIZE}"
+                               Stroke="Black"
+                               StrokeThickness="{StaticResource LINE_THICKNESS}"
+                               Fill="White"/>
+                    <TextBlock Style="{StaticResource GateTextStyle}"
+                               Canvas.Left="14" Canvas.Top="5">
+                        R<Run Style="{StaticResource GateSubscriptStyle}">y</Run>
+                    </TextBlock>
+                    <TextBox Style="{StaticResource InputAngleStyle}"/>
+                </Canvas>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!--Rotation around the Z axis-->
+    <Style x:Key="RzStyle"
+           TargetType="{x:Type local:ToolboxItem}">
+        <Setter Property="Margin" Value="{StaticResource MARGIN}"/>
+        <Setter Property="ToolTip" Value="Z-axis rotation gate"/>
+        <Setter Property="Content">
+            <Setter.Value>
+                <Canvas Tag="Rz"
+                        Width="{StaticResource SIZE}" Height="{StaticResource SIZE}">
+                    <Rectangle Width="{StaticResource SIZE}" Height="{StaticResource SIZE}"
+                               Stroke="Black"
+                               StrokeThickness="{StaticResource LINE_THICKNESS}"
+                               Fill="White"/>
+                    <TextBlock Style="{StaticResource GateTextStyle}"
+                               Canvas.Left="14" Canvas.Top="5">
+                        R<Run Style="{StaticResource GateSubscriptStyle}">z</Run>
+                    </TextBlock>
+                    <TextBox Style="{StaticResource InputAngleStyle}"/>
+                </Canvas>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!--Phase shift gate-->
+    <Style x:Key="RpStyle"
+           TargetType="{x:Type local:ToolboxItem}">
+        <Setter Property="Margin" Value="{StaticResource MARGIN}"/>
+        <Setter Property="ToolTip" Value="Phase shift gate"/>
+        <Setter Property="Content">
+            <Setter.Value>
+                <Canvas Tag="Rp"
+                        Width="{StaticResource SIZE}" Height="{StaticResource SIZE}">
+                    <Rectangle Width="{StaticResource SIZE}" Height="{StaticResource SIZE}"
+                               Stroke="Black"
+                               StrokeThickness="{StaticResource LINE_THICKNESS}"
+                               Fill="White"/>
+                    <TextBlock Style="{StaticResource GateTextStyle}"
+                               Canvas.Left="14" Canvas.Top="5">
+                        R<Run Style="{StaticResource GateSubscriptStyle}">&#x03D5;</Run>
+                    </TextBlock>
+                    <TextBox Style="{StaticResource InputAngleStyle}"/>
                 </Canvas>
             </Setter.Value>
         </Setter>

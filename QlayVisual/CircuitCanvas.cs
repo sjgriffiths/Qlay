@@ -110,7 +110,7 @@ namespace QlayVisual
 
             //Receive data from ToolboxItem
             string xamlString = e.Data.GetData("CIRCUIT_ITEM") as string;
-            if (!String.IsNullOrEmpty(xamlString))
+            if (!string.IsNullOrEmpty(xamlString))
             {
                 FrameworkElement content = null;
 
@@ -122,8 +122,16 @@ namespace QlayVisual
 
                 if (content != null)
                 {
+                    //Disable hit test for all children except textboxes, which should now be visible
+                    foreach (UIElement tb in ((Canvas)content).Children)
+                    {
+                        if (tb is TextBox)
+                            tb.Visibility = Visibility.Visible;
+                        else
+                            tb.IsHitTestVisible = false;
+                    }
+
                     //Copy content into CircuitItem
-                    content.IsHitTestVisible = false;
                     CircuitItem ci = new CircuitItem
                     {
                         Content = content,

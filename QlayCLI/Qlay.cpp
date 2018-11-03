@@ -32,6 +32,9 @@ namespace qlay
 
 			//Returns true with the given probability (Bernoulli distribution)
 			static bool chance(double p) { return qlay::chance(p); }
+
+			//Converts the given angle from degrees to radians
+			static double deg_to_rad(double angle) { return qlay::deg_to_rad(angle); }
 		};
 
 

@@ -1,7 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Reflection;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
 
@@ -100,11 +101,23 @@ namespace QlayVisual
 
             for (int i = 0; i < repeats; i++)
             {
-                using (var q = new Qubit())
+                using (Qubit q = new Qubit())
                 {
                     //Apply logic gates in the order they appear, i.e. by X value
                     foreach (CircuitItem ci in cc.Children.OfType<CircuitItem>().OrderBy(n => Canvas.GetLeft(n)))
-                        typeof(Gates).GetMethod((string)ci.Tag).Invoke(null, new object[] { q });
+                    {
+                        //List of arguments to pass to logic gate
+                        List<object> args = new List<object>();
+
+                        //Obtain angle parameter, if one exists
+                        foreach (UIElement uie in ((Canvas)ci.Content).Children)
+                            if (uie is TextBox tb)
+                                args.Add(Core.deg_to_rad(double.Parse(tb.Text)));
+
+                        //Add qubit argument and call
+                        args.Add(q);
+                        typeof(Gates).GetMethod((string)ci.Tag).Invoke(null, args.ToArray());
+                    }
 
                     //Measure and log result
                     if (Gates.M(q))
@@ -114,7 +127,7 @@ namespace QlayVisual
                 }
             }
 
-            System.Windows.MessageBox.Show("ZERO: " + zeroes + "\nONE:  " + ones);
+            MessageBox.Show("ZERO: " + zeroes + "\nONE:  " + ones);
         }
     }
 }

@@ -57,6 +57,10 @@
                 <local:ToolboxItem Style="{StaticResource ZStyle}"/>
                 <local:ToolboxItem Style="{StaticResource HadamardStyle}"/>
                 <local:ToolboxItem Style="{StaticResource SRNOTStyle}"/>
+                <local:ToolboxItem Style="{StaticResource RxStyle}"/>
+                <local:ToolboxItem Style="{StaticResource RyStyle}"/>
+                <local:ToolboxItem Style="{StaticResource RzStyle}"/>
+                <local:ToolboxItem Style="{StaticResource RpStyle}"/>
             </StackPanel>
             
             <!--Circuit diagram viewer-->

@@ -29,4 +29,9 @@ namespace qlay
 		std::bernoulli_distribution dist(p);
 		return dist(rng);
 	}
+
+	double deg_to_rad(double angle)
+	{
+		return angle * PI / 180.0;
+	}
 }
