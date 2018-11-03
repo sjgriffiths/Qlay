@@ -43,25 +43,34 @@
         
         <Grid Background="DarkGray">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
             
             <!--Left panel, containing toolbox of circuit items-->
-            <StackPanel Name="LeftPanel"
+            <Grid Name="LeftPanel"
                         Grid.Column="0"
                         Background="LightSlateGray">
-                <local:ToolboxItem Style="{StaticResource XStyle}"/>
-                <local:ToolboxItem Style="{StaticResource YStyle}"/>
-                <local:ToolboxItem Style="{StaticResource ZStyle}"/>
-                <local:ToolboxItem Style="{StaticResource HadamardStyle}"/>
-                <local:ToolboxItem Style="{StaticResource SRNOTStyle}"/>
-                <local:ToolboxItem Style="{StaticResource RxStyle}"/>
-                <local:ToolboxItem Style="{StaticResource RyStyle}"/>
-                <local:ToolboxItem Style="{StaticResource RzStyle}"/>
-                <local:ToolboxItem Style="{StaticResource RpStyle}"/>
-            </StackPanel>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <local:ToolboxItem Style="{StaticResource XStyle}"/>
+                    <local:ToolboxItem Style="{StaticResource YStyle}"/>
+                    <local:ToolboxItem Style="{StaticResource ZStyle}"/>
+                    <local:ToolboxItem Style="{StaticResource HadamardStyle}"/>
+                    <local:ToolboxItem Style="{StaticResource SRNOTStyle}"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1">
+                    <local:ToolboxItem Style="{StaticResource RxStyle}"/>
+                    <local:ToolboxItem Style="{StaticResource RyStyle}"/>
+                    <local:ToolboxItem Style="{StaticResource RzStyle}"/>
+                    <local:ToolboxItem Style="{StaticResource RpStyle}"/>
+                </StackPanel>
+
+            </Grid>
             
             <!--Circuit diagram viewer-->
             <ScrollViewer Name="CircuitScrollViewer"
