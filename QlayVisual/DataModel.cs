@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -31,6 +32,11 @@ namespace QlayVisual
         /// References the owning ContentControl of the XAML data model
         /// </summary>
         public ContentControl ContentContainer { set; get; }
+
+        /// <summary>
+        /// References the current CircuitCanvas
+        /// </summary>
+        public CircuitCanvas CircuitCanvas => (CircuitCanvas) ContentContainer.Content;
 
         private string _filePath;
 
@@ -66,7 +72,7 @@ namespace QlayVisual
         /// <returns></returns>
         public string Serialise()
         {
-            return XamlWriter.Save(ContentContainer.Content);
+            return XamlWriter.Save(CircuitCanvas);
         }
 
         /// <summary>
@@ -90,21 +96,31 @@ namespace QlayVisual
         /// <summary>
         /// Runs the quantum simulation, translating the CircuitCanvas into an experiment
         /// </summary>
-        public void RunSimulation()
+        /// <param name="repeats"></param>
+        public Dictionary<string, Tuple<int, int>> RunSimulation(int repeats)
         {
-            CircuitCanvas cc = ContentContainer.Content as CircuitCanvas;
+            //Consider logic gates in the order they appear, i.e. by X value
+            var circuitItems = CircuitCanvas.Children.OfType<CircuitItem>().OrderBy(n => Canvas.GetLeft(n));
 
+            //Collection of measurement results in (zeros, ones) pairs
+            var results = new Dictionary<string, Tuple<int, int>>();
+
+            //Name measurement items in order
+            int mi = 0;
+            foreach (CircuitItem ci in circuitItems)
+                if (((string)ci.Tag).StartsWith("M"))
+                {
+                    ci.Name = "M" + (mi++).ToString();
+                    results.Add(ci.Name, Tuple.Create(0,0));
+                }
+
+            //Run repeat simulations
             Core.init();
-
-            int repeats = 1000;
-            int zeroes = 0, ones = 0;
-
             for (int i = 0; i < repeats; i++)
             {
                 using (Qubit q = new Qubit())
                 {
-                    //Apply logic gates in the order they appear, i.e. by X value
-                    foreach (CircuitItem ci in cc.Children.OfType<CircuitItem>().OrderBy(n => Canvas.GetLeft(n)))
+                    foreach (CircuitItem ci in circuitItems)
                     {
                         //List of arguments to pass to logic gate
                         List<object> args = new List<object>();
@@ -116,18 +132,23 @@ namespace QlayVisual
 
                         //Add qubit argument and call
                         args.Add(q);
-                        typeof(Gates).GetMethod((string)ci.Tag).Invoke(null, args.ToArray());
-                    }
+                        bool? result = typeof(Gates).GetMethod((string)ci.Tag).Invoke(null, args.ToArray()) as bool?;
 
-                    //Measure and log result
-                    if (Gates.M(q))
-                        ones++;
-                    else
-                        zeroes++;
+                        //Log measurement
+                        if (result.HasValue)
+                        {
+                            Tuple<int, int> t = results[ci.Name];
+                            if (result.Value)
+                                results[ci.Name] = Tuple.Create(t.Item1, t.Item2 + 1);
+                            else
+                                results[ci.Name] = Tuple.Create(t.Item1 + 1, t.Item2);
+                        }
+                            
+                    }
                 }
             }
 
-            MessageBox.Show("ZERO: " + zeroes + "\nONE:  " + ones);
+            return results;
         }
     }
 }

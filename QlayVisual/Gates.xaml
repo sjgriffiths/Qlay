@@ -36,9 +36,62 @@
         <Setter Property="Visibility" Value="Hidden"/>
     </Style>
     
+    <!--Style for measurement output Label-->
+    <Style x:Key="OutputStyle"
+           TargetType="Label">
+        <Setter Property="Canvas.Top" Value="-20"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+    
     
     <!--Canvas tag represents gate function to invoke-->
     
+    <!--Measure (computational basis)-->
+    <Style x:Key="MStyle"
+           TargetType="{x:Type local:ToolboxItem}">
+        <Setter Property="Margin" Value="{StaticResource MARGIN}"/>
+        <Setter Property="ToolTip" Value="Measure (computational basis)"/>
+        <Setter Property="Content">
+            <Setter.Value>
+                <Canvas Tag="M"
+                        Width="{StaticResource SIZE}" Height="{StaticResource SIZE}">
+                    <Rectangle Width="{StaticResource SIZE}" Height="{StaticResource SIZE}"
+                               Stroke="Black"
+                               StrokeThickness="{StaticResource LINE_THICKNESS}"
+                               Fill="White"/>
+                    <TextBlock Style="{StaticResource GateTextStyle}"
+                               Text="M"
+                               Canvas.Left="14" Canvas.Top="5"/>
+                    <Label Style="{StaticResource OutputStyle}"/>
+                </Canvas>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!--Measure (sign basis)-->
+    <Style x:Key="MxStyle"
+           TargetType="{x:Type local:ToolboxItem}">
+        <Setter Property="Margin" Value="{StaticResource MARGIN}"/>
+        <Setter Property="ToolTip" Value="Measure (sign basis)"/>
+        <Setter Property="Content">
+            <Setter.Value>
+                <Canvas Tag="Mx"
+                        Width="{StaticResource SIZE}" Height="{StaticResource SIZE}">
+                    <Rectangle Width="{StaticResource SIZE}" Height="{StaticResource SIZE}"
+                               Stroke="Black"
+                               StrokeThickness="{StaticResource LINE_THICKNESS}"
+                               Fill="White"/>
+                    <TextBlock Style="{StaticResource GateTextStyle}"
+                               Canvas.Left="7" Canvas.Top="5">
+                        M<Run Style="{StaticResource GateSubscriptStyle}">x</Run>
+                    </TextBlock>
+                    <Label Style="{StaticResource OutputStyle}"/>
+                </Canvas>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
     <!--Pauli X-->
     <Style x:Key="XStyle"
            TargetType="{x:Type local:ToolboxItem}">

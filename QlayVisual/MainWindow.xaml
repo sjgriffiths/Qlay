@@ -57,6 +57,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0">
+                    <local:ToolboxItem Style="{StaticResource MStyle}"/>
                     <local:ToolboxItem Style="{StaticResource XStyle}"/>
                     <local:ToolboxItem Style="{StaticResource YStyle}"/>
                     <local:ToolboxItem Style="{StaticResource ZStyle}"/>
@@ -64,6 +65,7 @@
                     <local:ToolboxItem Style="{StaticResource SRNOTStyle}"/>
                 </StackPanel>
                 <StackPanel Grid.Column="1">
+                    <local:ToolboxItem Style="{StaticResource MxStyle}"/>
                     <local:ToolboxItem Style="{StaticResource RxStyle}"/>
                     <local:ToolboxItem Style="{StaticResource RyStyle}"/>
                     <local:ToolboxItem Style="{StaticResource RzStyle}"/>
@@ -87,9 +89,23 @@
             <StackPanel Name="RightPanel"
                         Grid.Column="2"
                         Background="LightSlateGray">
-                <Button Name="RunSimulation2"
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0"
+                           Content="Repeats"
+                           Margin="-5,0,5,0"/>
+                    <TextBox Name="NumOfRepeats"
+                             Grid.Column="1"
+                             VerticalContentAlignment="Center"
+                             Text="1000"/>
+                </Grid>
+                <Button Name="RunSimulation"
                         Content="Run Simulation"
                         Click="RunSimulation_Click"
+                        Height="40"
                         Margin="10"/>
             </StackPanel>
         </Grid>

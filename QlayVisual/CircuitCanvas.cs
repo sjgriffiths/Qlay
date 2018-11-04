@@ -68,6 +68,32 @@ namespace QlayVisual
             }
         }
 
+        /// <summary>
+        /// Updates all measurement labels with the given dictionary of results
+        /// </summary>
+        /// <param name="data"></param>
+        public void SetMeasurementLabels(Dictionary<string, Tuple<int, int>> data)
+        {
+            foreach (CircuitItem ci in Children.OfType<CircuitItem>())
+                if (ci.Name.StartsWith("M"))
+                    foreach (Label l in ((Canvas)ci.Content).Children.OfType<Label>())
+                    {
+                        var t = data[ci.Name];
+                        l.Content = t.Item1 + " , " + t.Item2;
+                    }
+        }
+
+        /// <summary>
+        /// Clears all measurement labels
+        /// </summary>
+        public void ClearMeasurementLabels()
+        {
+            foreach (CircuitItem ci in Children.OfType<CircuitItem>())
+                if (ci.Name.StartsWith("M"))
+                    foreach (Label l in ((Canvas)ci.Content).Children.OfType<Label>())
+                        l.Content = "";
+        }
+
         private void CircuitCanvas_Loaded(object sender, RoutedEventArgs e)
         {
             //Ensure correct style is assigned upon loading
@@ -107,6 +133,9 @@ namespace QlayVisual
         protected override void OnDrop(DragEventArgs e)
         {
             base.OnDrop(e);
+
+            //Acknowledge change by clearing measurements
+            ClearMeasurementLabels();
 
             //Receive data from ToolboxItem
             string xamlString = e.Data.GetData("CIRCUIT_ITEM") as string;

@@ -107,7 +107,9 @@ namespace QlayVisual
 
         private void RunSimulation_Click(object sender, RoutedEventArgs e)
         {
-            ((DataModel)DataContext).RunSimulation();
+            int repeats = int.Parse(NumOfRepeats.Text);
+            var results = ((DataModel)DataContext).RunSimulation(repeats);
+            ((DataModel)DataContext).CircuitCanvas.SetMeasurementLabels(results);
         }
     }
 }

@@ -44,6 +44,9 @@ namespace QlayVisual
                 //Else, snap to nearest (currently only) qubit line
                 else
                     ci.SnapToQubitLine();
+
+                //Acknowledge change by clearing measurements
+                cc.ClearMeasurementLabels();
             }
         }
     }
