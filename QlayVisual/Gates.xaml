@@ -43,6 +43,23 @@
         <Setter Property="FontWeight" Value="Bold"/>
     </Style>
     
+    <!--Style for measurement arrow-->
+    <Style x:Key="ArrowStyle"
+           TargetType="Path">
+        <Setter Property="Fill" Value="Black"/>
+        <Setter Property="Stretch" Value="Fill"/>
+        <Setter Property="Data" Value="M 0 115 95 115 65 90 85 90 120 120 85 150 65 150 95 125 0 125 Z"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="0.5" ScaleY="0.4"/>
+                    <RotateTransform Angle="-60"/>
+                    <TranslateTransform X="9" Y="53"/>
+                </TransformGroup>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
     
     <!--Canvas tag represents gate function to invoke-->
     
@@ -59,9 +76,10 @@
                                Stroke="Black"
                                StrokeThickness="{StaticResource LINE_THICKNESS}"
                                Fill="White"/>
-                    <TextBlock Style="{StaticResource GateTextStyle}"
-                               Text="M"
-                               Canvas.Left="14" Canvas.Top="5"/>
+                    <Path Style="{StaticResource ArrowStyle}"/>
+                    <Ellipse Fill="Black"
+                             Width="10" Height="10"
+                             Canvas.Left="16" Canvas.Top="51"/>
                     <Label Style="{StaticResource OutputStyle}"/>
                 </Canvas>
             </Setter.Value>
@@ -81,17 +99,21 @@
                                Stroke="Black"
                                StrokeThickness="{StaticResource LINE_THICKNESS}"
                                Fill="White"/>
+                    <Path Style="{StaticResource ArrowStyle}"/>
+                    <Ellipse Fill="Black"
+                             Width="10" Height="10"
+                             Canvas.Left="16" Canvas.Top="51"/>
                     <TextBlock Style="{StaticResource GateTextStyle}"
-                               Canvas.Left="7" Canvas.Top="5">
-                        M<Run Style="{StaticResource GateSubscriptStyle}">x</Run>
+                               Canvas.Left="44" Canvas.Top="26">
+                        <Run Style="{StaticResource GateSubscriptStyle}">x</Run>
                     </TextBlock>
                     <Label Style="{StaticResource OutputStyle}"/>
                 </Canvas>
             </Setter.Value>
         </Setter>
     </Style>
-
-
+    
+    
     <!--Pauli X-->
     <Style x:Key="XStyle"
            TargetType="{x:Type local:ToolboxItem}">
