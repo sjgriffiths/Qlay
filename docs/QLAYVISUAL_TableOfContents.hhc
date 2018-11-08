@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<OBJECT type="text/site properties">
+	<param name="ImageType" value="Folder">
+</OBJECT>
+<UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Introduction">
+		<param name="Local" value="QLAYVISUAL.html#introduction">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="The quantum bit">
+		<param name="Local" value="QLAYVISUAL.html#the-quantum-bit">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Coding with one qubit">
+		<param name="Local" value="QLAYVISUAL.html#coding-with-one-qubit">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Setting up an experiment">
+			<param name="Local" value="QLAYVISUAL.html#setting-up-an-experiment">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Quantum logic gates">
+			<param name="Local" value="QLAYVISUAL.html#quantum-logic-gates">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Intricacies of Pauli X and Hadamard">
+			<param name="Local" value="QLAYVISUAL.html#intricacies-of-pauli-x-and-hadamard">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Reference: Quantum logic gates">
+		<param name="Local" value="QLAYVISUAL.html#reference-quantum-logic-gates">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Measurement">
+			<param name="Local" value="QLAYVISUAL.html#measurement">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Single-input gates">
+			<param name="Local" value="QLAYVISUAL.html#single-input-gates">
+			</OBJECT>
+	</UL>
+</UL>
+</BODY></HTML>

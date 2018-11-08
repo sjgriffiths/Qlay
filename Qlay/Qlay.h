@@ -65,6 +65,9 @@ namespace qlay
 	//Returns true with the given probability (Bernoulli distribution)
 	QLAY_API bool chance(double p);
 
+	//Converts the given angle from degrees to radians
+	QLAY_API double deg_to_rad(double angle);
+
 
 	//Measures the given qubit in the Z (computational) basis
 	QLAY_API Basis M(Qubit &q);
