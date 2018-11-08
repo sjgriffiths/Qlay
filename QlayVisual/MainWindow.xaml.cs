@@ -108,7 +108,11 @@ namespace QlayVisual
 
         private void Help_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-
+            ProcessStartInfo psi = new ProcessStartInfo(@"QLAYVISUAL.chm")
+            {
+                WindowStyle = ProcessWindowStyle.Maximized
+            };
+            Process.Start(psi);
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)

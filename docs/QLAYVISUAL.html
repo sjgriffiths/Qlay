@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Qlay Visual tutorial</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="qlay-visual-tutorial">Qlay Visual tutorial</h1>
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#the-quantum-bit">The quantum bit</a></li>
+<li><a href="#coding-with-one-qubit">Coding with one qubit</a>
+<ul>
+<li><a href="#setting-up-an-experiment">Setting up an experiment</a></li>
+<li><a href="#quantum-logic-gates">Quantum logic gates</a></li>
+<li><a href="#intricacies-of-pauli-x-and-hadamard">Intricacies of Pauli X and Hadamard</a></li>
+</ul></li>
+<li><a href="#reference-quantum-logic-gates">Reference: Quantum logic gates</a>
+<ul>
+<li><a href="#measurement">Measurement</a></li>
+<li><a href="#single-input-gates">Single-input gates</a></li>
+</ul></li>
+</ul>
+<h2 id="introduction">Introduction</h2>
+<p>Quantum mechanics is an extraordinarily strange, unintuitive yet increasingly accurate description of how reality works at the lowest of levels. The idea that we can take this theory and use it to build an entirely new form of computing is now well-known in popular science, but to study it requires a drastic entry barrier of maths and physics. As a computer scientist/programmer, is it at all possible as of yet to break into the field of quantum programming?</p>
+<p>The answer is <strong>yes</strong>. Some basic familiarty with linear algebra (read: do you know what vectors and matrices are?) would do you well, but even without this, let’s take a hands-on, no-knowledge-assumed jump into quantum programming using this simulator.</p>
+<p><strong>IMPORTANT: Qlay Visual is designed to help visualise and prototype very simple quantum logic circuits. Many of the fundamental concepts can be explored much more clearly using the very simple C++/C# library directly, so it is highly recommended to follow both tutorials simultaneously. This tutorial will inevitably delegate to the <a href="https://github.com/sjgriffiths/Qlay/blob/master/docs/QLAY.md">C++/C# tutorial</a> at various points.</strong></p>
+<h2 id="the-quantum-bit">The quantum bit</h2>
+<p>The basic unit of classical computing is the <em>bit</em> (binary digit). A bit can take either of the values 0 or 1. It cannot take any other values and must take one of those values at any given time.</p>
+<p>Let’s begin by treating 0 and 1 as vectors. We’ll define them as:</p>
+<p><img src="images/maths/basisvectors.png" alt="basisvectors.png" /> </p>
+<p>The pipe-and-chevron notation is known as a <em>ket vector</em>: for our purposes, it simply means a column vector.</p>
+<p>0 and 1 are our only two possible states, so |0&gt; and |1&gt; are our <em>basis vectors</em>, or <em>basis states</em>. We can represent a single bit, <em>b</em>, using this system like so:</p>
+<p><img src="images/maths/linearcombination.png" alt="linearcombination.png" /> </p>
+<p>For a classical bit, either <em>α</em> is 1 and <em>β</em> is 0, or vice versa: the state is either entirely |0&gt; or entirely |1&gt;.</p>
+<p>Simulating our classical bit like this allows us to extend our line of thinking a bit more: what if the state <em>isn’t</em> entirely |0&gt; or |1&gt;, but somewhere in between? This is the motivation behind the <em>qubit</em>: the quantum bit.</p>
+<p>A qubit can take almost any values for the coefficients <em>α</em> and <em>β</em>, creating a mix of states, not quite |0&gt; yet not quite |1&gt;, a blur between the two. The squared magnitude of the coefficient gives the state’s probability, i.e. |<em>α</em>|<sup>2</sup> is the chance it will be |0&gt; and |<em>β</em>|<sup>2</sup> is the chance it will be |1&gt;. Therefore, these two must sum to 1, as there are no other possibilities.</p>
+<h2 id="coding-with-one-qubit">Coding with one qubit</h2>
+<p>The maths checks out, but how can a qubit possibly be probabilistic in reality? Let’s set that aside for one moment: enough with the linear algebra, ahead with the coding.</p>
+<h3 id="setting-up-an-experiment">Setting up an experiment</h3>
+<p>An empty circuit contains just one horizontal line. Each line represents one qubit, with gates placed onto the line being applied from left to right. From the toolbox on the right, drag one of the top-left-most gates onto the line, then click ‘Run Simulation’.</p>
+<p><img src="images/visual/measure.png" alt="measure.png" /> </p>
+<p>This gate is a measurement operation. Our qubit data type does not possess its own value in an accessible way; instead, we use the measurement operation to observe the qubit. We expect this output to be 0: all qubits are initialised into the |0&gt; state.</p>
+<p>As mentioned before, this system will reveal itself to be probabilistic. We repeat the experiment some suitably large number of times (default is 1000), counting every time the result was 0 and every time it was 1. The results are placed above the gate: <code>1000 , 0</code> means that, as expected, it’s 0 every time.</p>
+<h3 id="quantum-logic-gates">Quantum logic gates</h3>
+<p>The classical bit doesn’t do much by itself: we create programs by manipulating them with logic gates, such as <code>NOT</code>, <code>AND</code>, <code>OR</code> etc. We manipulate the qubit using logic gates, too, but they work rather differently indeed.</p>
+<p>The first gate to use is called the <em>Pauli X gate</em>. It’s a complicated name for a very simple function: it maps |0&gt; to |1&gt; and |1&gt; to |0&gt;. In other words, it’s a direct equivalent of the classical <code>NOT</code>, or <em>bit-flip</em>.</p>
+<p>Let’s add the <code>X</code> gate to our experiment. It is easily recognisable as the circle with a vertical cross, but don’t forget that you can hover over any item in the toolbox to see its name:</p>
+<p><img src="images/visual/PauliX.png" alt="PauliX.png" /> </p>
+<p>Every single qubit prepared to |0&gt; is |1&gt;. Again, very normal.</p>
+<p>A logic gate is actually an operation, represented by a matrix, applied to the qubit vector representation. The matrix for the Pauli X gate is:</p>
+<p><img src="images/maths/PauliXgateequals.png" alt="PauliXgateequals.png" /> </p>
+<p>Matrix representations will no longer be given here, but are all <a href="#reference--quantum-logic-gates">provided below</a> for each gate.</p>
+<p>Measuring and flipping are the only things we can do with only one bit, classically, but there actually exist numerous quantum logic gates with only one input which don’t have classical equivalents. For instance, <em>Pauli Y</em> and <em>Pauli Z</em> gates also exist, but their effects are subtle and not of interest to us yet.</p>
+<p>Instead, the next essential gate to know is the <em>Hadamard gate</em>. The easiest way to understand what this gate does is that it performs half a bit-flip. If the input is |0&gt; or |1&gt;, the output will be exactly half-way between |0&gt; and |1&gt;.</p>
+<p>What does this mean in practice? Let’s try it out in the same way as before. You can remove any gate by dragging it off the circuit canvas. Put a Hadamard gate (square with a capital letter H) in instead of the Pauli X gate:</p>
+<p><img src="images/visual/Hadamard.png" alt="Hadamard.png" /> </p>
+<p>With the qubit set to exactly half-way between |0&gt; and |1&gt;, it has a 50:50 chance of being measured as 0 or 1! This is, clearly, a huge deviation from classical computing and the fundamental motivation behind the qubit, as explained earlier.</p>
+<p>The fact that the qubit can exist as as any mixture of the two states is known as <strong><em>quantum superposition</em></strong>. The qubit exists as a <em>superpostion</em> of the |0&gt; and |1&gt; basis states. When we observe/measure the qubit, only then does it present itself as one of those basis states, with some probability.</p>
+<p>It goes further than even that. Let’s extend our experiment so that we simply measure the qubit twice and see what happens (ideally we would like to count the number of times both measurements matched; see <a href="../QlayExamples/Hadamard.cpp">Hadamard.cpp</a>)):</p>
+<p><img src="images/visual/match.png" alt="match.png" /> </p>
+<p>If the qubit simply had a 50:50 chance of being |0&gt; or |1&gt; when observed, then the number of matches would be around 50% of the time. However, we instead see that the measurements matched 100% of the time.</p>
+<p>This means that not only did we get a 50:50 result when first observing the qubit, but the <em>act of measurement itself</em> permanently collapsed the qubit into that state. The superpostion has been destroyed and we will now measure the same result every time. This phenomenon is called <strong><em>wavefunction collapse</em></strong> and goes alongside superposition itself as perhaps the most startling, fundamental of features of quantum mechanics, entering popular science as the <em>Schrödinger’s cat paradox</em>.</p>
+<h3 id="intricacies-of-pauli-x-and-hadamard">Intricacies of Pauli X and Hadamard</h3>
+<p>The description of the Hadamard gate’s effects as ‘half a bit-flip’ is a gross simplification, albeit a useful one, but it is hard to understand it more without delving into the underlying linear algebra.</p>
+<p>Instead, we will simply note another important property. If you were to apply ‘half a bit-flip’ twice, you would reasonably expect to get a full bit-flip. Is using two <code>H</code> gates equivalent to an <code>X</code> gate? Let’s find out:</p>
+<p><img src="images/visual/twoHadamard.png" alt="twoHadamard.png" /> </p>
+<p>The answer is <strong>no</strong>. Applying the <code>H</code> gate twice gets you right back to where you started, i.e. equals the <em>identity operation</em>. The same is, more intuitively, true of the Pauli X (<code>NOT</code>) gate (and also Y and Z, for future reference).</p>
+<p>Speaking of the <code>X</code> gate, it is generalised to flipping all superpositions. In other words, if you had for example a qubit with a 25% chance of |0&gt; and a 75% chance of |1&gt;, applying the <code>X</code> gate would yield a 75% chance of |0&gt; and 25% chance of |1&gt; (it simply swaps the values of <em>α</em> and <em>β</em>).</p>
+<h2 id="reference-quantum-logic-gates">Reference: Quantum logic gates</h2>
+<p>This section outlines all of the quantum logic gates, explaning them by their operator matrices and effects on a qubit by treating it as a spin state – understanding their intricacies is not necessarily crucial to start quantum programming. All angles are given in radians, <em>but remember that Qlay Visual takes angle arguments in degrees</em>.</p>
+<h3 id="measurement">Measurement</h3>
+<table>
+<colgroup>
+<col style="width: 60%" />
+<col style="width: 39%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Function header</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>M(q)</code></td>
+<td>The ‘normal’ measurement, returning 0 or 1. Measures the qubit in the Z-axis, i.e. the computational basis.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>Mx(q)</code></td>
+<td>Measures the qubit in the X-axis, i.e. the sign basis.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="single-input-gates">Single-input gates</h3>
+<table>
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 34%" />
+<col style="width: 30%" />
+<col style="width: 22%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Gate</th>
+<th style="text-align: center;">Function header</th>
+<th>Operator matrix</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Pauli X</td>
+<td style="text-align: center;"><code>X(q)</code></td>
+<td><img src="images/maths/PauliXgate.png" alt="PauliXgate.png" /></td>
+<td>Bit-flip, equivalent to classical <code>NOT</code>. Performs a rotation of <em>π</em> around the X-axis. Maps |0&gt; to |1&gt; and |1&gt; to |0&gt;.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Pauli Y</td>
+<td style="text-align: center;"><code>Y(q)</code></td>
+<td><img src="images/maths/PauliYgate.png" alt="PauliYgate.png" /></td>
+<td>Performs a rotation of <em>π</em> around the Y-axis. Maps |0&gt; to <em>i</em>|1&gt; and |1&gt; to −<em>i</em>|0&gt;.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Pauli Z</td>
+<td style="text-align: center;"><code>Z(q)</code></td>
+<td><img src="images/maths/PauliZgate.png" alt="PauliZgate.png" /></td>
+<td>Phase-flip. Performs a rotation of <em>π</em> around the Z-axis. Leaves |0&gt; unchanged and maps |1&gt; to −|1&gt;.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Hadamard</td>
+<td style="text-align: center;"><code>H(q)</code></td>
+<td><img src="images/maths/Hadamardgate.png" alt="Hadamardgate.png" /></td>
+<td>Creates a superposition by mapping |0&gt; to (|0&gt;+|1&gt;)/sqrt(2) and |1&gt; to (|0&gt;−|1&gt;)/sqrt(2). Performs a rotation of <em>π</em> around the X-axis followed by <em>π</em>/2 around the Y-axis.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Square root NOT</td>
+<td style="text-align: center;"><code>SRNOT(q)</code></td>
+<td><img src="images/maths/SRNOTgate.png" alt="SRNOTgate.png" /></td>
+<td>Square root of the Pauli X gate. Appling two in sequence is thus equivalent to a single <code>NOT</code>.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">X rotation</td>
+<td style="text-align: center;"><code>Rx(angle, q)</code></td>
+<td><img src="images/maths/Rxgate.png" alt="Rxgate.png" /></td>
+<td>Rotates around the X-axis by the given angle.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Y rotation</td>
+<td style="text-align: center;"><code>Ry(angle, q)</code></td>
+<td><img src="images/maths/Rygate.png" alt="Rygate.png" /></td>
+<td>Rotates around the Y-axis by the given angle.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Z rotation</td>
+<td style="text-align: center;"><code>Rz(angle, q)</code></td>
+<td><img src="images/maths/Rzgate.png" alt="Rzgate.png" /></td>
+<td>Rotates around the Z-axis by the given angle.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Phase shift</td>
+<td style="text-align: center;"><code>Rp(angle, q)</code></td>
+<td><img src="images/maths/phaseshiftgate.png" alt="phaseshiftgate.png" /></td>
+<td>Performs a phase shift by the given angle, mapping |1&gt; to exp(<em>iθ</em>)|1&gt;.</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>
