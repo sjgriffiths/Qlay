@@ -14,6 +14,7 @@
         <CommandBinding Command="Open" CanExecute="Open_CanExecute" Executed="Open_Executed"/>
         <CommandBinding Command="Save" CanExecute="Save_CanExecute" Executed="Save_Executed"/>
         <CommandBinding Command="SaveAs" CanExecute="SaveAs_CanExecute" Executed="SaveAs_Executed"/>
+        <CommandBinding Command="Help" CanExecute="Help_CanExecute" Executed="Help_Executed"/>
     </Window.CommandBindings>
     
     <!--Window-level resources-->
@@ -38,6 +39,10 @@
                 <MenuItem Command="SaveAs"/>
                 <Separator/>
                 <MenuItem Header="_Exit" Click="Exit_Click"/>
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Command="Help"/>
+                <MenuItem Header="About Qlay Visual" Click="About_Click"/>
             </MenuItem>
         </Menu>
         

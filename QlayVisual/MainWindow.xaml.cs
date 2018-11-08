@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -100,9 +101,24 @@ namespace QlayVisual
             }
         }
 
+        private void Help_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void Help_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+
+        }
+
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://github.com/sjgriffiths/Qlay");
         }
 
         private void RunSimulation_Click(object sender, RoutedEventArgs e)
