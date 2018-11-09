@@ -15,6 +15,10 @@ Quantum mechanics is an extraordinarily strange, unintuitive yet increasingly ac
 
 The answer is **yes**. Some basic familiarty with linear algebra (read: do you know what vectors and matrices are?) would do you well, but even without this, let's take a hands-on, no-knowledge-assumed jump into quantum programming using this simulator.
 
+This tutorial contains all examples in both C++ and the C# equivalent. To use Qlay in C++, link against Qlay.lib and include Qlay.h, making sure to have Qlay.dll available. To use Qlay in C#, reference both Qlay.dll and QlayCLI.dll &ndash; as the former is unmanaged, you should (in Visual Studio) manually add it as a project file and set it to copy to output in its properties.
+
+The CLI interface is almost identical, except that standalone functions are contained in the `Core` static class, with the exception of logic gates, which are contained in `Gates`.
+
 ## The quantum bit
 
 The basic unit of classical computing is the *bit* (binary digit). A bit can take either of the values 0 or 1. It cannot take any other values and must take one of those values at any given time.
@@ -41,6 +45,7 @@ The maths checks out, but how can a qubit possibly be probabilistic in reality? 
 ### Setting up an experiment
 First, we'll set up a bareboned Qlay program:
 
+**C++:**
 ```c++
 #include "Qlay.h"
 #include <iostream>
@@ -54,14 +59,41 @@ int main()
     return 0;
 }
 ```
+**C#:**
+```csharp
+using qlay.cli;
+
+namespace QlayTest
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Core.init();
+        }
+    }
+}
+```
 
 We must call `init()` to seed the pseudorandom engine (you can provide a seed as an argument, but leaving it blank defaults to using the current time).
 
 Inside here, let's create a qubit:
 
+**C++:**
 ```c++
 Qubit q;
 std::cout << M(q) << std::endl;
+```
+**C#:**
+```csharp
+//Managed Qubit is IDisposable
+using (Qubit q = new Qubit())
+{
+    bool result = Gates.M(q);
+
+    //Render as 0 or 1
+    Console.WriteLine(result ? 1 : 0);
+}
 ```
 
 Our qubit data type does not possess its own value in an accessible way. Instead, we use the `M()` function to measure the qubit, which returns the value as a boolean (true/false, representing |1> and |0>).
@@ -70,6 +102,7 @@ The output will be 0: all qubits are initialised into the |0> state.
 
 As mentioned before, this system will reveal itself to be probabilistic. Rather than just doing our experiments once, we should repeat them for statistical results:
 
+**C++:**
 ```c++
 int repeats = 1000;
 int zeroes = 0, ones = 0;
@@ -83,7 +116,24 @@ for (int i = 0; i < repeats; i++)
 
 std::cout << "ZERO: " << zeroes << std::endl << "ONE:  " << ones << std::endl;
 ```
+**C#:**
+```csharp
+int repeats = 1000;
+int zeroes = 0, ones = 0;
 
+for (int i = 0; i < repeats; i++)
+{
+    using (Qubit q = new Qubit())
+    {
+        if (Gates.M(q)) ones++;
+        else zeroes++;
+    }
+}
+
+Console.WriteLine("ZERO: " + zeroes);
+Console.WriteLine("ONE:  " + ones);
+```
+**Output:**
 ```
 ZERO: 1000
 ONE:  0
@@ -98,13 +148,24 @@ The first gate to use is called the *Pauli X gate*. It's a complicated name for 
 
 Let's add the `X` gate to our experiment (see [PauliX.cpp](../QlayExamples/PauliX.cpp)):
 
+**C++:**
 ```c++
 Qubit q;
 X(q);
 
 M(q) ? ones++ : zeroes++;
 ```
+**C#:**
+```csharp
+using (Qubit q = new Qubit())
+{
+    Gates.X(q);
 
+    if (Gates.M(q)) ones++;
+    else zeroes++;
+}
+```
+**Output:**
 ```
 ZERO: 0
 ONE:  1000
@@ -124,13 +185,24 @@ Instead, the next essential gate to know is the *Hadamard gate*. The easiest way
 
 What does this mean in practice? Let's try it out in the same way as before:
 
+**C++:**
 ```c++
 Qubit q;
 H(q);
 
 M(q) ? ones++ : zeroes++;
 ```
+**C#:**
+```csharp
+using (Qubit q = new Qubit())
+{
+    Gates.H(q);
 
+    if (Gates.M(q)) ones++;
+    else zeroes++;
+}
+```
+**Output:**
 ```
 ZERO: 497
 ONE:  503
@@ -142,6 +214,7 @@ The fact that the qubit can exist as as any mixture of the two states is known a
 
 It goes further than even that. Let's extend our experiment so that we simply measure the qubit twice, and also count the number of times both measurements matched (see [Hadamard.cpp](../QlayExamples/Hadamard.cpp)):
 
+**C++:**
 ```c++
 Qubit q;
 H(q);
@@ -153,7 +226,21 @@ result ? ones++ : zeroes++;
 if (M(q) == result)
     matches++;
 ```
+**C#:**
+```csharp
+using (Qubit q = new Qubit())
+{
+    Gates.H(q);
 
+    bool result = Gates.M(q);
+    if (result) ones++;
+    else zeroes++;
+
+    if (Gates.M(q) == result)
+    matches++;
+}
+```
+**Output:**
 ```
 ZERO:  536
 ONE:   464
@@ -169,6 +256,7 @@ The description of the Hadamard gate's effects as 'half a bit-flip' is a gross s
 
 Instead, we will simply note another important property. If you were to apply 'half a bit-flip' twice, you would reasonably expect to get a full bit-flip. Is using two `H` gates equivalent to an `X` gate? Let's find out:
 
+**C++:**
 ```c++
 Qubit q;
 H(q);
@@ -176,7 +264,18 @@ H(q);
 
 M(q) ? ones++ : zeroes++;
 ```
+**C#:**
+```csharp
+using (Qubit q = new Qubit())
+{
+    Gates.H(q);
+    Gates.H(q);
 
+    if (Gates.M(q)) ones++;
+    else zeroes++;
+}
+```
+**Output:**
 ```
 ZERO: 1000
 ONE:  0
