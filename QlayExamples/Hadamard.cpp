@@ -19,7 +19,8 @@ void Hadamard(unsigned repeats)
 
 	for (unsigned i = 0; i < repeats; i++)
 	{
-		Qubit q;
+		QubitSystem qs;
+		Qubit q(qs);
 		H(q);
 
 		Basis result = M(q);

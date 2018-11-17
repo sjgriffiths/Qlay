@@ -10,20 +10,25 @@
 
 namespace qlay
 {
-	Qubit::Qubit() : Qubit(false)
+	QubitSystem::QubitSystem() : state_(std::make_shared<State>())
 	{
 	}
 
-	Qubit::Qubit(Basis b) : s(std::make_shared<State>())
+	std::ostream& operator<<(std::ostream& os, const QubitSystem &system)
 	{
-		s->v = b ? ONE : ZERO;
+		os << system.state_->v;
+		return os;
 	}
 
-	Qubit &Qubit::operator=(Basis b)
+	Qubit::Qubit(QubitSystem &system) : system_(system)
 	{
-		if (M(*this) != b)
-			X(*this);
+		Ket &k = system.state_->v;
 
-		return *this;
+		if (system.count() == 0)
+			k = ZERO;
+		else
+			k = kronecker_product(ZERO, k);
+
+		index_ = system.count_++;
 	}
 }

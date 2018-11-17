@@ -18,7 +18,8 @@ void PauliX(unsigned repeats)
 
 	for (unsigned i = 0; i < repeats; i++)
 	{
-		Qubit q;
+		QubitSystem qs;
+		Qubit q(qs);
 		X(q);
 
 		M(q) ? ones++ : zeroes++;

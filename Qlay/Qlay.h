@@ -34,25 +34,51 @@ namespace qlay
 
 	template class QLAY_API std::shared_ptr<State>;
 
+	//Represents a system of potentially entangled qubits
+	class QLAY_API QubitSystem
+	{
+		friend class Qubit;
+		friend class Gate;
+		friend class AngleGate;
+
+	private:
+		std::shared_ptr<State> state_;
+		int count_ = 0;
+
+	public:
+		//Default constructor prepares empty system
+		QubitSystem();
+
+		//Returns the number of qubits in the system
+		int count() const { return count_; }
+
+		//QubitSystems cannot be classically copied
+		QubitSystem(const QubitSystem&) = delete;
+		QubitSystem &operator=(const QubitSystem&) = delete;
+
+		QLAY_API friend std::ostream& operator<<(std::ostream& os, const QubitSystem &system);
+	};
+
 	//Represents a qubit (quantum bit), a linear combination of |0> and |1>
 	class QLAY_API Qubit
 	{
+	private:
+		QubitSystem &system_;
+		int index_;
+
 	public:
-		//Default constructor initialises to |0>
-		Qubit();
+		//Construct in the given QubitSystem, initialised to |0>
+		Qubit(QubitSystem &system);
 
-		//Prepares to the given basis state
-		Qubit(Basis b);
+		//Returns a reference to the qubit's owning system
+		QubitSystem &system() const { return system_; }
 
-		//Assignment by preparing to the given basis state
-		Qubit &operator=(Basis b);
+		//Returns this qubit's index in the system
+		int index() const { return index_; }
 
 		//Qubits cannot be classically copied
 		Qubit(const Qubit&) = delete;
 		Qubit &operator=(const Qubit&) = delete;
-
-		//State vector representation
-		std::shared_ptr<State> s;
 	};
 
 
@@ -77,30 +103,30 @@ namespace qlay
 
 
 	//Pauli X gate (NOT)
-	QLAY_API void X(Qubit &q);
+	QLAY_API void X(const Qubit &q);
 
 	//Pauli Y gate
-	QLAY_API void Y(Qubit &q);
+	QLAY_API void Y(const Qubit &q);
 
 	//Pauli Z gate
-	QLAY_API void Z(Qubit &q);
+	QLAY_API void Z(const Qubit &q);
 
 	//Hadamard gate
-	QLAY_API void H(Qubit &q);
+	QLAY_API void H(const Qubit &q);
 
 	//Square root NOT gate
-	QLAY_API void SRNOT(Qubit &q);
+	QLAY_API void SRNOT(const Qubit &q);
 
 
 	//Rotation around the X axis
-	QLAY_API void Rx(double angle, Qubit &q);
+	QLAY_API void Rx(double angle, const Qubit &q);
 
 	//Rotation around the Y axis
-	QLAY_API void Ry(double angle, Qubit &q);
+	QLAY_API void Ry(double angle, const Qubit &q);
 
 	//Rotation around the Z axis
-	QLAY_API void Rz(double angle, Qubit &q);
+	QLAY_API void Rz(double angle, const Qubit &q);
 
 	//Phase shift gate
-	QLAY_API void Rp(double angle, Qubit &q);
+	QLAY_API void Rp(double angle, const Qubit &q);
 }

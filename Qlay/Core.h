@@ -44,4 +44,7 @@ namespace qlay
 
 	// |1> basis vector
 	const Ket ONE  ((Ket(2) << 0, 1).finished());
+
+	//Computes the Kronecker product of the given matrices
+	Mat kronecker_product(const Mat &a, const Mat &b);
 }
