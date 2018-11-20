@@ -16,13 +16,13 @@ namespace qlay
 
 	std::ostream& operator<<(std::ostream& os, const QubitSystem &system)
 	{
-		os << system.state_->v;
+		os << system.state_->get();
 		return os;
 	}
 
 	Qubit::Qubit(QubitSystem &system) : system_(system)
 	{
-		Ket &k = system.state_->v;
+		Ket &k = system.state_->get();
 
 		if (system.count() == 0)
 			k = ZERO;

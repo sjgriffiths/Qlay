@@ -30,7 +30,7 @@ namespace qlay
 
 
 	//State vector (forward declaration used internally)
-	struct State;
+	class State;
 
 	template class QLAY_API std::shared_ptr<State>;
 
@@ -40,6 +40,7 @@ namespace qlay
 		friend class Qubit;
 		friend class Gate;
 		friend class AngleGate;
+		friend QLAY_API Basis M(const Qubit &q);
 
 	private:
 		std::shared_ptr<State> state_;
@@ -96,10 +97,10 @@ namespace qlay
 
 
 	//Measures the given qubit in the Z (computational) basis
-	QLAY_API Basis M(Qubit &q);
+	QLAY_API Basis M(const Qubit &q);
 
 	//Measures the given qubit in the X (sign) basis
-	QLAY_API Basis Mx(Qubit &q);
+	QLAY_API Basis Mx(const Qubit &q);
 
 
 	//Pauli X gate (NOT)

@@ -8,6 +8,8 @@
 
 #include "Core.h"
 
+#include <set>
+
 namespace qlay
 {
 	//Defines all base operator matrices
@@ -41,8 +43,8 @@ namespace qlay
 		//X rotation
 		Mat Rx(double angle)
 		{
-			double hsin = sin(angle / 2.0);
-			double hcos = cos(angle / 2.0);
+			double hsin = std::sin(angle / 2.0);
+			double hcos = std::cos(angle / 2.0);
 			return (Mat(2, 2) <<              hcos, Complex(0, -hsin),
 				                 Complex(0, -hsin),              hcos).finished();
 		}
@@ -50,8 +52,8 @@ namespace qlay
 		//Y rotation
 		Mat Ry(double angle)
 		{
-			double hsin = sin(angle / 2.0);
-			double hcos = cos(angle / 2.0);
+			double hsin = std::sin(angle / 2.0);
+			double hcos = std::cos(angle / 2.0);
 			return (Mat(2, 2) << hcos, -hsin,
 				                 hsin,  hcos).finished();
 		}
@@ -59,15 +61,15 @@ namespace qlay
 		//Z rotation
 		Mat Rz(double angle)
 		{
-			return (Mat(2, 2) << exp(Complex(0, -angle/2.0)),                          0,
-				                                           0, exp(Complex(0, angle/2.0))).finished();
+			return (Mat(2, 2) << std::exp(Complex(0, -angle/2.0)),                          0,
+				                                                0, std::exp(Complex(0, angle/2.0))).finished();
 		}
 
 		//Phase shift
 		Mat Rp(double angle)
 		{
-			return (Mat(2, 2) << 1,                      0,
-				                 0, exp(Complex(0, angle))).finished();
+			return (Mat(2, 2) << 1,                           0,
+				                 0, std::exp(Complex(0, angle))).finished();
 		}
 	}
 
@@ -102,7 +104,7 @@ namespace qlay
 
 		void operator()(const Qubit &q) const
 		{
-			Ket &state = q.system().state_->v;
+			Ket &state = q.system().state_->get();
 			Mat op = expand_operator(m_, q.system().count(), q.index());
 			state = op * state;
 		}
@@ -121,7 +123,7 @@ namespace qlay
 
 		void operator()(double angle, const Qubit &q) const
 		{
-			Ket &state = q.system().state_->v;
+			Ket &state = q.system().state_->get();
 			Mat op = expand_operator(m_(angle), q.system().count(), q.index());
 			state = op * state;
 		}
@@ -154,25 +156,68 @@ namespace qlay
 	inline void Rp(double angle, const Qubit &q) { return gates::Rp(angle, q); }
 
 
-	//Basis M(Qubit &q)
-	//{
-	//	Ket &k = q.s->v;
-	//	Basis result = chance(std::norm(k(1)));
-	//	k = result ? ONE : ZERO;
-	//	return result;
-	//}
+	//Returns a set of numbers below the upper bound x with bit b as value (default true)
+	template <typename T, typename U>
+	std::set<T> ints_with_bit(T x, U b, bool value = true)
+	{
+		static_assert(std::is_integral<T>::value, "Upper bound must be integer");
+		static_assert(std::is_integral<U>::value, "Bit index must be integer");
 
-	//Basis Mx(Qubit &q)
-	//{
-	//	//Rotate X onto Z
-	//	H(q);
+		std::set<T> s;
+		T mask = 1 << b;
 
-	//	//Measure in Z
-	//	Basis result = M(q);
+		for (T i = 0; i < x; i++)
+			if (static_cast<bool>(i & mask) == value)
+				s.insert(i);
 
-	//	//Rotate back again
-	//	H(q);
+		return s;
+	}
 
-	//	return result;
-	//}
+	Basis M(const Qubit &q)
+	{
+		//Set of coefficient indices where qx = |1>
+		auto s = ints_with_bit(1 << q.system().count(), q.index());
+
+		//Set complement
+		auto sc = ints_with_bit(1 << q.system().count(), q.index(), false);
+
+		Ket &state = q.system().state_->get();
+
+		//Sum individual probabilities
+		double p = 0;
+		for (auto i : s)
+			p += std::norm(state(i));
+
+		bool result = chance(p);
+
+		//Set contradictory states to zero
+		for (auto i : (result ? sc : s))
+			state(i) = 0;
+
+		//Initialise then sum normalisation constant
+		double norm = 0;
+		for (auto i : (result ? s : sc))
+			norm += std::norm(state(i));
+
+		//Renormalise states
+		norm = std::sqrt(norm);
+		for (auto i : (result ? s : sc))
+			state(i) /= norm;
+
+		return result;
+	}
+
+	Basis Mx(const Qubit &q)
+	{
+		//Rotate X onto Z
+		H(q);
+
+		//Measure in Z
+		Basis result = M(q);
+
+		//Rotate back again
+		H(q);
+
+		return result;
+	}
 }

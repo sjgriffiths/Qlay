@@ -33,10 +33,15 @@ namespace qlay
 	//Generic matrix
 	using Mat = Eigen::Matrix<Complex, Eigen::Dynamic, Eigen::Dynamic>;
 
-	//State vector in binary bases
-	struct State
+	//State vector wrapper class
+	class State
 	{
+	private:
 		Ket v;
+
+	public:
+		//References the Eigen state vector
+		inline Ket &get() { return v; }
 	};
 
 	// |0> basis vector
