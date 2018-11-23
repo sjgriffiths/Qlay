@@ -61,7 +61,7 @@ namespace qlay
 		//Z rotation
 		Mat Rz(double angle)
 		{
-			return (Mat(2, 2) << std::exp(Complex(0, -angle/2.0)),                          0,
+			return (Mat(2, 2) << std::exp(Complex(0, -angle/2.0)),                               0,
 				                                                0, std::exp(Complex(0, angle/2.0))).finished();
 		}
 
@@ -71,6 +71,24 @@ namespace qlay
 			return (Mat(2, 2) << 1,                           0,
 				                 0, std::exp(Complex(0, angle))).finished();
 		}
+
+		//SWAP
+		const Mat SWAP = (Mat(4, 4) << 1, 0, 0, 0,
+			                           0, 0, 1, 0,
+			                           0, 1, 0, 0,
+			                           0, 0, 0, 1).finished();
+
+		//Square root SWAP
+		const Mat SRSWAP = (Mat(4, 4) << 1,                  0,                  0, 0,
+			                             0, Complex(0.5,  0.5), Complex(0.5, -0.5), 0,
+			                             0, Complex(0.5, -0.5), Complex(0.5,  0.5), 0,
+			                             0,                  0,                  0, 1).finished();
+
+		//Controlled NOT
+		const Mat CNOT = (Mat(4, 4) << 1, 0, 0, 0,
+			                           0, 1, 0, 0,
+			                           0, 0, 0, 1,
+			                           0, 0, 1, 0).finished();
 	}
 
 	//Expands the given operator matrix to apply to a given qubit
@@ -84,7 +102,10 @@ namespace qlay
 
 		result = kronecker_product(m, result);
 
-		for (int i = index; i < count - 1; i++)
+		//Reduce expansion if matrix is already two-input
+		int limit = m.rows() == 4 ? count - 2 : count - 1;
+
+		for (int i = index; i < limit; i++)
 			result = kronecker_product(matrices::I, result);
 
 		return result;
@@ -129,6 +150,67 @@ namespace qlay
 		}
 	};
 
+	//Quantum logic gate functor, taking two qubit inputs
+	class TwoGate
+	{
+	private:
+		Mat m_;
+
+	public:
+		TwoGate(Mat m) : m_(m)
+		{
+		}
+
+		void operator()(const Qubit &a, const Qubit &b) const
+		{
+			QubitSystem &qs = b.system();
+			Ket &state = qs.state_->get();
+
+			//If the qubits are consecutive and correctly ordered, apply normally
+			if (a.index() == b.index() + 1)
+			{
+				Mat op = expand_operator(m_, qs.count(), b.index());
+				state = op * state;
+			}
+
+			//If the qubits are consecutive but incorrectly ordered, swap before and after
+			else if (a.index() == b.index() - 1)
+			{
+				SWAP(b, a);
+				Mat op = expand_operator(m_, qs.count(), a.index());
+				state = op * state;
+				SWAP(b, a);
+			}
+
+			//If the qubits are nonconsecutive, swap into end position
+			else
+			{
+				//Swap b into end (q0 position)
+				for (int i = b.index(); i > 0; i--)
+					SWAP(Qubit(qs, i), Qubit(qs, i - 1));
+
+				//a may have been displaced
+				int a_i = a.index() < b.index() ? a.index() + 1 : a.index();
+
+				//Swap a into end-but-one (q1 position)
+				for (int i = a_i; i > 1; i--)
+					SWAP(Qubit(qs, i), Qubit(qs, i - 1));
+
+				//Apply operator to end
+				Mat op = expand_operator(m_, qs.count(), 0);
+				state = op * state;
+
+				//Swap a back
+				for (int i = 1; i < a_i; i++)
+					SWAP(Qubit(qs, i + 1), Qubit(qs, i));
+
+				//Swap b back
+				for (int i = 0; i < b.index(); i++)
+					SWAP(Qubit(qs, i + 1), Qubit(qs, i));
+			}
+		}
+	};
+
 
 	namespace gates
 	{
@@ -142,6 +224,10 @@ namespace qlay
 		const AngleGate Ry(matrices::Rx);
 		const AngleGate Rz(matrices::Rx);
 		const AngleGate Rp(matrices::Rx);
+
+		const TwoGate SWAP(matrices::SWAP);
+		const TwoGate SRSWAP(matrices::SRSWAP);
+		const TwoGate CNOT(matrices::CNOT);
 	}
 
 	inline void X(const Qubit &q) { return gates::X(q); }
@@ -154,6 +240,10 @@ namespace qlay
 	inline void Ry(double angle, const Qubit &q) { return gates::Ry(angle, q); }
 	inline void Rz(double angle, const Qubit &q) { return gates::Rz(angle, q); }
 	inline void Rp(double angle, const Qubit &q) { return gates::Rp(angle, q); }
+
+	inline void SWAP(const Qubit &a, const Qubit &b) { return gates::SWAP(a, b); }
+	inline void SRSWAP(const Qubit &a, const Qubit &b) { return gates::SRSWAP(a, b); }
+	inline void CNOT(const Qubit &control, const Qubit &target) { return gates::CNOT(control, target); }
 
 
 	//Returns a set of numbers below the upper bound x with bit b as value (default true)

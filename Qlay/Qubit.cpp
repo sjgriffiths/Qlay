@@ -31,4 +31,8 @@ namespace qlay
 
 		index_ = system.count_++;
 	}
+
+	Qubit::Qubit(QubitSystem &system, int index) : system_(system), index_(index)
+	{
+	}
 }

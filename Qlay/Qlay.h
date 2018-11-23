@@ -40,6 +40,7 @@ namespace qlay
 		friend class Qubit;
 		friend class Gate;
 		friend class AngleGate;
+		friend class TwoGate;
 		friend QLAY_API Basis M(const Qubit &q);
 
 	private:
@@ -68,8 +69,11 @@ namespace qlay
 		int index_;
 
 	public:
-		//Construct in the given QubitSystem, initialised to |0>
+		//Construct a new Qubit in the given QubitSystem, initialised to |0>
 		Qubit(QubitSystem &system);
+
+		//Construct to refer to a preexisting qubit at an index in the given QubitSystem
+		Qubit(QubitSystem &system, int index);
 
 		//Returns a reference to the qubit's owning system
 		QubitSystem &system() const { return system_; }
@@ -130,4 +134,14 @@ namespace qlay
 
 	//Phase shift gate
 	QLAY_API void Rp(double angle, const Qubit &q);
+
+
+	//SWAP gate
+	QLAY_API void SWAP(const Qubit &a, const Qubit &b);
+
+	//Square root SWAP gate
+	QLAY_API void SRSWAP(const Qubit &a, const Qubit &b);
+
+	//Controlled NOT gate
+	QLAY_API void CNOT(const Qubit &control, const Qubit &target);
 }
