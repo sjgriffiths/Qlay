@@ -16,7 +16,39 @@ namespace qlay
 
 	std::ostream& operator<<(std::ostream& os, const QubitSystem &system)
 	{
-		os << system.state_->get();
+		Ket &k = system.state_->get();
+
+		//Print each coefficient
+		for (Eigen::Index i = 0; i < k.size(); i++)
+		{
+			Complex z = k(i);
+
+			//Format basis vector as binary number
+			os << "|";
+			for (int j = system.count(); j > 0; j--)
+				os << ((i >> (j-1)) & 1);
+			os << "> ";
+
+			//Print coefficient in the form a+bi
+			if (z.real() == 0 && z.imag() == 0)
+				os << 0 << std::endl;
+			else
+			{
+				if (z.real() != 0)
+					os << z.real();
+
+				if (z.imag() != 0)
+				{
+					os << (z.imag() > 0 ? "+" : "-");
+					if (std::abs(z.imag()) != 1)
+						os << std::abs(z.imag());
+					os << "i";
+				}
+
+				os << std::endl;
+			}
+		}
+
 		return os;
 	}
 
