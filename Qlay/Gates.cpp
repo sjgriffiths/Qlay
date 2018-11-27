@@ -9,6 +9,7 @@
 #include "Core.h"
 
 #include <set>
+#include <algorithm>
 
 namespace qlay
 {
@@ -278,7 +279,7 @@ namespace qlay
 		for (auto i : s)
 			p += std::norm(state(i));
 
-		bool result = chance(p);
+		bool result = chance(std::clamp(p, 0.0, 1.0));
 
 		//Set contradictory states to zero
 		for (auto i : (result ? sc : s))
