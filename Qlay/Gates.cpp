@@ -24,8 +24,8 @@ namespace qlay
 			                        1, 0).finished();
 
 		//Pauli Y
-		const Mat Y = (Mat(2, 2) <<              0, Complex(0, -1),
-			                        Complex(0, -1),              0).finished();
+		const Mat Y = (Mat(2, 2) <<             0, Complex(0, -1),
+			                        Complex(0, 1),              0).finished();
 
 		//Pauli Z
 		const Mat Z = (Mat(2, 2) << 1,  0,
@@ -221,9 +221,9 @@ namespace qlay
 		const Gate SRNOT(matrices::SRNOT);
 
 		const AngleGate Rx(matrices::Rx);
-		const AngleGate Ry(matrices::Rx);
-		const AngleGate Rz(matrices::Rx);
-		const AngleGate Rp(matrices::Rx);
+		const AngleGate Ry(matrices::Ry);
+		const AngleGate Rz(matrices::Rz);
+		const AngleGate Rp(matrices::Rp);
 
 		const TwoGate SWAP(matrices::SWAP);
 		const TwoGate SRSWAP(matrices::SRSWAP);
