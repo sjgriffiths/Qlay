@@ -24,6 +24,12 @@
     <ClCompile Include="Hadamard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CHSH.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GHZ.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Examples.h">
