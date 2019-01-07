@@ -9,7 +9,7 @@ With the tutorial-style documentation, one only needs a basic understanding of c
 
 ## Components
 * **Qlay:**
-The core C++ API, consisting only of Qlay.dll and Qlay.h.
+The core C++ API, consisting only of Qlay.dll+lib and Qlay.h.
 * **QlayExamples:**
 C++ projects demonstrating the use of the library and basic quantum concepts.
 * **QlayCLI:**
