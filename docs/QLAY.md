@@ -8,6 +8,7 @@
   * [Intricacies of Pauli X and Hadamard](#intricacies-of-pauli-x-and-hadamard)
 * [Coding with two qubits](#coding-with-two-qubits)
   * [Quantum entanglement](#quantum-entanglement)
+  * [Nonlocal games](#nonlocal-games)
 * [Reference: Quantum logic gates](#reference-quantum-logic-gates)
   * [Measurement](#measurement)
   * [Single-input gates](#single-input-gates)
@@ -399,6 +400,36 @@ If *q<sub>1</sub>* simply also had a 50:50 probability then we would expect it t
 When qubits are entangled, they cannot simply be considered as independent, 2-dimensional vectors. Instead, the entire system is a 4-dimensional vector space; a linear combination of all possible states, which are |00>, |01, |10> and |11> as given in the truth table above. In this case, the *entire system* is in an equal superposition of |00> and |11>, and measuring one qubit collapses the system as a whole.
 
 This simple example, though the most common and standard way of entagling two qubits, does not actually appear to transcend classical conditional probability, however. The true power lies in quantum algorithms and communication which exploits entanglement in ways which cannot be replicated or explained classically.
+
+### Nonlocal games
+Quantum nonlocality, the idea that states are not just subject to local realism, can be demonstrated through *nonlocal games*, experiments designed to exploit entanglement and prove quantum 'superiority'.
+
+Consider a referee in a game and two co-operative players, *Alice* and *Bob*. The game consists of Alice and Bob each receiving a 'question' from the referee, which is just a classical bit 0 or 1, and them responding with an 'answer', likewise 0 or 1. They win the game if and only if their answers satisfy some logical predicate with the questions. The kicker is that they *cannot communicate* with each other, outside of agreeing upon a strategy beforehand.
+
+The CHSH game consists of Alice and Bob receiving the questions *r* and *s* respectively, where both are 0 or 1 with 50:50 chance. They win if their answers *a* and *b* satisfy the predicate *r* AND *s* = *a* XOR *b*.
+
+In other words, if *r* and *s* are both 1 then *a* and *b* must be different; otherwise, they must be the same. These winning conditions can be visualised in a truth table:
+
+| *r* AND *s* | *a* XOR *b* |
+|:---:|:---:|
+| 0 AND 0 | 0 |
+| 0 AND 1 | 0 |
+| 1 AND 0 | 0 |
+| 1 AND 1 | 1 |
+
+Classically, the best possible strategy is trivial to determine. If Alice and Bob both give the same answers, they have a 3-in-4 chance of winning: they only lose in the 1 AND 1 case. So, Alice and Bob decide to both give the answer 0 and cannot win more assuredly than this.
+
+However, if Alice and Bob each possess entangled qubits, they can 'cheat' the system, being able to communicate with each other to an extent despite no classical channel existing between them.
+
+The trick is to perform measurement on the qubit(s) in particular bases. Normal measurement so far has been respect to the Z-axis: the computational basis. One can measure a qubit in any axis you want, which collapses the qubit onto that basis. We sometimes call the X-axis basis the *sign basis*. After applying Hadamard gate to |0>, you cannot say whether it will collapse to |0> or |1>, but you can say for certainty that it is in the |+> state. Likewise, a qubit prepared as |0> has a 50:50 chance of being measured to be |+> or |->, by instead measuring in the X-axis.
+
+An `Mx` function is provided as shorthand for measuring in the X-axis, but you can measure in any arbitrary axis *A* by applying rotation gates that map *A* onto the Z-axis, and then just measuring in the Z-axis with `M`.
+
+Alice and Bob would ideally like to communicate the question they received to the other. The best they can achieve is to measure their entangled qubits in different axes depending on the question they received, in such a way that the results (taken as their answers *a* and *b*) have the highest probability of falling into a winning condition. The derivation of the optimal strategy and axes to measure in is beyond this scope, but see [CHSH.cpp](../QlayExamples/CHSH.cpp) for it implemented and performed. The optimal strategy is that Alice measures in the X axis if *r* is 1 and in the Z axis otherwise, and Bob measures in the same but rotated &pi;/8 radians. The results as shown are conclusive: the classical strategy's success rate is 75%, but the quantum strategy's is ~85%!
+
+The GHZ game (see [GHZ.cpp](../QlayExamples/GHZ.cpp)) is very similar, but introduces a third player, *Charlie*, changes the predicate and restricts the possible set of questions they receive. The best classical success rate is again 75%. By sharing three entangled qubits prepared to a state correspending to the possible set of questions, a simpler quantum strategy of applying the Hadamard gate once achieves something spectacular: a 100% success rate.
+
+These games prove that quantum entanglement trascends mere conditional probability: that entangled states cannot be considered in isolation and can be dependent even when physically separated.
 
 ## Reference: Quantum logic gates
 This section outlines all of the quantum logic gates, explaning them by their operator matrices and effects on a qubit by treating it as a spin state &ndash; understanding their intricacies is not necessarily crucial to start quantum programming. All angles are given in radians.
