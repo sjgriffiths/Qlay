@@ -30,6 +30,9 @@
     <ClCompile Include="GHZ.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="entanglement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Examples.h">

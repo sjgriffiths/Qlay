@@ -12,6 +12,7 @@ int main()
 {
 	//PauliX(1000);
 	//Hadamard(1000);
+	//entanglement(1000);
 	//CHSH(1000);
 	//GHZ(1000);
 

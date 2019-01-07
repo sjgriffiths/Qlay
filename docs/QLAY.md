@@ -6,6 +6,8 @@
   * [Setting up an experiment](#setting-up-an-experiment)
   * [Quantum logic gates](#quantum-logic-gates)
   * [Intricacies of Pauli X and Hadamard](#intricacies-of-pauli-x-and-hadamard)
+* [Coding with two qubits](#coding-with-two-qubits)
+  * [Quantum entanglement](#quantum-entanglement)
 * [Reference: Quantum logic gates](#reference-quantum-logic-gates)
   * [Measurement](#measurement)
   * [Single-input gates](#single-input-gates)
@@ -296,6 +298,107 @@ ONE:  0
 The answer is **no**. Applying the `H` gate twice gets you right back to where you started, i.e. equals the *identity operation*. The same is, more intuitively, true of the Pauli X (`NOT`) gate (and also Y and Z, for future reference).
 
 Speaking of the `X` gate, it is generalised to flipping all superpositions. In other words, if you had for example a qubit with a 25% chance of |0> and a 75% chance of |1>, applying the `X` gate would yield a 75% chance of |0> and 25% chance of |1> (it simply swaps the values of *&alpha;* and *&beta;*).
+
+Finally, it is important to appreciate that a qubit can be treated as a direction vector in 3-dimensional Euclidian space, i.e. as a sphere of which the surface area maps the 2-dimensional Hilbert space (*Bloch sphere*). The Z-axis is treated by convention as the computational basis -- a qubit pointing directly along the Z-axis is |0>, whilst a qubit pointing directly against the Z-axis is |1>. One way of preparing a qubit with some probability *p* of |1> is by applying a Y-axis rotation to the default |0> qubit of 2*arcsin(sqrt(*p*)). Try deriving this from the operator matrix for the `Ry` gate in the reference section below!
+
+## Coding with two qubits
+We've seen that superposition is a key aspect of qubits. Although we can do more with a qubit than a classical bit, we still can't exactly do much with just one. The true power of quantum computing only becomes clear when we move onto using more than one qubit and the other key aspect of their behaviour: ***entanglement***.
+
+### Quantum entanglement
+First, let's look at probably the most straightforward of the logic gates which take two qubits as inputs: the `SWAP` gate.
+
+**C++:**
+```c++
+QubitSystem qs;
+Qubit q0(qs); Qubit q1(qs);
+X(q0);
+std::cout << "q0: " << M(q0) << std::endl;
+std::cout << "q1: " << M(q1) << std::endl;
+
+SWAP(q0, q1);
+std::cout << "q0: " << M(q0) << std::endl;
+std::cout << "q1: " << M(q1) << std::endl;
+```
+**C#:**
+```csharp
+using (QubitSystem qs = new QubitSystem())
+using (Qubit q0 = new Qubit(qs))
+using (Qubit q1 = new Qubit(qs))
+{
+    Gates.X(q0);
+    Console.WriteLine("q0: " + (Gates.M(q0) ? 1 : 0));
+    Console.WriteLine("q1: " + (Gates.M(q1) ? 1 : 0));
+
+    Gates.SWAP(q0, q1);
+    Console.WriteLine("q0: " + (Gates.M(q0) ? 1 : 0));
+    Console.WriteLine("q1: " + (Gates.M(q1) ? 1 : 0));
+}
+```
+**Output:**
+```
+q0: 1
+q1: 0
+q0: 0
+q1: 1
+```
+
+This above example instantiates two qubits, *q<sub>0</sub>* and *q<sub>1</sub>*, and flips *q<sub>0</sub>* to |1>. This is confirmed by measurement. The `SWAP` gate is then applied, which does exactly what it says on the tin: the two qubits are swapped with each other in their entirety. Following this, *q<sub>0</sub>* now measures |0> and *q<sub>1</sub>* now |1>. The values for *&alpha;* and *&beta;* for *q<sub>0</sub>* are swapped in-place with those for *q<sub>1</sub>*.
+
+The `SWAP` gate is of fundamental importance for low-level implementations, but we'll turn to a more interesting gate for the behaviour of interacting qubits. The controlled-NOT (`CNOT`) gate applies the `X` gate to a target qubit if an only if a control qubit measures |1> &ndash; otherwise, no change occurs. The truth table for a two-qubit system |*control*,*target*> is as follows:
+
+| before | after |
+|:------:|:-----:|
+| \|00> | \|00> |
+| \|01> | \|01> |
+| \|10> | \|11> |
+| \|11> | \|10> |
+
+The control qubit is never affected, and the target qubit is only affected conditionally on the control. We can use this gate to demonstrate logical interaction between qubits (see [entanglement.cpp](../QlayExamples/entanglement.cpp)):
+
+**C++:**
+```c++
+QubitSystem qs;
+Qubit q0(qs); Qubit q1(qs);
+H(q0);
+CNOT(q0, q1);
+
+Basis result = M(q0);
+result ? ones++ : zeroes++;
+
+if (M(q1) == result)
+    matches++;
+```
+**C#:**
+```csharp
+using (QubitSystem qs = new QubitSystem())
+using (Qubit q0 = new Qubit(qs))
+using (Qubit q1 = new Qubit(qs))
+{
+    Gates.H(q0);
+    Gates.CNOT(q0, q1);
+
+    bool result = Gates.M(q0);
+    if (result) ones++;
+    else zeroes++;
+
+    if (Gates.M(q1) == result)
+        matches++;
+}
+```
+**Output:**
+```
+ZERO:  502
+ONE:   498
+MATCH: 1000
+```
+
+First, we apply the Hadamard gate to *q<sub>0</sub>*, so it is in an equal superposition of |0> and |1>. Then, we use it as the control to `CNOT` on *q<sub>1</sub>*. Therefore, *q<sub>1</sub>* now also has a 50:50 probability between |0> and |1>. Critically, we count the number of times the measurement of *q<sub>0</sub>* equals *q<sub>1</sub>* and obtain 100%.
+
+If *q<sub>1</sub>* simply also had a 50:50 probability then we would expect it to only match approximately 50% of the time. The true situation is that the very act of measuring and thus collapsing *q<sub>0</sub>* collapses *q<sub>1</sub>* before it is itself measured. There is seemingly 'spooky action at a distance': the two qubits interacted at some point in the past (`CNOT`) and they are now *entangled*, such that measuring one has a very real effect upon the other.
+
+When qubits are entangled, they cannot simply be considered as independent, 2-dimensional vectors. Instead, the entire system is a 4-dimensional vector space; a linear combination of all possible states, which are |00>, |01, |10> and |11> as given in the truth table above. In this case, the *entire system* is in an equal superposition of |00> and |11>, and measuring one qubit collapses the system as a whole.
+
+This simple example, though the most common and standard way of entagling two qubits, does not actually appear to transcend classical conditional probability, however. The true power lies in quantum algorithms and communication which exploits entanglement in ways which cannot be replicated or explained classically.
 
 ## Reference: Quantum logic gates
 This section outlines all of the quantum logic gates, explaning them by their operator matrices and effects on a qubit by treating it as a spin state &ndash; understanding their intricacies is not necessarily crucial to start quantum programming. All angles are given in radians.

@@ -22,6 +22,9 @@ void PauliX(unsigned repeats = DEFAULT_REPEATS);
 //Demonstrates the Hadamard gate
 void Hadamard(unsigned repeats = DEFAULT_REPEATS);
 
+//Demontrates basic quantum entanglement
+void entanglement(unsigned repeats = DEFAULT_REPEATS);
+
 //Performs the CHSH game experiment
 void CHSH(unsigned repeats = DEFAULT_REPEATS);
 

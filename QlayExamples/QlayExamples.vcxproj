@@ -133,6 +133,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CHSH.cpp" />
+    <ClCompile Include="entanglement.cpp" />
     <ClCompile Include="GHZ.cpp" />
     <ClCompile Include="Hadamard.cpp" />
     <ClCompile Include="main.cpp" />
