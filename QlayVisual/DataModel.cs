@@ -118,7 +118,8 @@ namespace QlayVisual
             Core.init();
             for (int i = 0; i < repeats; i++)
             {
-                using (Qubit q = new Qubit())
+                using (QubitSystem qs = new QubitSystem())
+                using (Qubit q = new Qubit(qs))
                 {
                     foreach (CircuitItem ci in circuitItems)
                     {
@@ -143,7 +144,6 @@ namespace QlayVisual
                             else
                                 results[ci.Name] = Tuple.Create(t.Item1 + 1, t.Item2);
                         }
-                            
                     }
                 }
             }

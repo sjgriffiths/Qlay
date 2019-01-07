@@ -38,6 +38,34 @@ namespace qlay
 		};
 
 
+		//Represents a system of potentially entangled qubits
+		public ref class QubitSystem
+		{
+		internal:
+			qlay::QubitSystem *impl_;
+
+		public:
+			QubitSystem() : impl_(new qlay::QubitSystem())
+			{
+			}
+
+			~QubitSystem()
+			{
+				this->!QubitSystem();
+			}
+
+			!QubitSystem()
+			{
+				if (impl_)
+				{
+					delete impl_;
+					impl_ = nullptr;
+				}
+			}
+
+			int count() { return impl_->count(); }
+		};
+		
 		//Represents a qubit (quantum bit), a linear combination of |0> and |1>
 		public ref class Qubit
 		{
@@ -45,11 +73,11 @@ namespace qlay
 			qlay::Qubit *impl_;
 
 		public:
-			Qubit() : impl_(new qlay::Qubit())
+			Qubit(QubitSystem ^system) : impl_(new qlay::Qubit(*(system->impl_)))
 			{
 			}
 
-			Qubit(bool b) : impl_(new qlay::Qubit(b))
+			Qubit(QubitSystem ^system, int index) : impl_(new qlay::Qubit(*(system->impl_), index))
 			{
 			}
 
@@ -66,6 +94,8 @@ namespace qlay
 					impl_ = nullptr;
 				}
 			}
+
+			int index() { return impl_->index(); }
 		};
 
 
@@ -75,68 +105,72 @@ namespace qlay
 		public:
 			static bool M(Qubit ^q)
 			{
-				qlay::Qubit *qq = q->impl_;
-				return qlay::M(*qq);
+				return qlay::M(*(q->impl_));
 			}
 
 			static bool Mx(Qubit ^q)
 			{
-				qlay::Qubit *qq = q->impl_;
-				return qlay::Mx(*qq);
+				return qlay::Mx(*(q->impl_));
 			}
 
 			static void X(Qubit ^q)
 			{
-				qlay::Qubit *qq = q->impl_;
-				return qlay::X(*qq);
+				qlay::X(*(q->impl_));
 			}
 
 			static void Y(Qubit ^q)
 			{
-				qlay::Qubit *qq = q->impl_;
-				return qlay::Y(*qq);
+				qlay::Y(*(q->impl_));
 			}
 
 			static void Z(Qubit ^q)
 			{
-				qlay::Qubit *qq = q->impl_;
-				return qlay::Z(*qq);
+				qlay::Z(*(q->impl_));
 			}
 
 			static void H(Qubit ^q)
 			{
-				qlay::Qubit *qq = q->impl_;
-				return qlay::H(*qq);
+				qlay::H(*(q->impl_));
 			}
 
 			static void SRNOT(Qubit ^q)
 			{
-				qlay::Qubit *qq = q->impl_;
-				return qlay::SRNOT(*qq);
+				qlay::SRNOT(*(q->impl_));
 			}
 
 			static void Rx(double angle, Qubit ^q)
 			{
-				qlay::Qubit *qq = q->impl_;
-				return qlay::Rx(angle, *qq);
+				qlay::Rx(angle, *(q->impl_));
 			}
 
 			static void Ry(double angle, Qubit ^q)
 			{
-				qlay::Qubit *qq = q->impl_;
-				return qlay::Ry(angle, *qq);
+				qlay::Ry(angle, *(q->impl_));
 			}
 
 			static void Rz(double angle, Qubit ^q)
 			{
-				qlay::Qubit *qq = q->impl_;
-				return qlay::Rz(angle, *qq);
+				qlay::Rz(angle, *(q->impl_));
 			}
 
 			static void Rp(double angle, Qubit ^q)
 			{
-				qlay::Qubit *qq = q->impl_;
-				return qlay::Rp(angle, *qq);
+				qlay::Rp(angle, *(q->impl_));
+			}
+
+			static void SWAP(Qubit ^a, Qubit ^b)
+			{
+				qlay::SWAP(*(a->impl_), *(b->impl_));
+			}
+
+			static void SRSWAP(Qubit ^a, Qubit ^b)
+			{
+				qlay::SRSWAP(*(a->impl_), *(b->impl_));
+			}
+
+			static void CNOT(Qubit ^control, Qubit ^target)
+			{
+				qlay::CNOT(*(control->impl_), *(target->impl_));
 			}
 		};
 	}
