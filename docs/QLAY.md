@@ -81,13 +81,15 @@ Inside here, let's create a qubit:
 
 **C++:**
 ```c++
-Qubit q;
+QubitSystem qs;
+Qubit q(qs);
 std::cout << M(q) << std::endl;
 ```
 **C#:**
 ```csharp
 //Managed Qubit is IDisposable
-using (Qubit q = new Qubit())
+using (QubitSystem qs = new QubitSystem())
+using (Qubit q = new Qubit(qs))
 {
     bool result = Gates.M(q);
 
@@ -96,7 +98,7 @@ using (Qubit q = new Qubit())
 }
 ```
 
-Our qubit data type does not possess its own value in an accessible way. Instead, we use the `M()` function to measure the qubit, which returns the value as a boolean (true/false, representing |1> and |0>).
+We first instantiate a qubit system, which all qubits must be instantiated in relation to. Our qubit data type does not possess its own value in an accessible way. Instead, we use the `M()` function to measure the qubit, which returns the value as a boolean (true/false, representing |1> and |0>).
 
 The output will be 0: all qubits are initialised into the |0> state.
 
@@ -109,7 +111,8 @@ int zeroes = 0, ones = 0;
 
 for (int i = 0; i < repeats; i++)
 {
-    Qubit q;
+    QubitSystem qs;
+    Qubit q(qs);
 
     M(q) ? ones++ : zeroes++;
 }
@@ -123,7 +126,8 @@ int zeroes = 0, ones = 0;
 
 for (int i = 0; i < repeats; i++)
 {
-    using (Qubit q = new Qubit())
+    using (QubitSystem qs = new QubitSystem())
+    using (Qubit q = new Qubit(qs))
     {
         if (Gates.M(q)) ones++;
         else zeroes++;
@@ -150,14 +154,16 @@ Let's add the `X` gate to our experiment (see [PauliX.cpp](../QlayExamples/Pauli
 
 **C++:**
 ```c++
-Qubit q;
+QubitSystem qs;
+Qubit q(qs);
 X(q);
 
 M(q) ? ones++ : zeroes++;
 ```
 **C#:**
 ```csharp
-using (Qubit q = new Qubit())
+using (QubitSystem qs = new QubitSystem())
+using (Qubit q = new Qubit(qs))
 {
     Gates.X(q);
 
@@ -187,14 +193,16 @@ What does this mean in practice? Let's try it out in the same way as before:
 
 **C++:**
 ```c++
-Qubit q;
+QubitSystem qs;
+Qubit q(qs);
 H(q);
 
 M(q) ? ones++ : zeroes++;
 ```
 **C#:**
 ```csharp
-using (Qubit q = new Qubit())
+using (QubitSystem qs = new QubitSystem())
+using (Qubit q = new Qubit(qs))
 {
     Gates.H(q);
 
@@ -216,7 +224,8 @@ It goes further than even that. Let's extend our experiment so that we simply me
 
 **C++:**
 ```c++
-Qubit q;
+QubitSystem qs;
+Qubit q(qs);
 H(q);
 
 //Basis type is just an alias of bool
@@ -228,7 +237,8 @@ if (M(q) == result)
 ```
 **C#:**
 ```csharp
-using (Qubit q = new Qubit())
+using (QubitSystem qs = new QubitSystem())
+using (Qubit q = new Qubit(qs))
 {
     Gates.H(q);
 
@@ -258,7 +268,8 @@ Instead, we will simply note another important property. If you were to apply 'h
 
 **C++:**
 ```c++
-Qubit q;
+QubitSystem qs;
+Qubit q(qs);
 H(q);
 H(q);
 
@@ -266,7 +277,8 @@ M(q) ? ones++ : zeroes++;
 ```
 **C#:**
 ```csharp
-using (Qubit q = new Qubit())
+using (QubitSystem qs = new QubitSystem())
+using (Qubit q = new Qubit(qs))
 {
     Gates.H(q);
     Gates.H(q);
