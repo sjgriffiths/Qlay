@@ -138,6 +138,7 @@
     <ClCompile Include="Hadamard.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PauliX.cpp" />
+    <ClCompile Include="superdense_coding.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Examples.h" />

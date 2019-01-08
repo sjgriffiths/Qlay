@@ -9,6 +9,7 @@
 * [Coding with two qubits](#coding-with-two-qubits)
   * [Quantum entanglement](#quantum-entanglement)
   * [Nonlocal games](#nonlocal-games)
+  * [Superdense coding](#superdense-coding)
 * [Reference: Quantum logic gates](#reference-quantum-logic-gates)
   * [Measurement](#measurement)
   * [Single-input gates](#single-input-gates)
@@ -18,7 +19,7 @@ Quantum mechanics is an extraordinarily strange, unintuitive yet increasingly ac
 
 The answer is **yes**. Some basic familiarty with linear algebra (read: do you know what vectors and matrices are?) would do you well, but even without this, let's take a hands-on, no-knowledge-assumed jump into quantum programming using this simulator.
 
-This tutorial contains all examples in both C++ and the C# equivalent. To use Qlay in C++, link against Qlay.lib and include Qlay.h, making sure to have Qlay.dll available. To use Qlay in C#, reference both Qlay.dll and QlayCLI.dll &ndash; as the former is unmanaged, you should (in Visual Studio) manually add it as a project file and set it to copy to output in its properties.
+This tutorial contains all examples in both C++ and the C# equivalent. Later examples may omit C# equivalents for sanity, because they are identical outside of syntax. To use Qlay in C++, link against Qlay.lib and include Qlay.h, making sure to have Qlay.dll available. To use Qlay in C#, reference both Qlay.dll and QlayCLI.dll &ndash; as the former is unmanaged, you should (in Visual Studio) manually add it as a project file and set it to copy to output in its properties.
 
 The CLI interface is almost identical, except that standalone functions are contained in the `Core` static class, with the exception of logic gates, which are contained in `Gates`.
 
@@ -429,7 +430,83 @@ Alice and Bob would ideally like to communicate the question they received to th
 
 The GHZ game (see [GHZ.cpp](../QlayExamples/GHZ.cpp)) is very similar, but introduces a third player, *Charlie*, changes the predicate and restricts the possible set of questions they receive. The best classical success rate is again 75%. By sharing three entangled qubits prepared to a state correspending to the possible set of questions, a simpler quantum strategy of applying the Hadamard gate once achieves something spectacular: a 100% success rate.
 
-These games prove that quantum entanglement trascends mere conditional probability: that entangled states cannot be considered in isolation and can be dependent even when physically separated.
+These games prove that quantum entanglement transcends mere conditional probability: that entangled states cannot be considered in isolation and can be dependent even when physically separated.
+
+### Superdense coding
+Entanglement allows for extremely powerful techniques in communication, of which there's two major ones we'll look at. The first is ***superdense coding***, wherein we can transmit two classical bits of information by transmitting only one qubit.
+
+We mentioned earlier that the most basic way of creating an entangled state is by applying a `H` gate followed by a `CNOT`. This actually creates one of the four most simple and maximally entangled states possible between two qubits: one of the four *Bell states*. These are as follows:
+
+![Bellstates.png](images/maths/Bellstates.png)
+
+Applying `H` then `CNOT` creates the first Bell state (|&Phi;<sup>+</sup>>). The two &Phi; states are where the two qubits are equal and the two &Psi; states are where they are different. Between each of the states of these types, the superscript sign indicates the phase factor. Remember, this phase factor does not directly affect the probability amplitudes, but are distinguishable when applying other operations.
+
+The problem at hand is that Alice wishes to send two classical bits of information to Bob, by transmitting only one qubit. A simple insight is that there are four possible states she could wish to send: 00, 01, 10 or 11. The overall idea is thus straightforward: if Alice and Bob share an entangled state, Alice can transform the Bell state (encoding her message) such that Bob can determine the transformation made (decoding her message).
+
+First, Alice and Bob receive a qubit each, consituting the first Bell state (|&Phi;<sup>+</sup>>):
+
+**C++:**
+```c++
+QubitSystem qs;
+Qubit qa(qs); Qubit qb(qs);
+
+//Prepare Alice's and Bob's qubits in Bell state |Φ+>
+H(qa);
+CNOT(qa, qb);
+
+//Bob 'undoes' the entanglement
+CNOT(qa, qb);
+H(qa);
+
+std::cout << "Message received: " << M(qa) << M(qb) << std::endl;
+```
+**Output:**
+```
+Message received: 00
+```
+
+So far, Alice receives *q<sub>a</sub>* and Bob receives *q<sub>b</sub>*. Alice currently does nothing and sends *q<sub>a</sub>* to Bob. Bob decodes by applying `CNOT` then `H`, 'undoing' the entanglement. It is clear that Bob just returns the state to its initial preparation (|00>) by symmetry, because you should remember that all gates are reversible.
+
+If Alice intends to transmit the message 00, then this is already achieved. If she intends to transmit a different message, then she should transform the state into a different Bell state, by applying a certain operation(s) to *q<sub>a</sub>* before sending it, as below:
+
+| Message | Target state | Operation(s) |
+|:-------:|:------------:|:------------:|
+| 00 | \|&Phi;<sup>+</sup>> | none |
+| 01 | \|&Psi;<sup>+</sup>> | `X` |
+| 10 | \|&Phi;<sup>-</sup>> | `Z` |
+| 11 | \|&Psi;<sup>-</sup>> | `X` then `Z` |
+
+We can try each of these cases to confirm they send the intended message correctly (see [superdense_coding.cpp](../QlayExamples/superdense_coding.cpp)):
+
+**C++:**
+```c++
+QubitSystem qs;
+Qubit qa(qs); Qubit qb(qs);
+
+//Prepare Alice's and Bob's qubits in Bell state |Φ+>
+H(qa);
+CNOT(qa, qb);
+
+//If sending 00, do nothing
+
+//If sending 01, transform into |Ψ+>
+//X(qa);
+
+//If sending 10, transform into |Φ->
+//Z(qa);
+
+//If sending 11, transform into |Ψ->
+//X(qa);
+//Z(qa);
+
+//Bob 'undoes' the entanglement
+CNOT(qa, qb);
+H(qa);
+
+std::cout << "Message received: " << M(qa) << M(qb) << std::endl;
+```
+
+When working through examples and trying to understand the motivations and reasonings, it can be most useful to view the entire quantum state at specific points as a column vector. The `QubitSystem` object can just be streamed to standard output. This is, naturally, a debugging feature as a benefit of a simulation: the key principle is that true quantum systems collapse as a result of observation.
 
 ## Reference: Quantum logic gates
 This section outlines all of the quantum logic gates, explaning them by their operator matrices and effects on a qubit by treating it as a spin state &ndash; understanding their intricacies is not necessarily crucial to start quantum programming. All angles are given in radians.

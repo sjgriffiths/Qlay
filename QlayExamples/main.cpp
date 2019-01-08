@@ -15,6 +15,7 @@ int main()
 	//entanglement(1000);
 	//CHSH(1000);
 	//GHZ(1000);
+	//superdense_coding();
 
 	return 0;
 }

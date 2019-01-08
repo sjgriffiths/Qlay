@@ -30,3 +30,6 @@ void CHSH(unsigned repeats = DEFAULT_REPEATS);
 
 //Performs the GHZ game experiment
 void GHZ(unsigned repeats = DEFAULT_REPEATS);
+
+//Demonstrates superdense coding
+void superdense_coding();

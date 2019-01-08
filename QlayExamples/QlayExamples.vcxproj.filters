@@ -33,6 +33,9 @@
     <ClCompile Include="entanglement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="superdense_coding.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Examples.h">
