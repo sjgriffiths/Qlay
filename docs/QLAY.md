@@ -10,6 +10,7 @@
   * [Quantum entanglement](#quantum-entanglement)
   * [Nonlocal games](#nonlocal-games)
   * [Superdense coding](#superdense-coding)
+  * [Teleportation](#teleportation)
 * [Reference: Quantum logic gates](#reference-quantum-logic-gates)
   * [Measurement](#measurement)
   * [Single-input gates](#single-input-gates)
@@ -507,6 +508,108 @@ std::cout << "Message received: " << M(qa) << M(qb) << std::endl;
 ```
 
 When working through examples and trying to understand the motivations and reasonings, it can be most useful to view the entire quantum state at specific points as a column vector. The `QubitSystem` object can just be streamed to standard output. This is, naturally, a debugging feature as a benefit of a simulation: the key principle is that true quantum systems collapse as a result of observation.
+
+### Teleportation
+Another major technique in quantum communication is the spiritual inverse to superdense coding: transmitting one qubit in its entirety, with the support of classical bit communication. Alice can 'teleport' the information of one qubit by sending just two classical bits to Bob, assuming again that they can pre-share an entangled state.
+
+First, let's have Alice possess some qubit *q<sub>c</sub>*, which is the information that she wants to transmit to Bob:
+
+**C++:**
+```c++
+QubitSystem qs;
+Qubit qc(qs);
+
+//Prepare Alice's qubit with 75% chance of |1>, to teleport
+//r|0>+s|1> (where |s|^2 = 0.75)
+Ry(2 * asin(sqrt(0.75)), qc);
+
+M(qc) ? ones++ : zeroes++;
+```
+**Output:**
+```
+ZERO:  255
+ONE:   745
+```
+
+For demonstration purposes, we want this qubit to be very distinctive (perhaps not just, say, the rather common 50:50), so the above Y-axis rotation prepares a qubit with a 75% chance of measuring |1>.
+
+We want Bob to possess a qubit *q<sub>b</sub>* which becomes an exact copy of *q<sub>c</sub>*. First, if we perform a `CNOT(qc, qb)`, this only achieves an entangled system in which the observed value of *q<sub>b</sub>* will match the observed value of *q<sub>c</sub>*. We want *q<sub>b</sub>* to truly become the standalone state *r*|0>+*s*|1> of Alice's qubit!
+
+Instead, after performing the `CNOT`, Alice could measure in the sign (X) basis, obtaining either |+> or |->. This leaves *q<sub>b</sub>* as either *r*|0>+*s*|1> or *r*|0>-*s*|1>, respectively. Alice should let Bob know if she measured |->, so that he knows whether or not to perform a phase correction of a `Z` gate, flipping that minus sign.
+
+**C++:**
+```c++
+QubitSystem qs;
+Qubit qb(qs); Qubit qc(qs);
+
+//Prepare Alice's qubit with 75% chance of |1>, to teleport
+//r|0>+s|1> (where |s|^2 = 0.75)
+Ry(2 * asin(sqrt(0.75)), qc);
+
+//Copies Alice's measurement to Bob...
+//Doesn't give Bob the state r|0>+s|1> !
+CNOT(qc, qb);
+
+//Alice measures in the sign basis, as either |+> or |->
+Basis result = Mx(qc);
+
+//Bob's qubit is now either r|0>+s|1> or r|0>-s|1>
+//In the latter case, correct the phase
+if (result) Z(qb);
+
+M(qb) ? ones++ : zeroes++;
+```
+**Output:**
+```
+ZERO:  240
+ONE:   760
+```
+
+We now have a procedure for 'copying' Alice's qubit onto Bob's. Note that the term 'copy' is misleading here: Alice's original information is destroyed, being moved onto Bob's qubit. This is a fundamental restriction in quantum information called the *no-cloning theorem*.
+
+Alice currently classically communicates only one bit to Bob, letting him know if he must perform a phase correction. However, we aren't done yet, as we are still relying on an actual `CNOT` gate: the idea is to transmit the qubit from afar. The next step is to effectively turn this into a 'remote' `CNOT` by further exploiting entanglement, so &ndash; similarly to superdense coding &ndash; we must first provide Alice and Bob with an entangled state. We can use any of the aforementioned Bell states, so let's just again go with the most common |&Phi;<sup>+</sup>>.
+
+Alice adds her data qubit into the entanglement channel by performing `CNOT(qc, qa)`, where *q<sub>a</sub>* is her qubit given in a Bell state with Bob's *q<sub>b</sub>*. She then performs two measurements. One is the same as before: measuring her data qubit in the sign basis, to let Bob know if he must perform a phase correction. The additional one that must know be performed is a normal (computational basis) measurement of the Bell qubit. If she measures |1>, then Bob's qubit will be bit-flipped, so she must let Bob know if he needs to flip it back with an `X` gate (see [teleportation.cpp](../QlayExamples/teleportation.cpp)):
+
+**C++:**
+```c++
+QubitSystem qs;
+Qubit qa(qs); Qubit qb(qs); Qubit qc(qs);
+
+//Prepare Alice's qubit with 75% chance of |1>, to teleport
+//r|0>+s|1> (where |s|^2 = 0.75)
+Ry(2 * asin(sqrt(0.75)), qc);
+
+//Give Alice and Bob the Bell state |Φ+>
+H(qa);
+CNOT(qa, qb);
+
+//Alice entangles her data qubit with her Bell qubit
+CNOT(qc, qa);
+
+//Alice measures her data qubit in the sign basis
+Basis correct_phase = Mx(qc);
+
+//Alice measures her Bell qubit in the computational basis
+Basis correct_flip = M(qa);
+
+
+//Bob's qubit may have flipped, so correct if necessary
+if (correct_flip) X(qb);
+
+//Bob's qubit is now either r|0>+s|1> or r|0>-s|1>
+//In the latter case, correct the phase
+if (correct_phase) Z(qb);
+
+M(qb) ? ones++ : zeroes++;
+```
+**Output:**
+```
+ZERO:  250
+ONE:   750
+```
+
+This finished example now successfully teleports one qubit from Alice to Bob, with only a pre-shared entangled state, and two bits sent classically.
 
 ## Reference: Quantum logic gates
 This section outlines all of the quantum logic gates, explaning them by their operator matrices and effects on a qubit by treating it as a spin state &ndash; understanding their intricacies is not necessarily crucial to start quantum programming. All angles are given in radians.

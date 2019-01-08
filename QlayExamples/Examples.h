@@ -33,3 +33,6 @@ void GHZ(unsigned repeats = DEFAULT_REPEATS);
 
 //Demonstrates superdense coding
 void superdense_coding();
+
+//Demonstrates quantum teleportation
+void teleportation(unsigned repeats = DEFAULT_REPEATS);

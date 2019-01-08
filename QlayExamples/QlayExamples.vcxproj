@@ -139,6 +139,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PauliX.cpp" />
     <ClCompile Include="superdense_coding.cpp" />
+    <ClCompile Include="teleportation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Examples.h" />

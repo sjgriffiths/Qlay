@@ -16,6 +16,7 @@ int main()
 	//CHSH(1000);
 	//GHZ(1000);
 	//superdense_coding();
+	//teleportation(1000);
 
 	return 0;
 }
