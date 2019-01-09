@@ -47,26 +47,6 @@ void teleportation(unsigned repeats)
 		if (correct_phase) Z(qb);
 
 		M(qb) ? ones++ : zeroes++;
-		
-
-
-		/* OLD NON-REMOTE CNOT */
-		////Prepare Alice's qubit with 75% chance of |1>, to teleport
-		////r|0>+s|1> (where |s|^2 = 0.75)
-		//Ry(2 * asin(sqrt(0.75)), qc);
-
-		////Copies Alice's measurement to Bob...
-		////Doesn't give Bob the state r|0>+s|1> !
-		//CNOT(qc, qb);
-
-		////Alice measures in the sign basis, as either |+> or |->
-		//Basis result = Mx(qc);
-
-		////Bob's qubit is now either r|0>+s|1> or r|0>-s|1>
-		////In the latter case, correct the phase
-		//if (result) Z(qb);
-
-		//M(qb) ? ones++ : zeroes++;
 	}
 
 	std::cout << "ZERO:  " << zeroes << std::endl << "ONE:   " << ones << std::endl;
