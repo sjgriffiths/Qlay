@@ -11,6 +11,9 @@
   * [Nonlocal games](#nonlocal-games)
   * [Superdense coding](#superdense-coding)
   * [Teleportation](#teleportation)
+* [Quantum computation](#quantum-computation)
+  * [Representing functions](#representing-functions)
+  * [Deutsch-Jozsa algorithm](#deutsch-jozsa-algorithm)
 * [Reference: Quantum logic gates](#reference-quantum-logic-gates)
   * [Measurement](#measurement)
   * [Single-input gates](#single-input-gates)
@@ -610,6 +613,189 @@ ONE:   750
 ```
 
 This finished example now successfully teleports one qubit from Alice to Bob, with only a pre-shared entangled state, and two bits sent classically.
+
+## Quantum computation
+So far, we have looked mainly at examples of quantum 'superiority' in communication, rather than computation. Perhaps the most famous example of a quantum algorithm is *Shor's algorithm* for factorising integers almost exponentially faster than the best known classical method, prompting much of the subsequent research into quantum computing and post-quantum cryptography. This particular algorithm is out of scope for this guide, but let's look at more straightforward examples that constitute a good introduction to quantum programming.
+
+### Representing functions
+First, let's clarify how we can represent functions with qubits. We will just consider functions with a single input number, *x*. What we mean by a number here is, of course, a string of bits. Let's consider a 3-bit number: *x<sub>2</sub>x<sub>1</sub>x<sub>0</sub>*. We simply represent this with three qubits.
+
+We'll also just consider functions that, taking an *n*-bit number, return a single bit. In other words, our functions are some predicate on a number returning true or false. We call a quantum implementation of a function *f* an *oracle*, denoted *U<sub>f</sub>*, as the idea is that it can be treated as a black box.
+
+A simple example for a function *f*(*x*) is if *x* is an odd number. Due to the binary representation, this is just 1 (true) if the least-significant digit *x<sub>0</sub>* is 1, and 0 (false) if it is 0.
+
+One way of representing the oracle is in a form herein called an *output oracle*. We use a fourth qubit, *y*, which the oracle stores the result in. The beauty of quantum simulation is that we can consider the entire function domain at once through superposition:
+
+**C++:**
+```c++
+QubitSystem qs;
+Qubit x0(qs), x1(qs), x2(qs), y(qs);
+
+//Create uniform superposition of function domain
+H(x0);
+H(x1);
+H(x2);
+
+//Output Oracle: Number is odd (least significant digit is 1)
+//Maps |x>|y> to |x>|y XOR f(x)>
+CNOT(x0, y);
+
+std::cout << qs << std::endl;
+```
+**Output:**
+```
+|0000> 0.353553
+|0001> 0
+|0010> 0.353553
+|0011> 0
+|0100> 0.353553
+|0101> 0
+|0110> 0.353553
+|0111> 0
+|1000> 0
+|1001> 0.353553
+|1010> 0
+|1011> 0.353553
+|1100> 0
+|1101> 0.353553
+|1110> 0
+|1111> 0.353553
+```
+
+The three digits on the right constitute the input *x<sub>2</sub>x<sub>1</sub>x<sub>0</sub>* and the leftmost digit is the result *y*. For all inputs with the rightmost digit 1, *y* is correctly 1: they are odd. We just measure *y* to obtain the result of the function.
+
+There is a second major way of encoding functions which does not require an additional output qubit(s). Instead, the output is encoded directly into the input qubits by altering their phase. This is herein called the *phase oracle*:
+
+**C++:**
+```c++
+QubitSystem qs;
+Qubit x0(qs), x1(qs), x2(qs);
+
+//Create uniform superposition of function domain
+H(x0);
+H(x1);
+H(x2);
+
+//Phase Oracle: Number is odd (least significant digit is 1)
+//Flips phase on states matching predicate
+Z(x0);
+
+std::cout << qs << std::endl;
+```
+**Output:**
+```
+|000> 0.353553
+|001> -0.353553
+|010> 0.353553
+|011> -0.353553
+|100> 0.353553
+|101> -0.353553
+|110> 0.353553
+|111> -0.353553
+```
+
+We can see that instead of setting an external 'flag' qubit in the case of a 1 output, we phase-flip in the case of a 1 output. This is done very easily with the `Z` gate, which leaves |0> alone but maps |1> to -|1>. Although this reduces the memory cost, you may realise that it doesn't appear to be useful, as relative phase factor is not experimentally determinable just by measuring the qubits. However, we also know that relative phase factor does affect how states react to further operations, so this representation can come in very handy for algorithms using the function.
+
+### Deutsch-Jozsa algorithm
+Let's consider a situation in which we are promised that a function *f*(*x*) is either ***constant*** or ***balanced***. If it is constant, then it always outputs the same value, i.e. either 0 or 1. If it is balanced, then it outputs 0 for exactly half of the input domain, and 1 for the other half. Our task is to decide which of these a given function is.
+
+Our above example of a number being odd is balanced, because exactly half of the numbers in the domain are odd.
+
+Classically, we must continually test *f*(*x*) for different *x*. In the worst case, we must test just over half of the domain, because we can only be sure the function is constant if the same output is observed for more than half; as soon as we see a different output, we can conclude that it is balanced. So, if the input has *n* bits, then the worst case is 2<sup>*n*-1</sup>+1 function evaluations. This is clearly exponential complexity.
+
+The Deutsch-Jozsa algorithm is a quantum algorithm which determines if the function is constant or balanced with *just one function evaluation*. Therefore, it is a striking example of an exponential speedup over classical limits.
+
+It is quite simple. First, we again create a uniform superposition of the input domain with `H` gates on the *x* qubits, before feeding it into an output oracle. The trick is to first set the output qubit to |1> and apply an `H` gate to it also before applying the oracle. The output qubit can then be disregarded. We symmetrically take the *x* qubits out of superposition by again applying `H` gates then measure them all. If they all measure |0> then the function is constant; else, it is balanced (see [DeutschJozsa.cpp](../QlayExamples/DeutschJozsa.cpp)):
+
+**C++:**
+```c++
+QubitSystem qs;
+Qubit x0(qs), x1(qs), x2(qs), y(qs);
+
+//Create uniform superposition of function domain
+H(x0);
+H(x1);
+H(x2);
+
+//Prepare final result qubit
+X(y);
+H(y);
+
+//Output Oracle: Number is odd (least significant digit is 1)
+//Maps |x>|y> to |x>|y XOR f(x)>
+CNOT(x0, y);
+
+//Take out of superposition
+H(x0);
+H(x1);
+H(x2);
+
+//Constant if all M(x) = 0, balanced otherwise
+bool constant = !M(x0) && !M(x1) && !M(x2);
+std::cout << (constant ? "CONSTANT" : "BALANCED") << std::endl;
+```
+**Output:**
+```
+BALANCED
+```
+
+The algorithm is further simplified by just using a phase oracle instead, removing the need for the output qubit:
+
+**C++:**
+```c++
+QubitSystem qs;
+Qubit x0(qs), x1(qs), x2(qs);
+
+//Create uniform superposition of function domain
+H(x0);
+H(x1);
+H(x2);
+
+//Phase Oracle: Number is odd (least significant digit is 1)
+//Flips phase on states matching predicate
+Z(x0);
+
+//Take out of superposition
+H(x0);
+H(x1);
+H(x2);
+
+//Constant if all M(x) = 0, balanced otherwise
+bool constant = !M(x0) && !M(x1) && !M(x2);
+std::cout << (constant ? "CONSTANT" : "BALANCED") << std::endl;
+```
+**Output:**
+```
+BALANCED
+```
+
+We can test it with constant functions and see the correct result. Remember there are effectively only two constant functions: either 0 is always returned, or 1 is always returned:
+
+**C++:**
+```c++
+//Output Oracle: Output is always 0
+//Maps |x>|y> to |x>|y XOR f(x)>
+//DO NOTHING!
+
+//Phase Oracle: Output is always 0
+//Flips phase on states matching predicate
+//DO NOTHING!
+
+//Output Oracle: Output is always 1
+//Maps |x>|y> to |x>|y XOR f(x)>
+X(y);
+
+//Phase Oracle: Output is always 1
+//Flips phase on states matching predicate
+Z(q0);
+X(q0); Z(q0); X(q0);
+```
+
+These will correctly output "CONSTANT". In the first two cases, the output is already initialised to 0, so nothing needs to be done. In the third case, we just unconditionally flip the output to 1.
+
+In the final case, always outputting 1 means we must phase-flip *every* case. First, we phase-flip all cases where *q<sub>0</sub>* is 1 with a `Z` gate. Then, in order to phase-flip all cases where *q<sub>0</sub>* is 0, we use another `Z` gate but sandwiched between `X` (`NOT`) gates. Naturally, this constitutes flipping the phase in all possible cases (and it does not matter which qubit we perform this on).
+
+This constant vs balanced scenario is a rather contrived one, made to highlight the potential for exponential speedup and use of a quantum oracle. Whilst the phase oracle seems slightly trickier to understand and implement than the output oracle and we can use either here, other more powerful and useful algorithms (such as Grover's search) rely on phase oracles.
 
 ## Reference: Quantum logic gates
 This section outlines all of the quantum logic gates, explaning them by their operator matrices and effects on a qubit by treating it as a spin state &ndash; understanding their intricacies is not necessarily crucial to start quantum programming. All angles are given in radians.

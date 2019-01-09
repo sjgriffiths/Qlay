@@ -36,3 +36,9 @@ void superdense_coding();
 
 //Demonstrates quantum teleportation
 void teleportation(unsigned repeats = DEFAULT_REPEATS);
+
+//Implements and demonstrates the Deutsch-Jozsa algorithm (using output oracle)
+void DeutschJozsa_output();
+
+//Implements and demonstrates the Deutsch-Jozsa algorithm (using phase oracle)
+void DeutschJozsa_phase();

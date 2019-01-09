@@ -17,6 +17,8 @@ int main()
 	//GHZ(1000);
 	//superdense_coding();
 	//teleportation(1000);
+	//DeutschJozsa_output();
+	//DeutschJozsa_phase();
 
 	return 0;
 }

@@ -39,6 +39,9 @@
     <ClCompile Include="superdense_coding.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Deutsch-Jozsa.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Examples.h">
