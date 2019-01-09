@@ -28,7 +28,7 @@ The Qlay documentation functions as an introduction to both using the library/GU
 |:-------:| ----------- |:--------:|
 | [v1.0.0](https://github.com/sjgriffiths/Qlay/releases/tag/v1.0.0) | The API is defined, set up as open-source and tutorial-style documentation is initiated. The library supports programming with a single qubit and single-input logic gates. | 12/10/2018
 | [v1.1.0](https://github.com/sjgriffiths/Qlay/releases/tag/v1.1.0) | Qlay Visual, the circuitry GUI program, is launched using the Qlay API. | 09/11/2018
-| v2.0.0 | The API is refactored to support programming with multiple qubits and include multi-input logic gates.
+| [v2.0.0](https://github.com/sjgriffiths/Qlay/releases/tag/v2.0.0) | The API is refactored to support programming with multiple qubits and include multi-input logic gates. | 09/01/2019
 | v2.1.0 | Qlay Visual is extended with the refactored API to support multiple qubits.
 | v2.2.0 | The API includes some basic abstractions for treating qubit strings as integers, further supporting arithmetical context.
 
