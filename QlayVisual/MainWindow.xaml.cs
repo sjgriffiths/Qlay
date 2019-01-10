@@ -131,5 +131,15 @@ namespace QlayVisual
             var results = ((DataModel)DataContext).RunSimulation(repeats);
             ((DataModel)DataContext).CircuitCanvas.SetMeasurementLabels(results);
         }
+
+        private void AddQubit_Click(object sender, RoutedEventArgs e)
+        {
+            ((DataModel)DataContext).CircuitCanvas.ChangeQubits(1);
+        }
+
+        private void RemoveQubit_Click(object sender, RoutedEventArgs e)
+        {
+            ((DataModel)DataContext).CircuitCanvas.ChangeQubits(-1);
+        }
     }
 }

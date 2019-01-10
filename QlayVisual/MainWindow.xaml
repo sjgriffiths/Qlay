@@ -100,11 +100,40 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
                     <Label Grid.Column="0"
+                           Grid.Row="0"
+                           Content="Qubits"
+                           Margin="-5,0,5,0"/>
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Column="1"
+                                Grid.Row="0"
+                                Margin="0 0 0 10">
+                        <Button Name="RemoveQubit"
+                                Content="-"
+                                Click="RemoveQubit_Click"
+                                Width="50"
+                                FontSize="30"
+                                MaxHeight="26"
+                                Padding="0 -11 0 0"/>
+                        <Button Name="AddQubit"
+                                Content="+"
+                                Click="AddQubit_Click"
+                                Width="50"
+                                FontSize="30"
+                                MaxHeight="26"
+                                Padding="0 -11 0 0"/>
+                    </StackPanel>
+                    <Label Grid.Column="0"
+                           Grid.Row="1"
                            Content="Repeats"
                            Margin="-5,0,5,0"/>
                     <TextBox Name="NumOfRepeats"
                              Grid.Column="1"
+                             Grid.Row="1"
                              VerticalContentAlignment="Center"
                              Text="1000"/>
                 </Grid>

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
+using System.Xml.Linq;
 
 using qlay.cli;
 
@@ -149,6 +150,33 @@ namespace QlayVisual
             }
 
             return results;
+        }
+
+
+        /// <summary>
+        /// Converts the given Dictionary into an XML string representation
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="dict"></param>
+        /// <returns></returns>
+        public static string DictionaryToXML<TKey, TValue>(Dictionary<TKey, TValue> dict)
+        {
+            XElement xElement = new XElement("root",
+                dict.Select(n => new XElement(n.Key.ToString(), n.Value)));
+
+            return xElement.ToString();
+        }
+
+        /// <summary>
+        /// Converts the given XML string into a Dictionary
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <returns></returns>
+        public static Dictionary<string, string> XMLToDictionary(string xml)
+        {
+            return XElement.Parse(xml).Elements().ToDictionary(
+                n => n.Name.ToString(), n => n.Value);
         }
     }
 }
