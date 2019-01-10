@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:QlayVisual"
         mc:Ignorable="d"
         Title="{Binding WindowTitle}"
-        Width="1000" Height="500">
+        Width="1000" Height="500"
+        WindowState="Maximized">
     
     <!--Common command bindings-->
     <Window.CommandBindings>
