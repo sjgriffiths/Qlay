@@ -109,7 +109,7 @@ namespace QlayVisual
             //Name measurement items in order
             int mi = 0;
             foreach (CircuitItem ci in circuitItems)
-                if (((string)ci.Tag).StartsWith("M"))
+                if (ci.FunctionName.StartsWith("M"))
                 {
                     ci.Name = "M" + (mi++).ToString();
                     results.Add(ci.Name, Tuple.Create(0,0));
@@ -134,7 +134,7 @@ namespace QlayVisual
 
                         //Add qubit argument and call
                         args.Add(q);
-                        bool? result = typeof(Gates).GetMethod((string)ci.Tag).Invoke(null, args.ToArray()) as bool?;
+                        bool? result = (bool?) typeof(Gates).GetMethod(ci.FunctionName).Invoke(null, args.ToArray());
 
                         //Log measurement
                         if (result.HasValue)
@@ -162,7 +162,7 @@ namespace QlayVisual
         /// <returns></returns>
         public static string DictionaryToXML<TKey, TValue>(Dictionary<TKey, TValue> dict)
         {
-            XElement xElement = new XElement("root",
+            XElement xElement = new XElement("Dictionary",
                 dict.Select(n => new XElement(n.Key.ToString(), n.Value)));
 
             return xElement.ToString();

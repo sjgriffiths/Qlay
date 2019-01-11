@@ -128,7 +128,7 @@ namespace QlayVisual
             if (Tag == null)
                 Tag = DataModel.DictionaryToXML(new Dictionary<string, string>()
                 {
-                    {"NumberOfQubits", "1"}
+                    { "NumberOfQubits", "1" }
                 });
 
             //Initialise qubit lines
@@ -196,9 +196,14 @@ namespace QlayVisual
                     CircuitItem ci = new CircuitItem
                     {
                         Content = content,
-                        Tag = content.Tag,
                         Width = content.Width,
-                        Height = content.Height
+                        Height = content.Height,
+
+                        //Initialise tag dictionary with gate function name
+                        Tag = DataModel.DictionaryToXML(new Dictionary<string, string>()
+                        {
+                            { "FunctionName" , (string)content.Tag }
+                        })
                     };
                     Children.Add(ci);
 
