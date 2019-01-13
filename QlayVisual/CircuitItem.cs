@@ -16,14 +16,24 @@ namespace QlayVisual
             Loaded += new RoutedEventHandler(CircuitItem_Loaded);
         }
 
+        //Runtime caches of tag dictionary properties
+        private int? _qubitIndex;
+        private string _functionName;
+
         /// <summary>
         /// Index of the qubit in the system this gate acts upon
         /// </summary>
         public int QubitIndex
         {
-            get { return int.Parse(DataModel.XMLToDictionary((string)Tag)["QubitIndex"]); }
-            set
+            get
             {
+                if (!_qubitIndex.HasValue)
+                    _qubitIndex = int.Parse(DataModel.XMLToDictionary((string)Tag)["QubitIndex"]);
+                return _qubitIndex.Value;
+            }
+            private set
+            {
+                _qubitIndex = value;
                 Dictionary<string, string> dict = DataModel.XMLToDictionary((string)Tag);
                 dict["QubitIndex"] = value.ToString();
                 Tag = DataModel.DictionaryToXML(dict);
@@ -33,7 +43,15 @@ namespace QlayVisual
         /// <summary>
         /// Function name of this logic gate in the Qlay library
         /// </summary>
-        public string FunctionName => DataModel.XMLToDictionary((string)Tag)["FunctionName"];
+        public string FunctionName
+        {
+            get
+            {
+                if (_functionName == null)
+                    _functionName = DataModel.XMLToDictionary((string)Tag)["FunctionName"];
+                return _functionName;
+            }
+        }
 
         /// <summary>
         /// Deletes this CircuitItem from the owning canvas

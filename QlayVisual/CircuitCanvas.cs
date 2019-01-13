@@ -110,12 +110,23 @@ namespace QlayVisual
 
             if (numberOfQubits > 0)
             {
+                //Acknowledge change by clearing measurements
+                ClearMeasurementLabels();
+
                 //Update canvas
                 SetQubitLines(numberOfQubits);
 
                 //Update tag dictionary
                 dict["NumberOfQubits"] = numberOfQubits.ToString();
                 Tag = DataModel.DictionaryToXML(dict);
+
+                //Delete any gates left floating
+                var toDelete = Children.OfType<CircuitItem>()
+                    .Where(n => n.QubitIndex >= numberOfQubits)
+                    .ToArray();
+
+                foreach (CircuitItem ci in toDelete)
+                    ci.DeleteFromCanvas();
             }
         }
 

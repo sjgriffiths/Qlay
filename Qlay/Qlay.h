@@ -54,6 +54,9 @@ namespace qlay
 		//Returns the number of qubits in the system
 		int count() const { return count_; }
 
+		//Resets the system such that all qubits are in the |0> state
+		void reset();
+
 		//QubitSystems cannot be classically copied
 		QubitSystem(const QubitSystem&) = delete;
 		QubitSystem &operator=(const QubitSystem&) = delete;
