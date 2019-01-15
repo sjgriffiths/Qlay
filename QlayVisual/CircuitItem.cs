@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+
+using qlay.cli;
 
 namespace QlayVisual
 {
@@ -14,11 +17,13 @@ namespace QlayVisual
         public CircuitItem()
         {
             Loaded += new RoutedEventHandler(CircuitItem_Loaded);
+            MouseRightButtonDown += CircuitItem_MouseRightButtonDown;
         }
 
         //Runtime caches of tag dictionary properties
         private int? _qubitIndex;
         private string _functionName;
+        private int? _orientation;
 
         /// <summary>
         /// Index of the qubit in the system this gate acts upon
@@ -54,6 +59,33 @@ namespace QlayVisual
         }
 
         /// <summary>
+        /// For two-input gates, indicates whether the control index is +1 or -1
+        /// </summary>
+        public int Orientation
+        {
+            get
+            {
+                if (!_orientation.HasValue)
+                    _orientation = int.Parse(DataModel.XMLToDictionary((string)Tag)["Orientation"]);
+                return _orientation.Value;
+            }
+            private set
+            {
+                _orientation = value;
+                Dictionary<string, string> dict = DataModel.XMLToDictionary((string)Tag);
+                dict["Orientation"] = value.ToString();
+                Tag = DataModel.DictionaryToXML(dict);
+            }
+        }
+
+        /// <summary>
+        /// The number of qubit inputs this gate function takes
+        /// </summary>
+        public int NumberOfQubitInputs => typeof(Gates).GetMethod(FunctionName).GetParameters()
+            .Where(n => n.ParameterType == typeof(Qubit))
+            .Count();
+
+        /// <summary>
         /// Deletes this CircuitItem from the owning canvas
         /// </summary>
         public void DeleteFromCanvas()
@@ -84,6 +116,24 @@ namespace QlayVisual
         {
             //Ensure correct style is assigned upon loading
             Style = FindResource("CircuitItemStyle") as Style;
+
+            //Set correct Y-axis orientation
+            ((Canvas)Content).RenderTransformOrigin = new Point(0.5, 0.5);
+            ((Canvas)Content).RenderTransform = new ScaleTransform(1, Orientation);
+        }
+
+        private void CircuitItem_MouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            //Only applies to two-input gates
+            if (NumberOfQubitInputs == 2)
+            {
+                //Flip orientation
+                Orientation *= -1;
+                ((Canvas)Content).RenderTransform = new ScaleTransform(1, Orientation);
+
+                //Acknowledge change by clearing measurements
+                ((CircuitCanvas)Parent).ClearMeasurementLabels();
+            }
         }
     }
 }

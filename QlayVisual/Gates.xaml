@@ -317,4 +317,33 @@
         </Setter>
     </Style>
 
+    <!--Controlled-NOT-->
+    <Style x:Key="CNOTStyle"
+           TargetType="{x:Type local:ToolboxItem}">
+        <Setter Property="Margin" Value="{StaticResource MARGIN}"/>
+        <Setter Property="ToolTip" Value="Controlled-NOT (CNOT) gate"/>
+        <Setter Property="Content">
+            <Setter.Value>
+                <Canvas Tag="CNOT"
+                        Width="{StaticResource SIZE}" Height="{StaticResource SIZE}">
+                    <Ellipse Width="{StaticResource SIZE}" Height="{StaticResource SIZE}"
+                             Stroke="Black"
+                             StrokeThickness="{StaticResource LINE_THICKNESS}"
+                             Fill="White"/>
+                    <Line X1="35" X2="35"
+                          Y1="1" Y2="125"
+                          Stroke="Black"
+                          StrokeThickness="{StaticResource LINE_THICKNESS}"/>
+                    <Line X1="1" X2="69"
+                          Y1="35" Y2="35"
+                          Stroke="Black"
+                          StrokeThickness="{StaticResource LINE_THICKNESS}"/>
+                    <Ellipse Width="20" Height="20"
+                             Canvas.Left="25" Canvas.Top="115"
+                             Fill="Black"/>
+                </Canvas>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

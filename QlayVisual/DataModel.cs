@@ -139,6 +139,10 @@ namespace QlayVisual
                                 if (uie is TextBox tb)
                                     args.Add(Core.deg_to_rad(double.Parse(tb.Text)));
 
+                            //Obtain control qubit parameter, if one exists
+                            if (ci.NumberOfQubitInputs == 2)
+                                args.Add(qubits[ci.QubitIndex + ci.Orientation]);
+
                             //Add qubit argument and call
                             args.Add(qubits[ci.QubitIndex]);
                             bool? result = (bool?)typeof(Gates).GetMethod(ci.FunctionName).Invoke(null, args.ToArray());

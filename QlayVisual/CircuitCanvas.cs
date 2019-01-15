@@ -122,7 +122,7 @@ namespace QlayVisual
 
                 //Delete any gates left floating
                 var toDelete = Children.OfType<CircuitItem>()
-                    .Where(n => n.QubitIndex >= numberOfQubits)
+                    .Where(n => n.QubitIndex >= numberOfQubits || n.NumberOfQubitInputs == 2 && n.QubitIndex + n.Orientation >= numberOfQubits)
                     .ToArray();
 
                 foreach (CircuitItem ci in toDelete)
@@ -213,7 +213,8 @@ namespace QlayVisual
                         //Initialise tag dictionary with gate function name
                         Tag = DataModel.DictionaryToXML(new Dictionary<string, string>()
                         {
-                            { "FunctionName" , (string)content.Tag }
+                            { "FunctionName" , (string)content.Tag },
+                            { "Orientation" , 1.ToString() }
                         })
                     };
                     Children.Add(ci);

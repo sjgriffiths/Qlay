@@ -69,6 +69,7 @@
                     <local:ToolboxItem Style="{StaticResource ZStyle}"/>
                     <local:ToolboxItem Style="{StaticResource HadamardStyle}"/>
                     <local:ToolboxItem Style="{StaticResource SRNOTStyle}"/>
+                    <local:ToolboxItem Style="{StaticResource CNOTStyle}"/>
                 </StackPanel>
                 <StackPanel Grid.Column="1">
                     <local:ToolboxItem Style="{StaticResource MxStyle}"/>
