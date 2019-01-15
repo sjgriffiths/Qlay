@@ -801,6 +801,8 @@ This constant vs balanced scenario is a rather contrived one, made to highlight 
 This section outlines all of the quantum logic gates, explaning them by their operator matrices and effects on a qubit by treating it as a spin state &ndash; understanding their intricacies is not necessarily crucial to start quantum programming. All angles are given in radians.
 
 ### Measurement
+Note that measurement operations are not technically quantum logic gates as they are not reversible operations, but they are informally called gates here as a code function acting on a qubit.
+
 | Function header | Description |
 |:---------------:| ----------- |
 | `M(q)` | The 'normal' measurement, returning 0 or 1. Measures the qubit in the Z-axis, i.e. the computational basis.
