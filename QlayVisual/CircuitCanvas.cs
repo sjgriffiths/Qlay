@@ -24,10 +24,15 @@ namespace QlayVisual
         /// <summary>
         /// Vertical separation between qubit lines
         /// </summary>
-        public readonly double LINE_SEPARATION = 80;
+        public readonly double LINE_SEPARATION = 90;
 
         /// <summary>
-        /// Returns a list of the Y value of each qubit line
+        /// Number of qubits currently in the circuit
+        /// </summary>
+        public int NumberOfQubits => int.Parse(DataModel.XMLToDictionary((string)Tag)["NumberOfQubits"]);
+
+        /// <summary>
+        /// A list of the Y value of each qubit line
         /// </summary>
         public List<double> QubitLineYValues
         {
@@ -94,13 +99,51 @@ namespace QlayVisual
                         l.Content = "";
         }
 
+        /// <summary>
+        /// Changes the number of qubits in the circuit by the given amount
+        /// </summary>
+        public void ChangeQubits(int change)
+        {
+            //Get info from tag dictionary and update
+            Dictionary<string, string> dict = DataModel.XMLToDictionary((string)Tag);
+            int numberOfQubits = int.Parse(dict["NumberOfQubits"]) + change;
+
+            if (numberOfQubits > 0)
+            {
+                //Acknowledge change by clearing measurements
+                ClearMeasurementLabels();
+
+                //Update canvas
+                SetQubitLines(numberOfQubits);
+
+                //Update tag dictionary
+                dict["NumberOfQubits"] = numberOfQubits.ToString();
+                Tag = DataModel.DictionaryToXML(dict);
+
+                //Delete any gates left floating
+                var toDelete = Children.OfType<CircuitItem>()
+                    .Where(n => n.QubitIndex >= numberOfQubits || n.NumberOfQubitInputs == 2 && n.QubitIndex + n.Orientation >= numberOfQubits)
+                    .ToArray();
+
+                foreach (CircuitItem ci in toDelete)
+                    ci.DeleteFromCanvas();
+            }
+        }
+
         private void CircuitCanvas_Loaded(object sender, RoutedEventArgs e)
         {
             //Ensure correct style is assigned upon loading
             Style = FindResource("CircuitCanvasStyle") as Style;
 
-            //Initialise with one qubit line
-            SetQubitLines(1);
+            //Initialise tag dictionary if the canvas is new
+            if (Tag == null)
+                Tag = DataModel.DictionaryToXML(new Dictionary<string, string>()
+                {
+                    { "NumberOfQubits", "1" }
+                });
+
+            //Initialise qubit lines
+            SetQubitLines(int.Parse(DataModel.XMLToDictionary((string)Tag)["NumberOfQubits"]));
         }
 
         protected override Size MeasureOverride(Size constraint)
@@ -164,9 +207,15 @@ namespace QlayVisual
                     CircuitItem ci = new CircuitItem
                     {
                         Content = content,
-                        Tag = content.Tag,
                         Width = content.Width,
-                        Height = content.Height
+                        Height = content.Height,
+
+                        //Initialise tag dictionary with gate function name
+                        Tag = DataModel.DictionaryToXML(new Dictionary<string, string>()
+                        {
+                            { "FunctionName" , (string)content.Tag },
+                            { "Orientation" , 1.ToString() }
+                        })
                     };
                     Children.Add(ci);
 

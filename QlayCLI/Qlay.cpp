@@ -64,6 +64,7 @@ namespace qlay
 			}
 
 			int count() { return impl_->count(); }
+			void reset() { impl_->reset(); }
 		};
 		
 		//Represents a qubit (quantum bit), a linear combination of |0> and |1>

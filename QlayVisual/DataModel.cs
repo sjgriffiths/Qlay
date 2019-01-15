@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
+using System.Xml.Linq;
 
 using qlay.cli;
 
@@ -31,7 +32,7 @@ namespace QlayVisual
         /// <summary>
         /// References the owning ContentControl of the XAML data model
         /// </summary>
-        public ContentControl ContentContainer { set; get; }
+        public ContentControl ContentContainer { get; set; }
 
         /// <summary>
         /// References the current CircuitCanvas
@@ -45,6 +46,7 @@ namespace QlayVisual
         /// </summary>
         public string FilePath
         {
+            get { return _filePath; }
             set
             {
                 _filePath = value;
@@ -52,7 +54,6 @@ namespace QlayVisual
                 OnPropertyChanged("FileName");
                 OnPropertyChanged("WindowTitle");
             }
-            get { return _filePath; }
         }
 
         /// <summary>
@@ -108,47 +109,95 @@ namespace QlayVisual
             //Name measurement items in order
             int mi = 0;
             foreach (CircuitItem ci in circuitItems)
-                if (((string)ci.Tag).StartsWith("M"))
+                if (ci.FunctionName.StartsWith("M"))
                 {
                     ci.Name = "M" + (mi++).ToString();
                     results.Add(ci.Name, Tuple.Create(0,0));
                 }
 
-            //Run repeat simulations
+            //Initialise Qlay QubitSystem
             Core.init();
-            for (int i = 0; i < repeats; i++)
+            using (QubitSystem qs = new QubitSystem())
             {
-                using (QubitSystem qs = new QubitSystem())
-                using (Qubit q = new Qubit(qs))
+                //List of n qubits, disposed of later when finished with
+                List<Qubit> qubits = new List<Qubit>(CircuitCanvas.NumberOfQubits);
+                try
                 {
-                    foreach (CircuitItem ci in circuitItems)
+                    for (int i = 0; i < CircuitCanvas.NumberOfQubits; i++)
+                        qubits.Add(new Qubit(qs));
+
+                    //Run repeat simulations
+                    for (int i = 0; i < repeats; i++)
                     {
-                        //List of arguments to pass to logic gate
-                        List<object> args = new List<object>();
-
-                        //Obtain angle parameter, if one exists
-                        foreach (UIElement uie in ((Canvas)ci.Content).Children)
-                            if (uie is TextBox tb)
-                                args.Add(Core.deg_to_rad(double.Parse(tb.Text)));
-
-                        //Add qubit argument and call
-                        args.Add(q);
-                        bool? result = typeof(Gates).GetMethod((string)ci.Tag).Invoke(null, args.ToArray()) as bool?;
-
-                        //Log measurement
-                        if (result.HasValue)
+                        foreach (CircuitItem ci in circuitItems)
                         {
-                            Tuple<int, int> t = results[ci.Name];
-                            if (result.Value)
-                                results[ci.Name] = Tuple.Create(t.Item1, t.Item2 + 1);
-                            else
-                                results[ci.Name] = Tuple.Create(t.Item1 + 1, t.Item2);
+                            //List of arguments to pass to logic gate
+                            List<object> args = new List<object>();
+
+                            //Obtain angle parameter, if one exists
+                            foreach (UIElement uie in ((Canvas)ci.Content).Children)
+                                if (uie is TextBox tb)
+                                    args.Add(Core.deg_to_rad(double.Parse(tb.Text)));
+
+                            //Obtain additional qubit parameter, if one exists
+                            if (ci.NumberOfQubitInputs == 2)
+                                args.Add(qubits[ci.QubitIndex + ci.Orientation]);
+
+                            //Add qubit argument and call
+                            args.Add(qubits[ci.QubitIndex]);
+                            bool? result = (bool?)typeof(Gates).GetMethod(ci.FunctionName).Invoke(null, args.ToArray());
+
+                            //Log measurement
+                            if (result.HasValue)
+                            {
+                                Tuple<int, int> t = results[ci.Name];
+                                if (result.Value)
+                                    results[ci.Name] = Tuple.Create(t.Item1, t.Item2 + 1);
+                                else
+                                    results[ci.Name] = Tuple.Create(t.Item1 + 1, t.Item2);
+                            }
                         }
+
+                        //To save time, reset and reuse the same system
+                        qs.reset();
                     }
+                }
+                finally
+                {
+                    foreach (Qubit q in qubits)
+                        if (q != null)
+                            ((IDisposable)q).Dispose();
                 }
             }
 
             return results;
+        }
+
+
+        /// <summary>
+        /// Converts the given Dictionary into an XML string representation
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="dict"></param>
+        /// <returns></returns>
+        public static string DictionaryToXML<TKey, TValue>(Dictionary<TKey, TValue> dict)
+        {
+            XElement xElement = new XElement("Dictionary",
+                dict.Select(n => new XElement(n.Key.ToString(), n.Value)));
+
+            return xElement.ToString();
+        }
+
+        /// <summary>
+        /// Converts the given XML string into a Dictionary
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <returns></returns>
+        public static Dictionary<string, string> XMLToDictionary(string xml)
+        {
+            return XElement.Parse(xml).Elements().ToDictionary(
+                n => n.Name.ToString(), n => n.Value);
         }
     }
 }

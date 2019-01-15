@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:QlayVisual"
         mc:Ignorable="d"
         Title="{Binding WindowTitle}"
-        Width="1000" Height="500">
+        Width="1000" Height="500"
+        WindowState="Maximized">
     
     <!--Common command bindings-->
     <Window.CommandBindings>
@@ -68,6 +69,7 @@
                     <local:ToolboxItem Style="{StaticResource ZStyle}"/>
                     <local:ToolboxItem Style="{StaticResource HadamardStyle}"/>
                     <local:ToolboxItem Style="{StaticResource SRNOTStyle}"/>
+                    <local:ToolboxItem Style="{StaticResource CNOTStyle}"/>
                 </StackPanel>
                 <StackPanel Grid.Column="1">
                     <local:ToolboxItem Style="{StaticResource MxStyle}"/>
@@ -75,6 +77,9 @@
                     <local:ToolboxItem Style="{StaticResource RyStyle}"/>
                     <local:ToolboxItem Style="{StaticResource RzStyle}"/>
                     <local:ToolboxItem Style="{StaticResource RpStyle}"/>
+                    <local:ToolboxItem Style="{StaticResource SWAPStyle}"/>
+                    <local:ToolboxItem Style="{StaticResource SRSWAPStyle}"
+                                       Margin="0 60 0 0"/>
                 </StackPanel>
 
             </Grid>
@@ -99,11 +104,40 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
                     <Label Grid.Column="0"
+                           Grid.Row="0"
+                           Content="Qubits"
+                           Margin="-5,0,5,0"/>
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Column="1"
+                                Grid.Row="0"
+                                Margin="0 0 0 10">
+                        <Button Name="RemoveQubit"
+                                Content="-"
+                                Click="RemoveQubit_Click"
+                                Width="50"
+                                FontSize="30"
+                                MaxHeight="26"
+                                Padding="0 -11 0 0"/>
+                        <Button Name="AddQubit"
+                                Content="+"
+                                Click="AddQubit_Click"
+                                Width="50"
+                                FontSize="30"
+                                MaxHeight="26"
+                                Padding="0 -11 0 0"/>
+                    </StackPanel>
+                    <Label Grid.Column="0"
+                           Grid.Row="1"
                            Content="Repeats"
                            Margin="-5,0,5,0"/>
                     <TextBox Name="NumOfRepeats"
                              Grid.Column="1"
+                             Grid.Row="1"
                              VerticalContentAlignment="Center"
                              Text="1000"/>
                 </Grid>

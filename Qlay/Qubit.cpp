@@ -14,6 +14,16 @@ namespace qlay
 	{
 	}
 
+	void QubitSystem::reset()
+	{
+		Ket &k = state_->get();
+
+		//Set to |0...0> state
+		k(0) = 1;
+		for (Eigen::Index i = 1; i < k.size(); i++)
+			k(i) = 0;
+	}
+
 	std::ostream& operator<<(std::ostream& os, const QubitSystem &system)
 	{
 		Ket &k = system.state_->get();
