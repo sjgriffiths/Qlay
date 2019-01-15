@@ -124,8 +124,8 @@ namespace QlayVisual
 
         private void CircuitItem_MouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            //Only applies to two-input gates
-            if (NumberOfQubitInputs == 2)
+            //Only applies to CNOT gate
+            if (FunctionName == "CNOT")
             {
                 //Flip orientation
                 Orientation *= -1;

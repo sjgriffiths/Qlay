@@ -317,6 +317,84 @@
         </Setter>
     </Style>
 
+    <!--SWAP-->
+    <Style x:Key="SWAPStyle"
+           TargetType="{x:Type local:ToolboxItem}">
+        <Setter Property="Margin" Value="{StaticResource MARGIN}"/>
+        <Setter Property="ToolTip" Value="SWAP gate"/>
+        <Setter Property="Content">
+            <Setter.Value>
+                <Canvas Tag="SWAP"
+                        Width="{StaticResource SIZE}" Height="{StaticResource SIZE}">
+                    <Line X1="35" X2="35"
+                          Y1="35" Y2="125"
+                          Stroke="Black"
+                          StrokeThickness="{StaticResource LINE_THICKNESS}"/>
+                    <Line X1="20" X2="50"
+                          Y1="20" Y2="50"
+                          Stroke="Black"
+                          StrokeThickness="{StaticResource LINE_THICKNESS}"/>
+                    <Line X1="50" X2="20"
+                          Y1="20" Y2="50"
+                          Stroke="Black"
+                          StrokeThickness="{StaticResource LINE_THICKNESS}"/>
+                    <Line X1="20" X2="50"
+                          Y1="110" Y2="140"
+                          Stroke="Black"
+                          StrokeThickness="{StaticResource LINE_THICKNESS}"/>
+                    <Line X1="50" X2="20"
+                          Y1="110" Y2="140"
+                          Stroke="Black"
+                          StrokeThickness="{StaticResource LINE_THICKNESS}"/>
+                </Canvas>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--Square root SWAP (SRNOT)-->
+    <Style x:Key="SRSWAPStyle"
+           TargetType="{x:Type local:ToolboxItem}">
+        <Setter Property="Margin" Value="{StaticResource MARGIN}"/>
+        <Setter Property="ToolTip" Value="Square root SWAP (SRNOT) gate"/>
+        <Setter Property="Content">
+            <Setter.Value>
+                <Canvas Tag="SRSWAP"
+                        Width="{StaticResource SIZE}" Height="{StaticResource SIZE}">
+                    <Line X1="35" X2="35"
+                          Y1="35" Y2="125"
+                          Stroke="Black"
+                          StrokeThickness="{StaticResource LINE_THICKNESS}"/>
+                    <Line X1="20" X2="50"
+                          Y1="20" Y2="50"
+                          Stroke="Black"
+                          StrokeThickness="{StaticResource LINE_THICKNESS}"/>
+                    <Line X1="50" X2="20"
+                          Y1="20" Y2="50"
+                          Stroke="Black"
+                          StrokeThickness="{StaticResource LINE_THICKNESS}"/>
+                    <Line X1="20" X2="50"
+                          Y1="110" Y2="140"
+                          Stroke="Black"
+                          StrokeThickness="{StaticResource LINE_THICKNESS}"/>
+                    <Line X1="50" X2="20"
+                          Y1="110" Y2="140"
+                          Stroke="Black"
+                          StrokeThickness="{StaticResource LINE_THICKNESS}"/>
+                    <Ellipse Width="55" Height="55"
+                             Canvas.Left="8" Canvas.Top="52"
+                             Stroke="Black"
+                             StrokeThickness="{StaticResource LINE_THICKNESS}"
+                             Fill="White"/>
+                    <TextBlock Style="{StaticResource GateTextStyle}"
+                               Text="1/2"
+                               Canvas.Left="16" Canvas.Top="61.5"
+                               FontSize="30"
+                               FontStyle="Normal"/>
+                </Canvas>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!--Controlled-NOT-->
     <Style x:Key="CNOTStyle"
            TargetType="{x:Type local:ToolboxItem}">
