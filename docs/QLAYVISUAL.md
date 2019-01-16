@@ -51,7 +51,7 @@ The maths checks out, but how can a qubit possibly be probabilistic in reality? 
 ### Setting up an experiment
 An empty circuit contains just one horizontal line. Each line represents one qubit, with gates placed onto the line being applied from left to right. From the toolbox on the right, drag one of the top-left-most gates onto the line, then click 'Run Simulation'.
 
-![measure.png](images/visual/measure.png)&nbsp;
+![measure.png](images/visual/measure.png){ width=75% }&nbsp;
 
 This gate is a measurement operation. Our qubit data type does not possess its own value in an accessible way; instead, we use the measurement operation to observe the qubit. We expect this output to be 0: all qubits are initialised into the |0> state.
 
@@ -65,7 +65,7 @@ The first gate to use is called the *Pauli X gate*. It's a complicated name for 
 
 Let's add the `X` gate to our experiment. It is easily recognisable as the circle with a vertical cross, but don't forget that you can hover over any item in the toolbox to see its name:
 
-![PauliX.png](images/visual/PauliX.png)&nbsp;
+![PauliX.png](images/visual/PauliX.png){ width=75% }&nbsp;
 
 Every single qubit prepared to |0> is |1>. Again, very normal.
 
@@ -81,7 +81,7 @@ Instead, the next essential gate to know is the *Hadamard gate*. The easiest way
 
 What does this mean in practice? Let's try it out in the same way as before. You can remove any gate by dragging it off the circuit canvas. Put a Hadamard gate (square with a capital letter H) in instead of the Pauli X gate:
 
-![Hadamard.png](images/visual/Hadamard.png)&nbsp;
+![Hadamard.png](images/visual/Hadamard.png){ width=75% }&nbsp;
 
 With the qubit set to exactly half-way between |0> and |1>, it has a 50:50 chance of being measured as 0 or 1! This is, clearly, a huge deviation from classical computing and the fundamental motivation behind the qubit, as explained earlier.
 
@@ -89,7 +89,7 @@ The fact that the qubit can exist as as any mixture of the two states is known a
 
 It goes further than even that. Let's extend our experiment so that we simply measure the qubit twice and see what happens (ideally we would like to count the number of times both measurements matched; see [Hadamard.cpp](../QlayExamples/Hadamard.cpp))):
 
-![match.png](images/visual/match.png)&nbsp;
+![match.png](images/visual/match.png){ width=75% }&nbsp;
 
 If the qubit simply had a 50:50 chance of being |0> or |1> when observed, then the number of matches would be around 50% of the time. However, we instead see that the measurements matched 100% of the time.
 
@@ -100,7 +100,7 @@ The description of the Hadamard gate's effects as 'half a bit-flip' is a gross s
 
 Instead, we will simply note another important property. If you were to apply 'half a bit-flip' twice, you would reasonably expect to get a full bit-flip. Is using two `H` gates equivalent to an `X` gate? Let's find out:
 
-![twoHadamard.png](images/visual/twoHadamard.png)&nbsp;
+![twoHadamard.png](images/visual/twoHadamard.png){ width=75% }&nbsp;
 
 The answer is **no**. Applying the `H` gate twice gets you right back to where you started, i.e. equals the *identity operation*. The same is, more intuitively, true of the Pauli X (`NOT`) gate (and also Y and Z, for future reference).
 
@@ -114,7 +114,7 @@ We've seen that superposition is a key aspect of qubits. Although we can do more
 ### Quantum entanglement
 First, let's look at probably the most straightforward of the logic gates which take two qubits as inputs: the `SWAP` gate.
 
-![SWAP.png](images/visual/SWAP.png)&nbsp;
+![SWAP.png](images/visual/SWAP.png){ width=75% }&nbsp;
 
 This above example instantiates two qubits, *q<sub>0</sub>* and *q<sub>1</sub>*, and flips *q<sub>0</sub>* to |1>. This is confirmed by measurement. The `SWAP` gate is then applied, which does exactly what it says on the tin: the two qubits are swapped with each other in their entirety. Following this, *q<sub>0</sub>* now measures |0> and *q<sub>1</sub>* now |1>. The values for *&alpha;* and *&beta;* for *q<sub>0</sub>* are swapped in-place with those for *q<sub>1</sub>*.
 
@@ -129,7 +129,7 @@ The `SWAP` gate is of fundamental importance for low-level implementations, but 
 
 The control qubit is never affected, and the target qubit is only affected conditionally on the control. We can use this gate to demonstrate logical interaction between qubits (see [entanglement.cpp](../QlayExamples/entanglement.cpp)):
 
-![CNOT.png](images/visual/CNOT.png)&nbsp;
+![CNOT.png](images/visual/CNOT.png){ width=75% }&nbsp;
 
 *Note: for the `CNOT` gate, the node identical to the `NOT` gate is the target qubit, and the small dot is the control qubit. You can right-click to flip the orientation.*
 
@@ -176,7 +176,7 @@ Entanglement allows for extremely powerful techniques in communication, of which
 
 We mentioned earlier that the most basic way of creating an entangled state is by applying a `H` gate followed by a `CNOT`. This actually creates one of the four most simple and maximally entangled states possible between two qubits: one of the four *Bell states*. These are as follows:
 
-![Bellstates.png](images/maths/Bellstates.png)
+![Bellstates.png](images/maths/Bellstates.png)&nbsp;
 
 Applying `H` then `CNOT` creates the first Bell state (|&Phi;<sup>+</sup>>). The two &Phi; states are where the two qubits are equal and the two &Psi; states are where they are different. Between each of the states of these types, the superscript sign indicates the phase factor. Remember, this phase factor does not directly affect the probability amplitudes, but are distinguishable when applying other operations.
 
@@ -184,7 +184,7 @@ The problem at hand is that Alice wishes to send two classical bits of informati
 
 First, Alice and Bob receive a qubit each, consituting the first Bell state (|&Phi;<sup>+</sup>>):
 
-![superdense1.png](images/visual/superdense1.png)&nbsp;
+![superdense1.png](images/visual/superdense1.png){ width=75% }&nbsp;
 
 So far, Alice receives *q<sub>a</sub>* and Bob receives *q<sub>b</sub>*. Alice currently does nothing and sends *q<sub>a</sub>* to Bob. Bob decodes by applying `CNOT` then `H`, 'undoing' the entanglement. It is clear that Bob just returns the state to its initial preparation (|00>) by symmetry, because you should remember that all gates are reversible.
 
@@ -199,16 +199,16 @@ If Alice intends to transmit the message 00, then this is already achieved. If s
 
 We can try each of these cases to confirm they send the intended message correctly (see [superdense_coding.cpp](../QlayExamples/superdense_coding.cpp)):
 
-![superdense2.png](images/visual/superdense2.png)&nbsp;
-![superdense3.png](images/visual/superdense3.png)&nbsp;
-![superdense4.png](images/visual/superdense4.png)&nbsp;
+![superdense2.png](images/visual/superdense2.png){ width=75% }&nbsp;
+![superdense3.png](images/visual/superdense3.png){ width=75% }&nbsp;
+![superdense4.png](images/visual/superdense4.png){ width=75% }&nbsp;
 
 ### Teleportation
 Another major technique in quantum communication is the spiritual inverse to superdense coding: transmitting one qubit in its entirety, with the support of classical bit communication. Alice can 'teleport' the information of one qubit by sending just two classical bits to Bob, assuming again that they can pre-share an entangled state.
 
 First, let's have Alice possess some qubit *q<sub>c</sub>*, which is the information that she wants to transmit to Bob:
 
-![teleportation1.png](images/visual/teleportation1.png)&nbsp;
+![teleportation1.png](images/visual/teleportation1.png){ width=75% }&nbsp;
 
 For demonstration purposes, we want this qubit to be very distinctive (perhaps not just, say, the rather common 50:50), so the above Y-axis rotation (of 2*arcsin(sqrt(0.75))) prepares a qubit with a 75% chance of measuring |1>.
 
@@ -304,7 +304,7 @@ A simple example for a function *f*(*x*) is if *x* is an odd number. Due to the 
 
 One way of representing the oracle is in a form herein called an *output oracle*. We use a fourth qubit, *y*, which the oracle stores the result in. The beauty of quantum simulation is that we can consider the entire function domain at once through superposition:
 
-![outputoracle.png](images/visual/outputoracle.png)&nbsp;
+![outputoracle.png](images/visual/outputoracle.png){ width=75% }&nbsp;
 
 **Output of `QubitSystem` from code equivalent:**
 ```
@@ -330,7 +330,7 @@ The three digits on the right constitute the input *x<sub>2</sub>x<sub>1</sub>x<
 
 There is a second major way of encoding functions which does not require an additional output qubit(s). Instead, the output is encoded directly into the input qubits by altering their phase. This is herein called the *phase oracle*:
 
-![phaseoracle.png](images/visual/phaseoracle.png)&nbsp;
+![phaseoracle.png](images/visual/phaseoracle.png){ width=75% }&nbsp;
 
 **Output of `QubitSystem` from code equivalent:**
 ```
@@ -357,16 +357,16 @@ The Deutsch-Jozsa algorithm is a quantum algorithm which determines if the funct
 
 It is quite simple. First, we again create a uniform superposition of the input domain with `H` gates on the *x* qubits, before feeding it into an output oracle. The trick is to first set the output qubit to |1> and apply an `H` gate to it also before applying the oracle. The output qubit can then be disregarded. We symmetrically take the *x* qubits out of superposition by again applying `H` gates then measure them all. If they all measure |0> then the function is constant; else, it is balanced (see [DeutschJozsa.cpp](../QlayExamples/DeutschJozsa.cpp)):
 
-![deutschjozsa1.png](images/visual/deutschjozsa1.png)&nbsp;
+![deutschjozsa1.png](images/visual/deutschjozsa1.png){ width=75% }&nbsp;
 
 Not all of the outputs are |0> (the bottom one is |1>) so the function is balanced, not constant. The algorithm is further simplified by just using a phase oracle instead, removing the need for the output qubit:
 
-![deutschjozsa2.png](images/visual/deutschjozsa2.png)&nbsp;
+![deutschjozsa2.png](images/visual/deutschjozsa2.png){ width=75% }&nbsp;
 
 We can test it with constant functions and see the correct result. Remember there are effectively only two constant functions: either 0 is always returned, or 1 is always returned:
 
-![deutschjozsa3.png](images/visual/deutschjozsa3.png)&nbsp;
-![deutschjozsa4.png](images/visual/deutschjozsa4.png)&nbsp;
+![deutschjozsa3.png](images/visual/deutschjozsa3.png){ width=75% }&nbsp;
+![deutschjozsa4.png](images/visual/deutschjozsa4.png){ width=75% }&nbsp;
 
 These correctly output all |0>, therefore constant. The *f*(*x*)=0 cases are trivial as the output is already initialised to 0, so nothing needs to be done. Instead, both above examples show the *f*(*x*)=1 case. In the first showing an output oracle, we just unconditionally flip the output to 1.
 

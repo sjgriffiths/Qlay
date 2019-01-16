@@ -11,6 +11,69 @@
       span.underline{text-decoration: underline;}
       div.column{display: inline-block; vertical-align: top; width: 50%;}
   </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -25,6 +88,18 @@
 <li><a href="#setting-up-an-experiment">Setting up an experiment</a></li>
 <li><a href="#quantum-logic-gates">Quantum logic gates</a></li>
 <li><a href="#intricacies-of-pauli-x-and-hadamard">Intricacies of Pauli X and Hadamard</a></li>
+</ul></li>
+<li><a href="#coding-with-two-qubits">Coding with two qubits</a>
+<ul>
+<li><a href="#quantum-entanglement">Quantum entanglement</a></li>
+<li><a href="#nonlocal-games">Nonlocal games</a></li>
+<li><a href="#superdense-coding">Superdense coding</a></li>
+<li><a href="#teleportation">Teleportation</a></li>
+</ul></li>
+<li><a href="#quantum-computation">Quantum computation</a>
+<ul>
+<li><a href="#representing-functions">Representing functions</a></li>
+<li><a href="#deutsch-jozsa-algorithm">Deutsch-Jozsa algorithm</a></li>
 </ul></li>
 <li><a href="#reference-quantum-logic-gates">Reference: Quantum logic gates</a>
 <ul>
@@ -50,14 +125,14 @@
 <p>The maths checks out, but how can a qubit possibly be probabilistic in reality? Let’s set that aside for one moment: enough with the linear algebra, ahead with the coding.</p>
 <h3 id="setting-up-an-experiment">Setting up an experiment</h3>
 <p>An empty circuit contains just one horizontal line. Each line represents one qubit, with gates placed onto the line being applied from left to right. From the toolbox on the right, drag one of the top-left-most gates onto the line, then click ‘Run Simulation’.</p>
-<p><img src="images/visual/measure.png" alt="measure.png" /> </p>
+<p><img src="images/visual/measure.png" alt="measure.png" style="width:75.0%" /> </p>
 <p>This gate is a measurement operation. Our qubit data type does not possess its own value in an accessible way; instead, we use the measurement operation to observe the qubit. We expect this output to be 0: all qubits are initialised into the |0&gt; state.</p>
 <p>As mentioned before, this system will reveal itself to be probabilistic. We repeat the experiment some suitably large number of times (default is 1000), counting every time the result was 0 and every time it was 1. The results are placed above the gate: <code>1000 , 0</code> means that, as expected, it’s 0 every time.</p>
 <h3 id="quantum-logic-gates">Quantum logic gates</h3>
 <p>The classical bit doesn’t do much by itself: we create programs by manipulating them with logic gates, such as <code>NOT</code>, <code>AND</code>, <code>OR</code> etc. We manipulate the qubit using logic gates, too, but they work rather differently indeed.</p>
 <p>The first gate to use is called the <em>Pauli X gate</em>. It’s a complicated name for a very simple function: it maps |0&gt; to |1&gt; and |1&gt; to |0&gt;. In other words, it’s a direct equivalent of the classical <code>NOT</code>, or <em>bit-flip</em>.</p>
 <p>Let’s add the <code>X</code> gate to our experiment. It is easily recognisable as the circle with a vertical cross, but don’t forget that you can hover over any item in the toolbox to see its name:</p>
-<p><img src="images/visual/PauliX.png" alt="PauliX.png" /> </p>
+<p><img src="images/visual/PauliX.png" alt="PauliX.png" style="width:75.0%" /> </p>
 <p>Every single qubit prepared to |0&gt; is |1&gt;. Again, very normal.</p>
 <p>A logic gate is actually an operation, represented by a matrix, applied to the qubit vector representation. The matrix for the Pauli X gate is:</p>
 <p><img src="images/maths/PauliXgateequals.png" alt="PauliXgateequals.png" /> </p>
@@ -65,22 +140,265 @@
 <p>Measuring and flipping are the only things we can do with only one bit, classically, but there actually exist numerous quantum logic gates with only one input which don’t have classical equivalents. For instance, <em>Pauli Y</em> and <em>Pauli Z</em> gates also exist, but their effects are subtle and not of interest to us yet.</p>
 <p>Instead, the next essential gate to know is the <em>Hadamard gate</em>. The easiest way to understand what this gate does is that it performs half a bit-flip. If the input is |0&gt; or |1&gt;, the output will be exactly half-way between |0&gt; and |1&gt;.</p>
 <p>What does this mean in practice? Let’s try it out in the same way as before. You can remove any gate by dragging it off the circuit canvas. Put a Hadamard gate (square with a capital letter H) in instead of the Pauli X gate:</p>
-<p><img src="images/visual/Hadamard.png" alt="Hadamard.png" /> </p>
+<p><img src="images/visual/Hadamard.png" alt="Hadamard.png" style="width:75.0%" /> </p>
 <p>With the qubit set to exactly half-way between |0&gt; and |1&gt;, it has a 50:50 chance of being measured as 0 or 1! This is, clearly, a huge deviation from classical computing and the fundamental motivation behind the qubit, as explained earlier.</p>
 <p>The fact that the qubit can exist as as any mixture of the two states is known as <strong><em>quantum superposition</em></strong>. The qubit exists as a <em>superpostion</em> of the |0&gt; and |1&gt; basis states. When we observe/measure the qubit, only then does it present itself as one of those basis states, with some probability.</p>
 <p>It goes further than even that. Let’s extend our experiment so that we simply measure the qubit twice and see what happens (ideally we would like to count the number of times both measurements matched; see <a href="../QlayExamples/Hadamard.cpp">Hadamard.cpp</a>)):</p>
-<p><img src="images/visual/match.png" alt="match.png" /> </p>
+<p><img src="images/visual/match.png" alt="match.png" style="width:75.0%" /> </p>
 <p>If the qubit simply had a 50:50 chance of being |0&gt; or |1&gt; when observed, then the number of matches would be around 50% of the time. However, we instead see that the measurements matched 100% of the time.</p>
 <p>This means that not only did we get a 50:50 result when first observing the qubit, but the <em>act of measurement itself</em> permanently collapsed the qubit into that state. The superpostion has been destroyed and we will now measure the same result every time. This phenomenon is called <strong><em>wavefunction collapse</em></strong> and goes alongside superposition itself as perhaps the most startling, fundamental of features of quantum mechanics, entering popular science as the <em>Schrödinger’s cat paradox</em>.</p>
 <h3 id="intricacies-of-pauli-x-and-hadamard">Intricacies of Pauli X and Hadamard</h3>
 <p>The description of the Hadamard gate’s effects as ‘half a bit-flip’ is a gross simplification, albeit a useful one, but it is hard to understand it more without delving into the underlying linear algebra.</p>
 <p>Instead, we will simply note another important property. If you were to apply ‘half a bit-flip’ twice, you would reasonably expect to get a full bit-flip. Is using two <code>H</code> gates equivalent to an <code>X</code> gate? Let’s find out:</p>
-<p><img src="images/visual/twoHadamard.png" alt="twoHadamard.png" /> </p>
+<p><img src="images/visual/twoHadamard.png" alt="twoHadamard.png" style="width:75.0%" /> </p>
 <p>The answer is <strong>no</strong>. Applying the <code>H</code> gate twice gets you right back to where you started, i.e. equals the <em>identity operation</em>. The same is, more intuitively, true of the Pauli X (<code>NOT</code>) gate (and also Y and Z, for future reference).</p>
 <p>Speaking of the <code>X</code> gate, it is generalised to flipping all superpositions. In other words, if you had for example a qubit with a 25% chance of |0&gt; and a 75% chance of |1&gt;, applying the <code>X</code> gate would yield a 75% chance of |0&gt; and 25% chance of |1&gt; (it simply swaps the values of <em>α</em> and <em>β</em>).</p>
+<p>Finally, it is important to appreciate that a qubit can be treated as a direction vector in 3-dimensional Euclidian space, i.e. as a sphere of which the surface area maps the 2-dimensional Hilbert space (<em>Bloch sphere</em>). The Z-axis is treated by convention as the computational basis – a qubit pointing directly along the Z-axis is |0&gt;, whilst a qubit pointing directly against the Z-axis is |1&gt;. One way of preparing a qubit with some probability <em>p</em> of |1&gt; is by applying a Y-axis rotation to the default |0&gt; qubit of 2<em>arcsin(sqrt(</em>p*)). Try deriving this from the operator matrix for the <code>Ry</code> gate in the reference section below!</p>
+<h2 id="coding-with-two-qubits">Coding with two qubits</h2>
+<p>We’ve seen that superposition is a key aspect of qubits. Although we can do more with a qubit than a classical bit, we still can’t exactly do much with just one. The true power of quantum computing only becomes clear when we move onto using more than one qubit and the other key aspect of their behaviour: <strong><em>entanglement</em></strong>.</p>
+<h3 id="quantum-entanglement">Quantum entanglement</h3>
+<p>First, let’s look at probably the most straightforward of the logic gates which take two qubits as inputs: the <code>SWAP</code> gate.</p>
+<p><img src="images/visual/SWAP.png" alt="SWAP.png" style="width:75.0%" /> </p>
+<p>This above example instantiates two qubits, <em>q<sub>0</sub></em> and <em>q<sub>1</sub></em>, and flips <em>q<sub>0</sub></em> to |1&gt;. This is confirmed by measurement. The <code>SWAP</code> gate is then applied, which does exactly what it says on the tin: the two qubits are swapped with each other in their entirety. Following this, <em>q<sub>0</sub></em> now measures |0&gt; and <em>q<sub>1</sub></em> now |1&gt;. The values for <em>α</em> and <em>β</em> for <em>q<sub>0</sub></em> are swapped in-place with those for <em>q<sub>1</sub></em>.</p>
+<p>The <code>SWAP</code> gate is of fundamental importance for low-level implementations, but we’ll turn to a more interesting gate for the behaviour of interacting qubits. The controlled-NOT (<code>CNOT</code>) gate applies the <code>X</code> gate to a target qubit if an only if a control qubit measures |1&gt; – otherwise, no change occurs. The truth table for a two-qubit system |<em>control</em>,<em>target</em>&gt; is as follows:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">before</th>
+<th style="text-align: center;">after</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">|00&gt;</td>
+<td style="text-align: center;">|00&gt;</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">|01&gt;</td>
+<td style="text-align: center;">|01&gt;</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">|10&gt;</td>
+<td style="text-align: center;">|11&gt;</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">|11&gt;</td>
+<td style="text-align: center;">|10&gt;</td>
+</tr>
+</tbody>
+</table>
+<p>The control qubit is never affected, and the target qubit is only affected conditionally on the control. We can use this gate to demonstrate logical interaction between qubits (see <a href="../QlayExamples/entanglement.cpp">entanglement.cpp</a>):</p>
+<p><img src="images/visual/CNOT.png" alt="CNOT.png" style="width:75.0%" /> </p>
+<p><em>Note: for the <code>CNOT</code> gate, the node identical to the <code>NOT</code> gate is the target qubit, and the small dot is the control qubit. You can right-click to flip the orientation.</em></p>
+<p>First, we apply the Hadamard gate to <em>q<sub>0</sub></em>, so it is in an equal superposition of |0&gt; and |1&gt;. Then, we use it as the control to <code>CNOT</code> on <em>q<sub>1</sub></em>. Therefore, <em>q<sub>1</sub></em> now also has a 50:50 probability between |0&gt; and |1&gt;. Critically, we count the number of times the measurement of <em>q<sub>0</sub></em> equals <em>q<sub>1</sub></em> and obtain 100%.</p>
+<p>If <em>q<sub>1</sub></em> simply also had a 50:50 probability then we would expect it to only match approximately 50% of the time. The true situation is that the very act of measuring and thus collapsing <em>q<sub>0</sub></em> collapses <em>q<sub>1</sub></em> before it is itself measured. There is seemingly ‘spooky action at a distance’: the two qubits interacted at some point in the past (<code>CNOT</code>) and they are now <em>entangled</em>, such that measuring one has a very real effect upon the other.</p>
+<p>When qubits are entangled, they cannot simply be considered as independent, 2-dimensional vectors. Instead, the entire system is a 4-dimensional vector space; a linear combination of all possible states, which are |00&gt;, |01, |10&gt; and |11&gt; as given in the truth table above. In this case, the <em>entire system</em> is in an equal superposition of |00&gt; and |11&gt;, and measuring one qubit collapses the system as a whole.</p>
+<p>This simple example, though the most common and standard way of entagling two qubits, does not actually appear to transcend classical conditional probability, however. The true power lies in quantum algorithms and communication which exploits entanglement in ways which cannot be replicated or explained classically.</p>
+<h3 id="nonlocal-games">Nonlocal games</h3>
+<p>Quantum nonlocality, the idea that states are not just subject to local realism, can be demonstrated through <em>nonlocal games</em>, experiments designed to exploit entanglement and prove quantum ‘superiority’.</p>
+<p>Consider a referee in a game and two co-operative players, <em>Alice</em> and <em>Bob</em>. The game consists of Alice and Bob each receiving a ‘question’ from the referee, which is just a classical bit 0 or 1, and them responding with an ‘answer’, likewise 0 or 1. They win the game if and only if their answers satisfy some logical predicate with the questions. The kicker is that they <em>cannot communicate</em> with each other, outside of agreeing upon a strategy beforehand.</p>
+<p>The CHSH game consists of Alice and Bob receiving the questions <em>r</em> and <em>s</em> respectively, where both are 0 or 1 with 50:50 chance. They win if their answers <em>a</em> and <em>b</em> satisfy the predicate <em>r</em> AND <em>s</em> = <em>a</em> XOR <em>b</em>.</p>
+<p>In other words, if <em>r</em> and <em>s</em> are both 1 then <em>a</em> and <em>b</em> must be different; otherwise, they must be the same. These winning conditions can be visualised in a truth table:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><em>r</em> AND <em>s</em></th>
+<th style="text-align: center;"><em>a</em> XOR <em>b</em></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0 AND 0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">0 AND 1</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">1 AND 0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1 AND 1</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+<p>Classically, the best possible strategy is trivial to determine. If Alice and Bob both give the same answers, they have a 3-in-4 chance of winning: they only lose in the 1 AND 1 case. So, Alice and Bob decide to both give the answer 0 and cannot win more assuredly than this.</p>
+<p>However, if Alice and Bob each possess entangled qubits, they can ‘cheat’ the system, being able to communicate with each other to an extent despite no classical channel existing between them.</p>
+<p>The trick is to perform measurement on the qubit(s) in particular bases. Normal measurement so far has been respect to the Z-axis: the computational basis. One can measure a qubit in any axis you want, which collapses the qubit onto that basis. We sometimes call the X-axis basis the <em>sign basis</em>. After applying Hadamard gate to |0&gt;, you cannot say whether it will collapse to |0&gt; or |1&gt;, but you can say for certainty that it is in the |+&gt; state. Likewise, a qubit prepared as |0&gt; has a 50:50 chance of being measured to be |+&gt; or |-&gt;, by instead measuring in the X-axis.</p>
+<p>An <code>Mx</code> function is provided as shorthand for measuring in the X-axis, but you can measure in any arbitrary axis <em>A</em> by applying rotation gates that map <em>A</em> onto the Z-axis, and then just measuring in the Z-axis with <code>M</code>.</p>
+<p>Alice and Bob would ideally like to communicate the question they received to the other. The best they can achieve is to measure their entangled qubits in different axes depending on the question they received, in such a way that the results (taken as their answers <em>a</em> and <em>b</em>) have the highest probability of falling into a winning condition. The derivation of the optimal strategy and axes to measure in is beyond this scope, but see <a href="../QlayExamples/CHSH.cpp">CHSH.cpp</a> for it implemented and performed. The optimal strategy is that Alice measures in the X axis if <em>r</em> is 1 and in the Z axis otherwise, and Bob measures in the same but rotated π/8 radians. The results as shown are conclusive: the classical strategy’s success rate is 75%, but the quantum strategy’s is ~85%!</p>
+<p>The GHZ game (see <a href="../QlayExamples/GHZ.cpp">GHZ.cpp</a>) is very similar, but introduces a third player, <em>Charlie</em>, changes the predicate and restricts the possible set of questions they receive. The best classical success rate is again 75%. By sharing three entangled qubits prepared to a state correspending to the possible set of questions, a simpler quantum strategy of applying the Hadamard gate once achieves something spectacular: a 100% success rate.</p>
+<p>These games prove that quantum entanglement transcends mere conditional probability: that entangled states cannot be considered in isolation and can be dependent even when physically separated.</p>
+<h3 id="superdense-coding">Superdense coding</h3>
+<p>Entanglement allows for extremely powerful techniques in communication, of which there’s two major ones we’ll look at. The first is <strong><em>superdense coding</em></strong>, wherein we can transmit two classical bits of information by transmitting only one qubit.</p>
+<p>We mentioned earlier that the most basic way of creating an entangled state is by applying a <code>H</code> gate followed by a <code>CNOT</code>. This actually creates one of the four most simple and maximally entangled states possible between two qubits: one of the four <em>Bell states</em>. These are as follows:</p>
+<p><img src="images/maths/Bellstates.png" alt="Bellstates.png" /> </p>
+<p>Applying <code>H</code> then <code>CNOT</code> creates the first Bell state (|Φ<sup>+</sup>&gt;). The two Φ states are where the two qubits are equal and the two Ψ states are where they are different. Between each of the states of these types, the superscript sign indicates the phase factor. Remember, this phase factor does not directly affect the probability amplitudes, but are distinguishable when applying other operations.</p>
+<p>The problem at hand is that Alice wishes to send two classical bits of information to Bob, by transmitting only one qubit. A simple insight is that there are four possible states she could wish to send: 00, 01, 10 or 11. The overall idea is thus straightforward: if Alice and Bob share an entangled state, Alice can transform the Bell state (encoding her message) such that Bob can determine the transformation made (decoding her message).</p>
+<p>First, Alice and Bob receive a qubit each, consituting the first Bell state (|Φ<sup>+</sup>&gt;):</p>
+<p><img src="images/visual/superdense1.png" alt="superdense1.png" style="width:75.0%" /> </p>
+<p>So far, Alice receives <em>q<sub>a</sub></em> and Bob receives <em>q<sub>b</sub></em>. Alice currently does nothing and sends <em>q<sub>a</sub></em> to Bob. Bob decodes by applying <code>CNOT</code> then <code>H</code>, ‘undoing’ the entanglement. It is clear that Bob just returns the state to its initial preparation (|00&gt;) by symmetry, because you should remember that all gates are reversible.</p>
+<p>If Alice intends to transmit the message 00, then this is already achieved. If she intends to transmit a different message, then she should transform the state into a different Bell state, by applying a certain operation(s) to <em>q<sub>a</sub></em> before sending it, as below:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Message</th>
+<th style="text-align: center;">Target state</th>
+<th style="text-align: center;">Operation(s)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">00</td>
+<td style="text-align: center;">|Φ<sup>+</sup>&gt;</td>
+<td style="text-align: center;">none</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">01</td>
+<td style="text-align: center;">|Ψ<sup>+</sup>&gt;</td>
+<td style="text-align: center;"><code>X</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">|Φ<sup>-</sup>&gt;</td>
+<td style="text-align: center;"><code>Z</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">|Ψ<sup>-</sup>&gt;</td>
+<td style="text-align: center;"><code>X</code> then <code>Z</code></td>
+</tr>
+</tbody>
+</table>
+<p>We can try each of these cases to confirm they send the intended message correctly (see <a href="../QlayExamples/superdense_coding.cpp">superdense_coding.cpp</a>):</p>
+<p><img src="images/visual/superdense2.png" alt="superdense2.png" style="width:75.0%" />  <img src="images/visual/superdense3.png" alt="superdense3.png" style="width:75.0%" />  <img src="images/visual/superdense4.png" alt="superdense4.png" style="width:75.0%" /> </p>
+<h3 id="teleportation">Teleportation</h3>
+<p>Another major technique in quantum communication is the spiritual inverse to superdense coding: transmitting one qubit in its entirety, with the support of classical bit communication. Alice can ‘teleport’ the information of one qubit by sending just two classical bits to Bob, assuming again that they can pre-share an entangled state.</p>
+<p>First, let’s have Alice possess some qubit <em>q<sub>c</sub></em>, which is the information that she wants to transmit to Bob:</p>
+<p><img src="images/visual/teleportation1.png" alt="teleportation1.png" style="width:75.0%" /> </p>
+<p>For demonstration purposes, we want this qubit to be very distinctive (perhaps not just, say, the rather common 50:50), so the above Y-axis rotation (of 2*arcsin(sqrt(0.75))) prepares a qubit with a 75% chance of measuring |1&gt;.</p>
+<p>We want Bob to possess a qubit <em>q<sub>b</sub></em> which becomes an exact copy of <em>q<sub>c</sub></em>. First, if we perform a <code>CNOT(qc, qb)</code>, this only achieves an entangled system in which the observed value of <em>q<sub>b</sub></em> will match the observed value of <em>q<sub>c</sub></em>. We want <em>q<sub>b</sub></em> to truly become the standalone state <em>r</em>|0&gt;+<em>s</em>|1&gt; of Alice’s qubit!</p>
+<p>Instead, after performing the <code>CNOT</code>, Alice could measure in the sign (X) basis, obtaining either |+&gt; or |-&gt;. This leaves <em>q<sub>b</sub></em> as either <em>r</em>|0&gt;+<em>s</em>|1&gt; or <em>r</em>|0&gt;-<em>s</em>|1&gt;, respectively. Alice should let Bob know if she measured |-&gt;, so that he knows whether or not to perform a phase correction of a <code>Z</code> gate, flipping that minus sign.</p>
+<p><em>Note: at this point, we are mixing classical logic with quantum logic, so we cannot use just raw quantum circuitry. The rest of this section thus delegates to the code tutorial.</em></p>
+<p><strong>C++:</strong></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb1-1" title="1">QubitSystem qs;</a>
+<a class="sourceLine" id="cb1-2" title="2">Qubit qb(qs); Qubit qc(qs);</a>
+<a class="sourceLine" id="cb1-3" title="3"></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="co">//Prepare Alice&#39;s qubit with 75% chance of |1&gt;, to teleport</span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="co">//r|0&gt;+s|1&gt; (where |s|^2 = 0.75)</span></a>
+<a class="sourceLine" id="cb1-6" title="6">Ry(<span class="dv">2</span> * asin(sqrt(<span class="fl">0.75</span>)), qc);</a>
+<a class="sourceLine" id="cb1-7" title="7"></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="co">//Copies Alice&#39;s measurement to Bob...</span></a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="co">//Doesn&#39;t give Bob the state r|0&gt;+s|1&gt; !</span></a>
+<a class="sourceLine" id="cb1-10" title="10">CNOT(qc, qb);</a>
+<a class="sourceLine" id="cb1-11" title="11"></a>
+<a class="sourceLine" id="cb1-12" title="12"><span class="co">//Alice measures in the sign basis, as either |+&gt; or |-&gt;</span></a>
+<a class="sourceLine" id="cb1-13" title="13">Basis result = Mx(qc);</a>
+<a class="sourceLine" id="cb1-14" title="14"></a>
+<a class="sourceLine" id="cb1-15" title="15"><span class="co">//Bob&#39;s qubit is now either r|0&gt;+s|1&gt; or r|0&gt;-s|1&gt;</span></a>
+<a class="sourceLine" id="cb1-16" title="16"><span class="co">//In the latter case, correct the phase</span></a>
+<a class="sourceLine" id="cb1-17" title="17"><span class="cf">if</span> (result) Z(qb);</a>
+<a class="sourceLine" id="cb1-18" title="18"></a>
+<a class="sourceLine" id="cb1-19" title="19">M(qb) ? ones++ : zeroes++;</a></code></pre></div>
+<p><strong>Output:</strong></p>
+<pre><code>ZERO:  240
+ONE:   760</code></pre>
+<p>We now have a procedure for ‘copying’ Alice’s qubit onto Bob’s. Note that the term ‘copy’ is misleading here: Alice’s original information is destroyed, being moved onto Bob’s qubit. This is a fundamental restriction in quantum information called the <em>no-cloning theorem</em>.</p>
+<p>Alice currently classically communicates only one bit to Bob, letting him know if he must perform a phase correction. However, we aren’t done yet, as we are still relying on an actual <code>CNOT</code> gate: the idea is to transmit the qubit from afar. The next step is to effectively turn this into a ‘remote’ <code>CNOT</code> by further exploiting entanglement, so – similarly to superdense coding – we must first provide Alice and Bob with an entangled state. We can use any of the aforementioned Bell states, so let’s just again go with the most common |Φ<sup>+</sup>&gt;.</p>
+<p>Alice adds her data qubit into the entanglement channel by performing <code>CNOT(qc, qa)</code>, where <em>q<sub>a</sub></em> is her qubit given in a Bell state with Bob’s <em>q<sub>b</sub></em>. She then performs two measurements. One is the same as before: measuring her data qubit in the sign basis, to let Bob know if he must perform a phase correction. The additional one that must know be performed is a normal (computational basis) measurement of the Bell qubit. If she measures |1&gt;, then Bob’s qubit will be bit-flipped, so she must let Bob know if he needs to flip it back with an <code>X</code> gate (see <a href="../QlayExamples/teleportation.cpp">teleportation.cpp</a>):</p>
+<p><strong>C++:</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb3-1" title="1">QubitSystem qs;</a>
+<a class="sourceLine" id="cb3-2" title="2">Qubit qa(qs); Qubit qb(qs); Qubit qc(qs);</a>
+<a class="sourceLine" id="cb3-3" title="3"></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="co">//Prepare Alice&#39;s qubit with 75% chance of |1&gt;, to teleport</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="co">//r|0&gt;+s|1&gt; (where |s|^2 = 0.75)</span></a>
+<a class="sourceLine" id="cb3-6" title="6">Ry(<span class="dv">2</span> * asin(sqrt(<span class="fl">0.75</span>)), qc);</a>
+<a class="sourceLine" id="cb3-7" title="7"></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="co">//Give Alice and Bob the Bell state |Φ+&gt;</span></a>
+<a class="sourceLine" id="cb3-9" title="9">H(qa);</a>
+<a class="sourceLine" id="cb3-10" title="10">CNOT(qa, qb);</a>
+<a class="sourceLine" id="cb3-11" title="11"></a>
+<a class="sourceLine" id="cb3-12" title="12"><span class="co">//Alice entangles her data qubit with her Bell qubit</span></a>
+<a class="sourceLine" id="cb3-13" title="13">CNOT(qc, qa);</a>
+<a class="sourceLine" id="cb3-14" title="14"></a>
+<a class="sourceLine" id="cb3-15" title="15"><span class="co">//Alice measures her data qubit in the sign basis</span></a>
+<a class="sourceLine" id="cb3-16" title="16">Basis correct_phase = Mx(qc);</a>
+<a class="sourceLine" id="cb3-17" title="17"></a>
+<a class="sourceLine" id="cb3-18" title="18"><span class="co">//Alice measures her Bell qubit in the computational basis</span></a>
+<a class="sourceLine" id="cb3-19" title="19">Basis correct_flip = M(qa);</a>
+<a class="sourceLine" id="cb3-20" title="20"></a>
+<a class="sourceLine" id="cb3-21" title="21"></a>
+<a class="sourceLine" id="cb3-22" title="22"><span class="co">//Bob&#39;s qubit may have flipped, so correct if necessary</span></a>
+<a class="sourceLine" id="cb3-23" title="23"><span class="cf">if</span> (correct_flip) X(qb);</a>
+<a class="sourceLine" id="cb3-24" title="24"></a>
+<a class="sourceLine" id="cb3-25" title="25"><span class="co">//Bob&#39;s qubit is now either r|0&gt;+s|1&gt; or r|0&gt;-s|1&gt;</span></a>
+<a class="sourceLine" id="cb3-26" title="26"><span class="co">//In the latter case, correct the phase</span></a>
+<a class="sourceLine" id="cb3-27" title="27"><span class="cf">if</span> (correct_phase) Z(qb);</a>
+<a class="sourceLine" id="cb3-28" title="28"></a>
+<a class="sourceLine" id="cb3-29" title="29">M(qb) ? ones++ : zeroes++;</a></code></pre></div>
+<p><strong>Output:</strong></p>
+<pre><code>ZERO:  250
+ONE:   750</code></pre>
+<p>This finished example now successfully teleports one qubit from Alice to Bob, with only a pre-shared entangled state, and two bits sent classically.</p>
+<h2 id="quantum-computation">Quantum computation</h2>
+<p>So far, we have looked mainly at examples of quantum ‘superiority’ in communication, rather than computation. Perhaps the most famous example of a quantum algorithm is <em>Shor’s algorithm</em> for factorising integers almost exponentially faster than the best known classical method, prompting much of the subsequent research into quantum computing and post-quantum cryptography. This particular algorithm is out of scope for this guide, but let’s look at more straightforward examples that constitute a good introduction to quantum programming.</p>
+<h3 id="representing-functions">Representing functions</h3>
+<p>First, let’s clarify how we can represent functions with qubits. We will just consider functions with a single input number, <em>x</em>. What we mean by a number here is, of course, a string of bits. Let’s consider a 3-bit number: <em>x<sub>2</sub>x<sub>1</sub>x<sub>0</sub></em>. We simply represent this with three qubits.</p>
+<p>We’ll also just consider functions that, taking an <em>n</em>-bit number, return a single bit. In other words, our functions are some predicate on a number returning true or false. We call a quantum implementation of a function <em>f</em> an <em>oracle</em>, denoted <em>U<sub>f</sub></em>, as the idea is that it can be treated as a black box.</p>
+<p>A simple example for a function <em>f</em>(<em>x</em>) is if <em>x</em> is an odd number. Due to the binary representation, this is just 1 (true) if the least-significant digit <em>x<sub>0</sub></em> is 1, and 0 (false) if it is 0.</p>
+<p>One way of representing the oracle is in a form herein called an <em>output oracle</em>. We use a fourth qubit, <em>y</em>, which the oracle stores the result in. The beauty of quantum simulation is that we can consider the entire function domain at once through superposition:</p>
+<p><img src="images/visual/outputoracle.png" alt="outputoracle.png" style="width:75.0%" /> </p>
+<p><strong>Output of <code>QubitSystem</code> from code equivalent:</strong></p>
+<pre><code>|0000&gt; 0.353553
+|0001&gt; 0
+|0010&gt; 0.353553
+|0011&gt; 0
+|0100&gt; 0.353553
+|0101&gt; 0
+|0110&gt; 0.353553
+|0111&gt; 0
+|1000&gt; 0
+|1001&gt; 0.353553
+|1010&gt; 0
+|1011&gt; 0.353553
+|1100&gt; 0
+|1101&gt; 0.353553
+|1110&gt; 0
+|1111&gt; 0.353553</code></pre>
+<p>The three digits on the right constitute the input <em>x<sub>2</sub>x<sub>1</sub>x<sub>0</sub></em> and the leftmost digit is the result <em>y</em>. For all inputs with the rightmost digit 1, <em>y</em> is correctly 1: they are odd. We just measure <em>y</em> to obtain the result of the function.</p>
+<p>There is a second major way of encoding functions which does not require an additional output qubit(s). Instead, the output is encoded directly into the input qubits by altering their phase. This is herein called the <em>phase oracle</em>:</p>
+<p><img src="images/visual/phaseoracle.png" alt="phaseoracle.png" style="width:75.0%" /> </p>
+<p><strong>Output of <code>QubitSystem</code> from code equivalent:</strong></p>
+<pre><code>|000&gt; 0.353553
+|001&gt; -0.353553
+|010&gt; 0.353553
+|011&gt; -0.353553
+|100&gt; 0.353553
+|101&gt; -0.353553
+|110&gt; 0.353553
+|111&gt; -0.353553</code></pre>
+<p>We can see that instead of setting an external ‘flag’ qubit in the case of a 1 output, we phase-flip in the case of a 1 output. This is done very easily with the <code>Z</code> gate, which leaves |0&gt; alone but maps |1&gt; to -|1&gt;. Although this reduces the memory cost, you may realise that it doesn’t appear to be useful, as relative phase factor is not experimentally determinable just by measuring the qubits. However, we also know that relative phase factor does affect how states react to further operations, so this representation can come in very handy for algorithms using the function.</p>
+<h3 id="deutsch-jozsa-algorithm">Deutsch-Jozsa algorithm</h3>
+<p>Let’s consider a situation in which we are promised that a function <em>f</em>(<em>x</em>) is either <strong><em>constant</em></strong> or <strong><em>balanced</em></strong>. If it is constant, then it always outputs the same value, i.e. either 0 or 1. If it is balanced, then it outputs 0 for exactly half of the input domain, and 1 for the other half. Our task is to decide which of these a given function is.</p>
+<p>Our above example of a number being odd is balanced, because exactly half of the numbers in the domain are odd.</p>
+<p>Classically, we must continually test <em>f</em>(<em>x</em>) for different <em>x</em>. In the worst case, we must test just over half of the domain, because we can only be sure the function is constant if the same output is observed for more than half; as soon as we see a different output, we can conclude that it is balanced. So, if the input has <em>n</em> bits, then the worst case is 2<sup><em>n</em>-1</sup>+1 function evaluations. This is clearly exponential complexity.</p>
+<p>The Deutsch-Jozsa algorithm is a quantum algorithm which determines if the function is constant or balanced with <em>just one function evaluation</em>. Therefore, it is a striking example of an exponential speedup over classical limits.</p>
+<p>It is quite simple. First, we again create a uniform superposition of the input domain with <code>H</code> gates on the <em>x</em> qubits, before feeding it into an output oracle. The trick is to first set the output qubit to |1&gt; and apply an <code>H</code> gate to it also before applying the oracle. The output qubit can then be disregarded. We symmetrically take the <em>x</em> qubits out of superposition by again applying <code>H</code> gates then measure them all. If they all measure |0&gt; then the function is constant; else, it is balanced (see <a href="../QlayExamples/DeutschJozsa.cpp">DeutschJozsa.cpp</a>):</p>
+<p><img src="images/visual/deutschjozsa1.png" alt="deutschjozsa1.png" style="width:75.0%" /> </p>
+<p>Not all of the outputs are |0&gt; (the bottom one is |1&gt;) so the function is balanced, not constant. The algorithm is further simplified by just using a phase oracle instead, removing the need for the output qubit:</p>
+<p><img src="images/visual/deutschjozsa2.png" alt="deutschjozsa2.png" style="width:75.0%" /> </p>
+<p>We can test it with constant functions and see the correct result. Remember there are effectively only two constant functions: either 0 is always returned, or 1 is always returned:</p>
+<p><img src="images/visual/deutschjozsa3.png" alt="deutschjozsa3.png" style="width:75.0%" />  <img src="images/visual/deutschjozsa4.png" alt="deutschjozsa4.png" style="width:75.0%" /> </p>
+<p>These correctly output all |0&gt;, therefore constant. The <em>f</em>(<em>x</em>)=0 cases are trivial as the output is already initialised to 0, so nothing needs to be done. Instead, both above examples show the <em>f</em>(<em>x</em>)=1 case. In the first showing an output oracle, we just unconditionally flip the output to 1.</p>
+<p>In the second showing a phase oracle, always outputting 1 means we must phase-flip <em>every</em> case. First, we phase-flip all cases where <em>q<sub>0</sub></em> is 1 with a <code>Z</code> gate. Then, in order to phase-flip all cases where <em>q<sub>0</sub></em> is 0, we use another <code>Z</code> gate but sandwiched between <code>X</code> (<code>NOT</code>) gates. Naturally, this constitutes flipping the phase in all possible cases (and it does not matter which qubit we perform this on).</p>
+<p>This constant vs balanced scenario is a rather contrived one, made to highlight the potential for exponential speedup and use of a quantum oracle. Whilst the phase oracle seems slightly trickier to understand and implement than the output oracle and we can use either here, other more powerful and useful algorithms (such as Grover’s search) rely on phase oracles.</p>
 <h2 id="reference-quantum-logic-gates">Reference: Quantum logic gates</h2>
 <p>This section outlines all of the quantum logic gates, explaning them by their operator matrices and effects on a qubit by treating it as a spin state – understanding their intricacies is not necessarily crucial to start quantum programming. All angles are given in radians, <em>but remember that Qlay Visual takes angle arguments in degrees</em>.</p>
 <h3 id="measurement">Measurement</h3>
+<p>Note that measurement operations are not technically quantum logic gates as they are not reversible operations, but they are informally called gates here as a code function acting on a qubit.</p>
 <table>
 <colgroup>
 <col style="width: 60%" />

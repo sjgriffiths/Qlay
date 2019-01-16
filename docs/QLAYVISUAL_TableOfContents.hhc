@@ -35,6 +35,42 @@
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Coding with two qubits">
+		<param name="Local" value="QLAYVISUAL.html#coding-with-two-qubits">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Quantum entanglement">
+			<param name="Local" value="QLAYVISUAL.html#quantum-entanglement">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Nonlocal games">
+			<param name="Local" value="QLAYVISUAL.html#nonlocal-games">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Superdense coding">
+			<param name="Local" value="QLAYVISUAL.html#superdense-coding">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Teleportation">
+			<param name="Local" value="QLAYVISUAL.html#teleportation">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Quantum computation">
+		<param name="Local" value="QLAYVISUAL.html#quantum-computation">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Representing functions">
+			<param name="Local" value="QLAYVISUAL.html#representing-functions">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Deutsch-Jozsa algorithm">
+			<param name="Local" value="QLAYVISUAL.html#deutsch-jozsa-algorithm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Reference: Quantum logic gates">
 		<param name="Local" value="QLAYVISUAL.html#reference-quantum-logic-gates">
 		</OBJECT>
